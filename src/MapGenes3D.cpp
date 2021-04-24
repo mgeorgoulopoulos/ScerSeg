@@ -28,39 +28,49 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string>
 #include <vector>
 
-#include "glm/glm.hpp"
+#include "utils/Vec3D.h"
+#include "utils/TsvReader.h"
 
 using namespace std;
-using namespace glm;
 
+// Represents a record of a PDB file. We only keep the fields relevant to yeast
+// 3D model.
 struct Record {
 	int serialNumber = 0;
 	string atomName;
 	string chain;
-	vec3 position;
+	Vec3D position;
 };
 
+// Represents the yeast 3D model. We break the records in chains (which are
+// chromosomes) and we also keep all the records in a central container.
 struct Model {
+	// All the records (definition points of the 3D model).
 	vector<Record> records;
 
 	struct Chain {
+		// Chromosome name
 		string name;
-		vector<vec3> vertices;
+
+		// Definition points
+		vector<Vec3D> vertices;
 	};
 
+	// All the chromosomes, each represented by a list of definition points.
 	vector<Chain> chains;
 
 	bool constructChains();
 };
 
+// Parses one line of PDB file text to a record
 bool readAtomRecord(const string &line, Record *record) {
 	if (line.size() < 70) {
-		//printf("Line short: %s\n", line.c_str());
+		// printf("Line short: %s\n", line.c_str());
 		return false;
 	}
 
 	if (line.substr(0, 4) != "ATOM") {
-		//printf("Line not ATOM: %s\n", line.c_str());
+		// printf("Line not ATOM: %s\n", line.c_str());
 		return false;
 	}
 
@@ -90,6 +100,7 @@ bool readAtomRecord(const string &line, Record *record) {
 	return true;
 }
 
+// Reads one line from the file and parses the line to a record
 bool readRecord(const string &line, Record *record) {
 	if (line.empty()) {
 		return false;
@@ -102,6 +113,7 @@ bool readRecord(const string &line, Record *record) {
 	return false;
 }
 
+// Read the complete 3D model from the PDB file.
 bool readModel(const string &filename, Model *model) {
 	FILE *fp = fopen(filename.c_str(), "rb");
 	if (fp == nullptr) {
@@ -146,32 +158,40 @@ bool readModel(const string &filename, Model *model) {
 	return true;
 }
 
-// Encapsulates a map from base index to 3D position
+// Encapsulates a map from base-pair index to 3D position. Base-pair indices
+// index one chromosome and their domain is [1,chromosomeSizeInBasePairs].
 struct BasePositionMap {
 	double basesPerSegment = 1.0;
-	vector<vec3> vertices;
+	vector<Vec3D> vertices;
 
-	vec3 position(int indexBase1) const;
-    int totalBases() const {
-        return vertices.empty()
-                    ? 0
-                    : (int)(basesPerSegment * vertices.size() - 1);
-    }
+	// Calculates interpolated position of base-pair index.
+	Vec3D position(int indexBase1) const;
+
+	int totalBases() const {
+		return vertices.empty() ? 0
+								: (int)(basesPerSegment * vertices.size() - 1);
+	}
 };
 
-bool extractBasePositionMaps(const Model &model, vector<BasePositionMap> *basePositionMaps) {
+// Converts a Model to a list of BasePositionMap objects. For yeast we will get
+// a list of 16 BasePositionMap objects. So when we want to get the 3D position
+// of chromosome i, basepair j: we will query the i-th BasePositionMap for its
+// j-th base-pair position. ASSUMPTION: We assume that the control points in the
+// PDB file are evenly distributed in the base-pair domain.
+bool extractBasePositionMaps(const Model &model,
+							 vector<BasePositionMap> *basePositionMaps) {
 	basePositionMaps->clear();
 
 	// Known Scharomyces chromosome sizes, in bp
-    vector<int> chromosomeBaseCounts{
-        230218, 813184, 316620, 1531933, 576874, 270161, 1090940, 562643,
-        439888, 745751, 666816, 1078177, 924431, 784333, 1091291, 948066};
+	vector<int> chromosomeBaseCounts{
+		230218, 813184, 316620, 1531933, 576874, 270161, 1090940, 562643,
+		439888, 745751, 666816, 1078177, 924431, 784333, 1091291, 948066};
 
 	if (model.chains.size() != chromosomeBaseCounts.size()) {
-        printf("Unexpected number of chromosomes: Chains=%d , known "
-                "chromosome lengths=%d\n",
-                model.chains.size(), chromosomeBaseCounts.size());
-    }
+		printf("Unexpected number of chromosomes: Chains=%d , known "
+			   "chromosome lengths=%d\n",
+			   (int)model.chains.size(), (int)chromosomeBaseCounts.size());
+	}
 
 	for (int i = 0; i < static_cast<int>(model.chains.size()); i++) {
 		const Model::Chain &chain = model.chains[i];
@@ -180,7 +200,8 @@ bool extractBasePositionMaps(const Model &model, vector<BasePositionMap> *basePo
 		const int bp = chromosomeBaseCounts[i];
 		const int segmentCount = static_cast<int>(chain.vertices.size()) - 1;
 		if (segmentCount <= 0) {
-			printf("W: Chain %s has zero vertices. Ignore this chain.\n", chain.name.c_str());
+			printf("W: Chain %s has zero vertices. Ignore this chain.\n",
+				   chain.name.c_str());
 			basePositionMaps->push_back(m);
 			continue;
 		}
@@ -189,68 +210,34 @@ bool extractBasePositionMaps(const Model &model, vector<BasePositionMap> *basePo
 	}
 
 	assert(basePositionMaps->size() == model.chains.size());
-	
-	return true;
-}
-
-using Row = vector<string>;
-using Table = vector<Row>;
-
-bool readTSV(const string &filename, Table *table) {
-	table->clear();
-
-	FILE *fp = fopen(filename.c_str(), "rb");
-	if (fp == nullptr) {
-		printf("Failed to open TSV file: %s\n", filename.c_str());
-		return false;
-	}
-
-	// get file size
-	fseek(fp, 0, SEEK_END);
-	const int fileSize = (int) ftell(fp);
-	fseek(fp, 0, SEEK_SET);
-	
-	string token;
-	Row row;
-	for (int i = 0; i < fileSize; i++) {
-		const char c = getc(fp);
-		if (c == 0x0A || c == 0x0D) {
-			if (!token.empty()) {
-				row.push_back(token);
-			}
-			if (!row.empty()) {
-				table->push_back(row);
-				token.clear();
-				row.resize(0);
-			}
-			continue;
-		}
-		if (c == '\t') {
-			row.push_back(token);
-			token.clear();
-			continue;
-		}
-		token += c;
-	}
-	if (!row.empty()) {
-		table->push_back(row);
-		row.clear();
-	}
-
-	fclose(fp);
 
 	return true;
 }
 
+// A continuous area in the genome. Located at a specific chromosome and
+// specifying its start and end base pair index. All indices are 1-based.
 struct Locus {
 	string geneName;
+
+	// Index of chromosome. 1 = ChrI
 	int chromosomeBase1 = 1;
+
+	// Start and end base-pair index
 	int baseStart = 1;
 	int baseEnd = 1;
-	vec3 position;
+
+	// Position in space. This refers to the interpolated position based on the
+	// yeast 3D model and computed for the center base-pair of the gene. So if a
+	// gene is 1000 bases long, we calculate the 3D position of base 500.
+	Vec3D position;
 };
 
+// Reads tab-separated file with columns: gene name, chromosome, start base, end
+// base. Returns a list of Locus objects with an uninitialized 3D position. This
+// will be filled later on based on their chromosome and base-pair indices.
 bool readLoci(const string &filename, vector<Locus> *loci) {
+	using namespace Tsv;
+
 	loci->clear();
 
 	Table table;
@@ -263,7 +250,8 @@ bool readLoci(const string &filename, vector<Locus> *loci) {
 	for (int i = 1 /* skip column names */; i < (int)table.size(); i++) {
 		const Row &row = table[i];
 		if (row.size() != 4) {
-			printf("Loci file (%s) line %d has %d values. We only support 4.\n", filename.c_str(), i, row.size());
+			printf("Loci file (%s) line %d has %d values. We only support 4.\n",
+				   filename.c_str(), i, (int)row.size());
 			return false;
 		}
 
@@ -292,17 +280,24 @@ bool readLoci(const string &filename, vector<Locus> *loci) {
 }
 
 int main(int argc, char *argv[]) {
-	const string filename = "41586_2010_BFnature08973_MOESM239_ESM.pdb";
-
+	// Load the 3D model - I'm not adding it in the package as it is not my own
+	// work. Notifying the user that she must find and add it.
 	Model model;
+	const string filename =
+		"PrimarySources/41586_2010_BFnature08973_MOESM239_ESM.pdb";
 	if (!readModel(filename, &model)) {
-		printf("Failed to read PDB file: %s\n", filename.c_str());
+		printf("Failed to read PDB file: %s. If you haven't done so already, "
+			   "please find this file from the corresponding paper by Duan et "
+			   "al. and place it in 'PrimarySources' folder of this package.\n",
+			   filename.c_str());
 		return 0;
 	}
 
-	printf("Read %d records from PDB file.\n", model.records.size());
-	printf("Read %d chains from PDB file.\n", model.chains.size());
+	printf("Read %d records from PDB file.\n", (int)model.records.size());
+	printf("Read %d chains from PDB file.\n", (int)model.chains.size());
 
+	// Convert the model to list of BasePositionMap obejcts so we can map our
+	// gene positions.
 	vector<BasePositionMap> basePositionMaps;
 	if (!extractBasePositionMaps(model, &basePositionMaps)) {
 		printf("Failed to extract base-position maps from 3D model\n");
@@ -310,7 +305,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Print some statistics
-	vec3 minPos, maxPos, avgPos;
+	Vec3D minPos, maxPos, avgPos;
 	bool first = true;
 	for (const auto &r : model.records) {
 		if (first) {
@@ -327,17 +322,16 @@ int main(int argc, char *argv[]) {
 		avgPos += r.position;
 	}
 	if (model.records.size() > 0) {
-		avgPos /= model.records.size();
+		avgPos /= (double)model.records.size();
 	}
 	printf("Min pos: %.03f\t%.03f\t%.03f\n", minPos.x, minPos.y, minPos.z);
 	printf("Max pos: %.03f\t%.03f\t%.03f\n", maxPos.x, maxPos.y, maxPos.z);
 	printf("Avg pos: %.03f\t%.03f\t%.03f\n", avgPos.x, avgPos.y, avgPos.z);
 
-
-    // How far apart is 1 kb in space? Take position samples every 1000 base
-    // pairs and output to a file to do some statistics later on.
+	// How far apart is 1 kb in space? Take position samples every 1000 base
+	// pairs and output to a file to do some statistics later on.
 	{
-		const string kbFilename = "kb.csv";
+		const string kbFilename = "Results/kb.csv";
 		FILE *fp = fopen(kbFilename.c_str(), "w");
 		if (fp == nullptr) {
 			printf("Failed to open %s for writing\n", kbFilename.c_str());
@@ -345,32 +339,35 @@ int main(int argc, char *argv[]) {
 		}
 		for (const auto &m : basePositionMaps) {
 			for (int i = 1; i < m.totalBases() - 1000; i += 1000) {
-				vec3 a = m.position(i);
-				vec3 b = m.position(i + 1);
-				const double distance = glm::distance(a, b);
+				Vec3D a = m.position(i);
+				Vec3D b = m.position(i + 1);
+				const double distance = Vec3D::distance(a, b);
 				fprintf(fp, "%f\n", distance);
 			}
 		}
 		fclose(fp);
 
-		printf("Written kilobase distance measurements to %s\n", kbFilename.c_str());
+		printf("Written kilobase distance measurements to %s\n",
+			   kbFilename.c_str());
 	}
 
-    // Now, load gene loci (start/end positions in chromosome).
+	// Now, load gene loci (start/end positions in chromosome).
 	vector<Locus> loci;
-	if (!readLoci("Loci.tsv", &loci)) {
+	if (!readLoci("PrimarySources/Loci.tsv", &loci)) {
 		printf("Failed to load Loci file\n");
 		return 0;
 	}
 
-	printf("Read loci for %d genes\n", loci.size());
-	
+	printf("Read loci for %d genes\n", (int)loci.size());
+
 	// Finally, map each gene to a position in space. Use median base.
 	for (Locus &gene : loci) {
 		const int medianBase = (gene.baseStart + gene.baseEnd) / 2;
 		const int chromosomeIndex = gene.chromosomeBase1 - 1;
-		if (chromosomeIndex < 0 || chromosomeIndex >= (int)basePositionMaps.size()) {
-			printf("Invalid chromosome base 1 index: %d (Gene %s)\n", gene.chromosomeBase1, gene.geneName.c_str());
+		if (chromosomeIndex < 0 ||
+			chromosomeIndex >= (int)basePositionMaps.size()) {
+			printf("Invalid chromosome base 1 index: %d (Gene %s)\n",
+				   gene.chromosomeBase1, gene.geneName.c_str());
 			return 0;
 		}
 		const BasePositionMap &m = basePositionMaps[chromosomeIndex];
@@ -378,7 +375,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Finally - write out the gene positions
-	const string outputFilename = "GenePositions.tsv";
+	const string outputFilename = "Results/GenePositions.tsv";
 	FILE *fp = fopen(outputFilename.c_str(), "w");
 	if (fp == nullptr) {
 		printf("Failed to open %s for writing\n", outputFilename.c_str());
@@ -387,21 +384,19 @@ int main(int argc, char *argv[]) {
 	fprintf(fp, "Gene\tChromosome\tStart\tEnd\tx\ty\tz\n");
 	for (const Locus &gene : loci) {
 		fprintf(fp, "%s\t%d\t%d\t%d\t%.03f\t%.03f\t%.03f\n",
-			gene.geneName.c_str(),
-			gene.chromosomeBase1, gene.baseStart, gene.baseEnd,
-			gene.position.x, gene.position.y, gene.position.z);
+				gene.geneName.c_str(), gene.chromosomeBase1, gene.baseStart,
+				gene.baseEnd, gene.position.x, gene.position.y,
+				gene.position.z);
 	}
 	fclose(fp);
 
 	printf("Gene positions written to %s\n", outputFilename.c_str());
 	printf("Full success.\n");
 
-    return 0;
-
+	return 0;
 }
 
-bool Model::constructChains()
-{
+bool Model::constructChains() {
 	chains.clear();
 
 	map<string, Chain> nameToChain;
@@ -418,14 +413,19 @@ bool Model::constructChains()
 	return true;
 }
 
-vec3 BasePositionMap::position(int indexBase1) const {
+// This is the important part: mapping base indices to positions. We do so by
+// mapping the base index between two control points of the original model,
+// producing a parameter t that tells us exactly how distant the base pair is
+// from the first and the second control point (0 = on top of the first point, 1
+// = on the second point, 0.3 = 30% of the distance between control points).
+Vec3D BasePositionMap::position(int indexBase1) const {
 	if (vertices.empty()) {
-		return vec3();
+		return Vec3D();
 	}
 
 	const int indexSpace = std::max(0, indexBase1 - 1);
 	const double segmentSpace = indexSpace / basesPerSegment;
-	int vertexA = (int) segmentSpace;
+	int vertexA = (int)segmentSpace;
 	vertexA = std::min((int)vertices.size() - 1, vertexA);
 	int vertexB = vertexA + 1;
 	vertexB = std::min((int)vertices.size() - 1, vertexB);
@@ -436,6 +436,5 @@ vec3 BasePositionMap::position(int indexBase1) const {
 	// Interpolate to get 3D position of base index
 	double tmp;
 	const double t = modf(segmentSpace, &tmp);
-	return mix(vertices[vertexA], vertices[vertexB], t);
-
+	return Vec3D::mix(vertices[vertexA], vertices[vertexB], t);
 }
