@@ -28,8 +28,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string>
 #include <vector>
 
-#include "utils/Vec3D.h"
 #include "utils/TsvReader.h"
+#include "utils/Vec3D.h"
 
 using namespace std;
 
@@ -328,6 +328,9 @@ int main(int argc, char *argv[]) {
 	printf("Max pos: %.03f\t%.03f\t%.03f\n", maxPos.x, maxPos.y, maxPos.z);
 	printf("Avg pos: %.03f\t%.03f\t%.03f\n", avgPos.x, avgPos.y, avgPos.z);
 
+#if 0 // Set this to 1 to write kb.csv containing sampled kilobase distances in
+	  // 3D space. This might be useful to get an idea of the units the model is
+	  // in. They are not in any standard units as far as I know.
 	// How far apart is 1 kb in space? Take position samples every 1000 base
 	// pairs and output to a file to do some statistics later on.
 	{
@@ -350,6 +353,7 @@ int main(int argc, char *argv[]) {
 		printf("Written kilobase distance measurements to %s\n",
 			   kbFilename.c_str());
 	}
+#endif // Write kilobase distances file
 
 	// Now, load gene loci (start/end positions in chromosome).
 	vector<Locus> loci;
