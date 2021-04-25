@@ -2,3 +2,5 @@ VS.bat
 build/
 PrimarySources/41586_2010_BFnature08973_MOESM239_ESM.pdb
 src/CMakeFiles/
+Results/yeast.sqlite
+Results/yeast.sqlite-journal
