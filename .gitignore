@@ -7,3 +7,5 @@ Results/yeast.sqlite-journal
 .Rproj.user
 r/.RData
 r/.Rhistory
+PrimarySources/SelectedHistonesPromoter.csv
+Results/SelectedHistonesPromoter-Patched.csv
