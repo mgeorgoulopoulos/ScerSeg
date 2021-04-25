@@ -5,3 +5,5 @@ src/CMakeFiles/
 Results/yeast.sqlite
 Results/yeast.sqlite-journal
 .Rproj.user
+r/.RData
+r/.Rhistory
