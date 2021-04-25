@@ -25,6 +25,10 @@ find_package(Qt5 COMPONENTS REQUIRED Core Gui Widgets Sql )
 #	${WrappedSources}
 #)
 
-add_executable(MapGenes3D "MapGenes3D.cpp")
-target_link_libraries(MapGenes3D Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
+add_executable(01_MapGenes3D "MapGenes3D.cpp")
+target_link_libraries(01_MapGenes3D Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
+
+add_executable(02_CsvPatcher "CsvPatcher.cpp")
+target_link_libraries(02_CsvPatcher Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
+
 
