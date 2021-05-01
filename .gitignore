@@ -9,3 +9,4 @@ r/.RData
 r/.Rhistory
 PrimarySources/SelectedHistonesPromoter.csv
 Results/SelectedHistonesPromoter-Patched.csv
+r/chapters/*.html
