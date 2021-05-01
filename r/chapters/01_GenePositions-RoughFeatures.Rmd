@@ -1,32 +1,42 @@
 ---
-title: "Data mining"
+title: "Genes in 3D and rough features"
 output:
   html_document:
     df_print: paged
   pdf_document: default
 ---
 
-```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide"}
+```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
 library(plotly)
 library(RSQLite)
 ```
 
+# Gene positions
+
+We used the haploid genome model by Duan et al. to extract positions of all Sacharomyces cerevisiae genes.
+
+## Why the model can adequately place genes in space.
+
+## What do the 3D positions mean
+
+Not a static configuration. Position implies "preferred neighborhood".
+
 # Rough feature annotation
 
-Ok, so here we can start annotating the genes. Right away we can see 3 rough regions:
+We have observed and annotated three rough regions of the genome:
 
-* 'Hat' genes that form this separate domain (z > 175)
-* "Internal" and "External" genes: the rest of the genes form a bubble. separate into internal and external.
+* 'Hat' genes forming a separate domain (z > 175)
+* "Internal" and "External" genes: the rest of the genes form a hollow bubble. We annotate genes facing inwards as "Internal" and the ones facing outwards as "Exernal".
 
 Centroid of the "bubble": 108.823, 71.102, 81.404
 
 SELECT Gene, sqrt((x - 108.823) * (x - 108.823) + (y - 71.102) * (y - 71.102) + (z - 81.404) * (z - 81.404)) AS Radioid FROM Loci WHERE z < 175
 
-It turns out that the bubble is empty:
+It turns out that the bubble is hollow:
 
 ![Bubble radioids](images/bubble.png)
 
-Nevertheless, we can still consider bubble "internal" and "external" genes as ones that face inwards and outwards of the bubble. Average distance from the centroid is: 56.148
+Average distance from the centroid is: 56.148
 
 ```{sqlite}
 CREATE TABLE Labels AS 
@@ -41,7 +51,7 @@ END Label
 FROM Loci
 ```
 
-# Load and visualize the labels
+## Rough features visualizeed
 
 ```{r, message=FALSE, warning=FALSE}
 conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
@@ -50,7 +60,7 @@ Loci JOIN RoughFeatures ON Loci.Gene = RoughFeatures.Gene")
 plot_ly(x=genePositionsLabels$x, y=genePositionsLabels$y, z=genePositionsLabels$z, type="scatter3d", mode="markers", text=genePositionsLabels$Gene, color=genePositionsLabels$Label)
 dbDisconnect(conn)
 ```
-## Takeaway
+## Promoter histone modfications and rough features
 
 Histone modifications are agnostic to our structural domain labels.
 
