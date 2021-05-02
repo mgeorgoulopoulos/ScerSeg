@@ -31,4 +31,7 @@ target_link_libraries(01_MapGenes3D Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
 add_executable(02_CsvPatcher "CsvPatcher.cpp")
 target_link_libraries(02_CsvPatcher Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
 
+add_executable(03_CommunityScore "CommunityScore.cpp")
+target_link_libraries(03_CommunityScore Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
+
 
