@@ -117,3 +117,17 @@ dbDisconnect(conn)
 ```
 
 Subsequently, we are going to classify the entire genome using these centers as a scaffold, in histone space.
+
+# Communities in 3D
+
+After classifying all genes using the above scaffold and knn algorithm (k=3), we can plot them in space.
+
+Communities include a central histone-space cluster (aroung zero in all dimensions), which allows us to classify the entire set.
+In other words, one of the "extremes" is actually the center of histone space, distant from all other community centers.
+
+```{r echo=FALSE}
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+communities <- dbGetQuery(conn, "SELECT l.Gene, x, y, z, Community FROM Communities c JOIN Loci l ON c.Gene = l.Gene")
+plot_ly(x=communities$x, y=communities$y, z=communities$z, type="scatter3d", mode="markers", text=communities$Gene, color=communities$Community)
+dbDisconnect(conn)
+```
