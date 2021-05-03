@@ -1,0 +1,119 @@
+---
+title: "Histone communities"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
+library(gplots)
+library(plotly)
+library(RSQLite)
+library(RColorBrewer)
+library(clusternor)
+```
+
+# Community score
+
+We have calculated the "community score" for each gene.
+
+The score is defined as: A / N, where: 
+
+* A is the average Euclidean distance (in histone space) from the gene to all other genes of the same chromosome.
+* N is the average distance of the genes of the local group of 5 genes (+/- 2 genes from the genes we are examining).
+
+We bias the denominator to be 0.17 as a minimum. This corresponds to average of all N minus 3 standard deviations, so as to prevent divisions by zero. The 3 major spikes that can be seen in the picture below are such instances.
+
+```{r warning=FALSE, echo=FALSE}
+# Read community scores
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+scores <- dbGetQuery(conn, "SELECT l.Gene, Score FROM Loci l JOIN CommunityScores s ON l.Gene = s.Gene ORDER BY Chromosome, Start")
+row.names(scores) <- scores$Gene
+#scores <- scores[,names(scores) != "Gene"]
+dbDisconnect(conn)
+ggplot(scores, aes(x=1:nrow(scores), y=Score)) +
+  geom_line() + 
+  xlab("Gene number (ordered by chromosome and start position)")
+
+```
+
+# Filtering by community score
+
+We consider a value of '2' as significant. In other words, a gene being twice as similar as their neighbours than its similarity to all other genes in the chromosome is considered a "community center" gene.
+Here is a hierarchical clustering of the histone modifications of community centers:
+
+```{r warning=FALSE, echo=FALSE}
+# Genes selected for being community-centers
+sql <- "SELECT h.* FROM HistonesPromoterPatched h JOIN CommunityScores s ON h.Gene = s.Gene WHERE Score >= 2"
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+centers <- dbGetQuery(conn, sql)
+row.names(centers) <- centers$Gene
+centers <- centers[,names(centers) != "Gene"]
+centers <- as.matrix(centers)
+dbDisconnect(conn)
+
+# Do heatmap
+clusters <- heatmap.2(centers, main="Community centers", hclustfun=function(d) hclust(d, method="ward.D"))
+clusters <- as.hclust(clusters$rowDendrogram)
+```
+
+
+# Deciding number of clusters
+
+We have chosen the community center genes in such a way that we expect clear-cut clusters to be formed in histone space. Plotting the within-cluster total sum of squares we expect to see a clear-cut elbow.
+
+```{r warning=FALSE, echo=FALSE}
+maxClusterCount <- 10
+withinSS <- sapply(1:maxClusterCount, 
+              function(k){kmeans(centers, k, nstart=50,iter.max = 20 )$tot.withinss})
+plot(1:maxClusterCount, withinSS,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Cluster count",
+     ylab="Within-clusters total sum of squares")
+ 
+```
+
+# x-means
+
+It is not easy to decide where the elbow is. I would say it is on 3 clusters, but there's a lot more variance to be explained below that.
+Searching for a less ambiguous method, I stumbled upon x-means.
+
+x-means clustering algorithm outputs not only the k clusters, but also k itself. It does so by optimizing an objective function - the Bayesian information criterion - which reveals the mosto likely k. Experiments by the authors have shown it to reveal the true model underlying the data.
+
+```{r}
+bicOptimizedClusters <- Xmeans(centers, kmax=10)
+Cluster <- bicOptimizedClusters$cluster
+centers <- cbind(centers, Cluster)
+Cluster
+bicOptimizedClusters$size
+```
+x-means comes up with k=7, which explains most of the variance. Beyond 7 clusters it is evudebt that there's not much to be gained.
+
+Saving the community centers to database in CommunityCenters table, containing Gene name and Community (integer).
+
+
+```{r results="hide", message=FALSE, warning=FALSE, fig.show="hide"}
+# Insert community centers and corresponding cluster ids to db
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+dbExecute(conn, "DROP TABLE IF EXISTS CommunityCenters")
+dbExecute(conn, "CREATE TABLE CommunityCenters(Gene TEXT PRIMARY KEY, Community INTEGER)")
+for (i in 1:nrow(centers)) {
+	sql <- paste("INSERT INTO CommunityCenters(Gene, Community) VALUES('", row.names(centers)[i], "',", centers[i, 10], ")", sep='')
+	dbExecute(conn, sql)
+}
+dbDisconnect(conn)
+```
+
+# Community centers in 3D
+
+In this plot we only see the community centers. Each dot represents a gene and implies a group of 5 genes around it, having a similar histone profile.
+
+```{r echo=FALSE}
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+communities <- dbGetQuery(conn, "SELECT l.Gene, x, y, z, Community FROM CommunityCenters c JOIN Loci l ON c.Gene = l.Gene")
+plot_ly(x=communities$x, y=communities$y, z=communities$z, type="scatter3d", mode="markers", text=communities$Gene, color=communities$Community)
+dbDisconnect(conn)
+```
+
+Subsequently, we are going to classify the entire genome using these centers as a scaffold, in histone space.

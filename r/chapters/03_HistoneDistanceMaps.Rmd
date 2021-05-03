@@ -64,3 +64,9 @@ The interesting thing though is that we get these unique profiles in clusters in
 
 ![Community in distance map](images/Community.png)
 
+# Histone communities
+
+We will call these local groups "Histone communities", as they consist of genes with similar and unique histone modifications that converge together in space.
+
+
+
