@@ -34,4 +34,7 @@ target_link_libraries(02_CsvPatcher Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
 add_executable(03_CommunityScore "CommunityScore.cpp")
 target_link_libraries(03_CommunityScore Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
 
+add_executable(04_knn "knn.cpp")
+target_link_libraries(04_knn Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
+
 
