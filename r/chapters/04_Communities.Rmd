@@ -137,3 +137,19 @@ dbDisconnect(conn)
 Here is how the communities look in the linear chromosome. Genes are displayed in succession where each gene has a width of 1 pixel:
 
 ![Communities on linear chromosome](images/Communities.svg)
+
+# Measuring Shannon entropy
+
+We sample windows of 25 consecutive genes and measure Shannon entropy. Then we sample "clouds" of 25 uniformly random genes (with replacement) and compare the distributions of entropy.
+
+![Shannon entropy distributions for consecutive and cloud (random sets of) genes](images/CommunityEntropyDistributions.svg)
+
+We used a total of 100000 random samples for both windows and clouds.
+
+Unlike the "cloud" distribution which is normal, the "window" distribution differs both in shape and in its displacement towards smaller values.
+Its "staircase" shape hints a hierarchy of structure, starting from a set of very low-entropy windows (around 1.2 bits of entropy), two more less structured and more abundant sets at 1.5 and 1.7 bits and finally, after the average has been reached, the distribution collapses to normality.
+
+Probably most interesting result is the first step of the staircase.
+This corresponds to a set of windows having around 1.2 bits of entropy. These account for around 1% of the samples.
+
+The entire bubble lies in an area of low (<0.001) p-value with respect to the cloud distribution. An entropy limit of 1.28 bits corresponds to that p-value. We can filter our windows based on that.
