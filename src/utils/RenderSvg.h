@@ -114,7 +114,7 @@ void render(const QString &filename,
 
 	// Background gray box
 	svg << QString("<rect x=\"%1\" y=\"%2\" width=\"%3\" "
-				   "height=\"%4\" style=\"fill:%5\";\" />")
+				   "height=\"%4\" style=\"fill:%5;\" />")
 			   .arg(0)
 			   .arg(0)
 			   .arg(imageWidth)
@@ -134,7 +134,7 @@ void render(const QString &filename,
 
 		for (GeneClass geneClass : chromosome) {
 			svg << QString("<rect x=\"%1\" y=\"%2\" width=\"%3\" "
-						   "height=\"%4\" style=\"fill:%5\";\" />")
+						   "height=\"%4\" style=\"fill:%5;\" />")
 					   .arg(x)
 					   .arg(y)
 					   .arg(1)
@@ -150,14 +150,16 @@ void render(const QString &filename,
 	}
 
 	// Legend
+	svg << "<g>";
 	for (GeneClass geneClass : geneClasses) {
-		svg << QString("<text x=\"%1\" y=\"%2\" style=\"fill:%3\";\">%4</text>")
+		svg << QString("<text x=\"%1\" y=\"%2\" style=\"fill:%3;\">%4</text>")
 				   .arg(x)
 				   .arg(y)
 				   .arg(classToColor[geneClass])
 				   .arg(geneClass);
 		y += padding;
 	}
+	svg << "</g>";
 
 	svg.push_back("</svg>");
 
