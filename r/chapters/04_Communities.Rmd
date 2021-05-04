@@ -131,3 +131,9 @@ communities <- dbGetQuery(conn, "SELECT l.Gene, x, y, z, Community FROM Communit
 plot_ly(x=communities$x, y=communities$y, z=communities$z, type="scatter3d", mode="markers", text=communities$Gene, color=communities$Community)
 dbDisconnect(conn)
 ```
+
+# Communities in 1D
+
+Here is how the communities look in the linear chromosome. Genes are displayed in succession where each gene has a width of 1 pixel:
+
+![Communities on linear chromosome](images/Communities.svg)
