@@ -35,6 +35,22 @@ using namespace std;
 using Row = vector<string>;
 using Table = vector<Row>;
 
+bool writeTsv(const string &filename, const Table &table) {
+	FILE *fp = fopen(filename.c_str(), "w");
+	if (fp == nullptr)
+		return false;
+	for (const Row &row : table) {
+		for (int i = 0; i < (int)row.size() - 1; i++) {
+			fprintf(fp, "%s\t", row[i].c_str());
+		}
+		if (!row.empty())
+			fprintf(fp, row.back().c_str());
+		fprintf(fp, "\n");
+	}
+	fclose(fp);
+	return true;
+}
+
 bool readTSV(const string &filename, Table *table) {
 	table->clear();
 
