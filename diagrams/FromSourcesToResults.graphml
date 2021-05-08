@@ -20,14 +20,14 @@
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GroupNode>
-              <y:Geometry height="115.37646484375" width="1977.0" x="0.0" y="383.0"/>
+              <y:Geometry height="225.37646484375" width="1256.6666666666665" x="396.33333333333326" y="332.0"/>
               <y:Fill color="#F5F5F5" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="1977.0" x="0.0" xml:space="preserve" y="0.0">yeast.sqlite database</y:NodeLabel>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="1256.6666666666665" x="0.0" xml:space="preserve" y="0.0">yeast.sqlite database</y:NodeLabel>
               <y:Shape type="roundrectangle"/>
               <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
               <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="1.1368683772161603E-13" right="0" rightF="0.0" top="0" topF="0.0"/>
             </y:GroupNode>
             <y:GroupNode>
               <y:Geometry height="50.0" width="50.0" x="0.0" y="60.0"/>
@@ -46,7 +46,7 @@
         <node id="n0::n0">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="63.0" width="248.0" x="293.0" y="420.37646484375"/>
+              <y:Geometry height="63.0" width="248.0" x="1112.0" y="479.37646484375"/>
               <y:Fill color="#CCFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="210.080078125" x="18.9599609375" xml:space="preserve" y="14.798828125">Loci
@@ -58,7 +58,7 @@ Gene, Chromosome, Start, End, x, y, z<y:LabelModel><y:SmartNodeLabelModel distan
         <node id="n0::n1">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="63.0" width="248.0" x="15.0" y="420.37646484375"/>
+              <y:Geometry height="63.0" width="248.0" x="1390.0" y="479.37646484375"/>
               <y:Fill color="#CCFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="190.099609375" x="28.9501953125" xml:space="preserve" y="14.798828125">RoughFeatures
@@ -70,7 +70,7 @@ Gene, Label (Internal/External/Hat)<y:LabelModel><y:SmartNodeLabelModel distance
         <node id="n0::n2">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="63.0" width="248.0" x="1127.0" y="420.37646484375"/>
+              <y:Geometry height="63.0" width="248.0" x="1035.5" y="369.37646484375"/>
               <y:Fill color="#CCFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="205.439453125" x="21.2802734375" xml:space="preserve" y="14.798828125">HistonesPromoterPatched
@@ -82,7 +82,7 @@ Gene associated with 9 Histone mods<y:LabelModel><y:SmartNodeLabelModel distance
         <node id="n0::n3">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="63.0" width="248.0" x="571.0" y="420.37646484375"/>
+              <y:Geometry height="63.0" width="248.0" x="550.8333333333334" y="369.37646484375"/>
               <y:Fill color="#CCFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="212.7578125" x="17.62109375" xml:space="preserve" y="14.798828125">CommunityScores
@@ -94,7 +94,7 @@ Gene associated with community score<y:LabelModel><y:SmartNodeLabelModel distanc
         <node id="n0::n4">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="63.0" width="248.0" x="849.0" y="420.37646484375"/>
+              <y:Geometry height="63.0" width="248.0" x="1313.5" y="369.37646484375"/>
               <y:Fill color="#CCFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="48.103515625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="182.1015625" x="32.94921875" xml:space="preserve" y="7.4482421875">CommunityCenters
@@ -107,7 +107,7 @@ integer Community ID<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
         <node id="n0::n5">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="63.0" width="248.0" x="1436.0" y="420.37646484375"/>
+              <y:Geometry height="63.0" width="248.0" x="411.33333333333337" y="479.37646484375"/>
               <y:Fill color="#CCFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="220.779296875" x="13.6103515625" xml:space="preserve" y="14.798828125">Communities
@@ -119,7 +119,7 @@ Associating each gene with a community<y:LabelModel><y:SmartNodeLabelModel dista
         <node id="n0::n6">
           <data key="d6">
             <y:ShapeNode>
-              <y:Geometry height="63.0" width="248.0" x="1714.0" y="420.37646484375"/>
+              <y:Geometry height="63.0" width="248.0" x="834.0" y="479.37646484375"/>
               <y:Fill color="#CCFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="238.140625" x="4.9296875" xml:space="preserve" y="14.798828125">TightCommunities
@@ -133,7 +133,7 @@ List of genes belonging to a tight community<y:LabelModel><y:SmartNodeLabelModel
     <node id="n1">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="15.0" y="0.0"/>
+          <y:Geometry height="63.0" width="248.0" x="1559.0" y="0.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="216.12109375" x="15.939453125" xml:space="preserve" y="14.798828125">S.cerevisiae haploid genome 3D model.
@@ -145,7 +145,7 @@ List of genes belonging to a tight community<y:LabelModel><y:SmartNodeLabelModel
     <node id="n2">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="154.0" y="194.0"/>
+          <y:Geometry height="63.0" width="248.0" x="1621.0" y="237.5"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.71484375" x="73.642578125" xml:space="preserve" y="22.1494140625">GenePositions.tsv<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -156,7 +156,7 @@ List of genes belonging to a tight community<y:LabelModel><y:SmartNodeLabelModel
     <node id="n3">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="154.0" y="94.0"/>
+          <y:Geometry height="80.0" width="248.0" x="1621.0" y="94.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="78.0390625" x="84.98046875" xml:space="preserve" y="23.298828125">MapGenes3D
@@ -168,7 +168,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n4">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="293.0" y="0.0"/>
+          <y:Geometry height="63.0" width="248.0" x="1837.0" y="0.0"/>
           <y:Fill color="#FF99CC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="44.681640625" x="101.6591796875" xml:space="preserve" y="22.1494140625">Loci.tsv<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -179,7 +179,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n5">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="15.0" y="288.0"/>
+          <y:Geometry height="80.0" width="248.0" x="1683.0" y="360.87646484375"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="115.380859375" x="66.3095703125" xml:space="preserve" y="30.6494140625">Custom SQL queries<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -190,7 +190,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n6">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="15.0" y="677.37646484375"/>
+          <y:Geometry height="63.0" width="248.0" x="1390.0" y="747.37646484375"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="160.0703125" x="43.96484375" xml:space="preserve" y="14.798828125">Promoter Histones Indifferent
@@ -202,7 +202,7 @@ to Rough Features<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
     <node id="n7">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="15.0" y="577.37646484375"/>
+          <y:Geometry height="80.0" width="248.0" x="1266.0" y="636.37646484375"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="34.673828125" x="106.6630859375" xml:space="preserve" y="30.6494140625">Weka<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -213,7 +213,7 @@ to Rough Features<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
     <node id="n8">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="293.0" y="677.37646484375"/>
+          <y:Geometry height="63.0" width="248.0" x="1668.0" y="747.37646484375"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="130.732421875" x="58.6337890625" xml:space="preserve" y="22.1494140625">Figure: Rough Features<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -224,7 +224,7 @@ to Rough Features<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
     <node id="n9">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="293.0" y="577.37646484375"/>
+          <y:Geometry height="80.0" width="248.0" x="1668.0" y="636.37646484375"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="44.669921875" x="101.6650390625" xml:space="preserve" y="30.6494140625">R script<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -235,7 +235,7 @@ to Rough Features<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
     <node id="n10">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="1127.0" y="194.0"/>
+          <y:Geometry height="63.0" width="248.0" x="1281.0" y="0.0"/>
           <y:Fill color="#FF99CC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="168.068359375" x="39.9658203125" xml:space="preserve" y="22.1494140625">SelectedHistonesPromoter.csv<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -246,7 +246,7 @@ to Rough Features<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
     <node id="n11">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="1127.0" y="288.0"/>
+          <y:Geometry height="80.0" width="248.0" x="1281.0" y="94.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="66.021484375" x="90.9892578125" xml:space="preserve" y="30.6494140625">CsvPatcher<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -257,7 +257,7 @@ to Rough Features<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
     <node id="n12">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="849.0" y="577.37646484375"/>
+          <y:Geometry height="80.0" width="248.0" x="396.83333333333337" y="94.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="96.02734375" x="75.986328125" xml:space="preserve" y="30.6494140625">CommunityScore<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -268,7 +268,7 @@ to Rough Features<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
     <node id="n13">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="571.0" y="577.37646484375"/>
+          <y:Geometry height="80.0" width="248.0" x="674.8333333333334" y="94.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="50.013671875" x="98.9931640625" xml:space="preserve" y="23.298828125">x-means
@@ -280,7 +280,7 @@ R script<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:M
     <node id="n14">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="1127.0" y="577.37646484375"/>
+          <y:Geometry height="80.0" width="248.0" x="952.8333333333333" y="94.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="74.69921875" x="86.650390625" xml:space="preserve" y="23.298828125">knn
@@ -292,7 +292,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n15">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="1405.0" y="577.37646484375"/>
+          <y:Geometry height="80.0" width="248.0" x="278.0" y="636.37646484375"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="85.357421875" x="81.3212890625" xml:space="preserve" y="23.298828125">CommunitySvg
@@ -304,7 +304,7 @@ C++ Program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n16">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="1405.0" y="677.37646484375"/>
+          <y:Geometry height="63.0" width="248.0" x="278.0" y="747.37646484375"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="96.02734375" x="75.986328125" xml:space="preserve" y="22.1494140625">Communities.svg<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -315,7 +315,7 @@ C++ Program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n17">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="1683.0" y="577.37646484375"/>
+          <y:Geometry height="80.0" width="248.0" x="0.0" y="636.37646484375"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="115.375" x="66.3125" xml:space="preserve" y="23.298828125">CommunityEntropies
@@ -327,7 +327,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n18">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="1683.0" y="677.37646484375"/>
+          <y:Geometry height="63.0" width="248.0" x="0.0" y="747.37646484375"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="108.0390625" x="69.98046875" xml:space="preserve" y="14.798828125">Community entropy
@@ -339,7 +339,7 @@ statistics<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y
     <node id="n19">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="1961.0" y="577.37646484375"/>
+          <y:Geometry height="80.0" width="248.0" x="556.0" y="636.37646484375"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="132.701171875" x="57.6494140625" xml:space="preserve" y="23.298828125">CommunityEntropyFilter
@@ -351,7 +351,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n20">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="1961.0" y="677.37646484375"/>
+          <y:Geometry height="63.0" width="248.0" x="556.0" y="747.37646484375"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="122.705078125" x="62.6474609375" xml:space="preserve" y="22.1494140625">TightCommunities.svg<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -362,7 +362,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n21">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="80.0" width="248.0" x="2239.0" y="577.37646484375"/>
+          <y:Geometry height="80.0" width="248.0" x="834.0" y="636.37646484375"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="153.384765625" x="47.3076171875" xml:space="preserve" y="23.298828125">TightCommunitiesDistances
@@ -374,7 +374,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <node id="n22">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="63.0" width="248.0" x="2239.0" y="677.37646484375"/>
+          <y:Geometry height="63.0" width="248.0" x="834.0" y="747.37646484375"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="172.052734375" x="37.9736328125" xml:space="preserve" y="22.1494140625">TightCommunitiesDistances.tsv<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -382,13 +382,21 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
         </y:ShapeNode>
       </data>
     </node>
+    <node id="n23">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="63.0" width="248.0" x="1112.0" y="747.37646484375"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="144.05078125" x="51.974609375" xml:space="preserve" y="22.1494140625">CommunitiesGeneLists.txt<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
     <edge id="e0" source="n1" target="n3">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="31.5" tx="-62.0" ty="-40.0">
-            <y:Point x="139.0" y="78.5"/>
-            <y:Point x="216.0" y="78.5"/>
-          </y:Path>
+          <y:Path sx="0.0" sy="31.5" tx="-62.0" ty="-40.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -399,8 +407,8 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="31.5" tx="62.0" ty="-40.0">
-            <y:Point x="417.0" y="78.5"/>
-            <y:Point x="340.0" y="78.5"/>
+            <y:Point x="1961.0" y="78.5"/>
+            <y:Point x="1807.0" y="78.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -421,9 +429,11 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e3" source="n2" target="n0::n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="62.0" sy="31.5" tx="0.0" ty="-31.5">
-            <y:Point x="340.0" y="272.5"/>
-            <y:Point x="417.0" y="272.5"/>
+          <y:Path sx="-62.0" sy="31.5" tx="0.0" ty="-31.5">
+            <y:Point x="1683.0" y="316.0"/>
+            <y:Point x="1577.0" y="316.0"/>
+            <y:Point x="1577.0" y="447.87646484375"/>
+            <y:Point x="1236.0" y="447.87646484375"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -434,10 +444,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e4" source="n2" target="n5">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-62.0" sy="31.5" tx="0.0" ty="-40.0">
-            <y:Point x="216.0" y="272.5"/>
-            <y:Point x="139.0" y="272.5"/>
-          </y:Path>
+          <y:Path sx="62.0" sy="31.5" tx="0.0" ty="-40.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -447,7 +454,10 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e5" source="n5" target="n0::n1">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="40.0" tx="0.0" ty="-31.5"/>
+          <y:Path sx="0.0" sy="40.0" tx="0.0" ty="-31.5">
+            <y:Point x="1807.0" y="463.87646484375"/>
+            <y:Point x="1514.0" y="463.87646484375"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -457,9 +467,9 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e6" source="n0::n0" target="n7">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-62.0" sy="31.5" tx="62.0" ty="-40.0">
-            <y:Point x="355.0" y="529.87646484375"/>
-            <y:Point x="201.0" y="529.87646484375"/>
+          <y:Path sx="-62.0" sy="31.5" tx="-62.0" ty="-40.0">
+            <y:Point x="1174.0" y="604.87646484375"/>
+            <y:Point x="1328.0" y="604.87646484375"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -470,7 +480,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e7" source="n0::n1" target="n7">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-62.0" sy="31.5" tx="-62.0" ty="-40.0"/>
+          <y:Path sx="-62.0" sy="31.5" tx="62.0" ty="-40.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -480,7 +490,10 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e8" source="n7" target="n6">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="40.0" tx="0.0" ty="-31.5"/>
+          <y:Path sx="0.0" sy="40.0" tx="0.0" ty="-31.5">
+            <y:Point x="1390.0" y="731.87646484375"/>
+            <y:Point x="1514.0" y="731.87646484375"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -490,7 +503,10 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e9" source="n0::n0" target="n9">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="62.0" sy="31.5" tx="62.0" ty="-40.0"/>
+          <y:Path sx="62.0" sy="31.5" tx="-62.0" ty="-40.0">
+            <y:Point x="1298.0" y="588.87646484375"/>
+            <y:Point x="1730.0" y="588.87646484375"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -500,9 +516,9 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e10" source="n0::n1" target="n9">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="62.0" sy="31.5" tx="-62.0" ty="-40.0">
-            <y:Point x="201.0" y="513.87646484375"/>
-            <y:Point x="355.0" y="513.87646484375"/>
+          <y:Path sx="62.0" sy="31.5" tx="62.0" ty="-40.0">
+            <y:Point x="1576.0" y="572.87646484375"/>
+            <y:Point x="1854.0" y="572.87646484375"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -533,7 +549,10 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e13" source="n11" target="n0::n2">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="40.0" tx="0.0" ty="-31.5"/>
+          <y:Path sx="0.0" sy="40.0" tx="82.66666666666674" ty="-31.5">
+            <y:Point x="1405.0" y="284.5"/>
+            <y:Point x="1242.1666666666667" y="284.5"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -543,9 +562,9 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e14" source="n0::n2" target="n12">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-62.0" sy="31.5" tx="62.0" ty="-40.0">
-            <y:Point x="1189.0" y="529.87646484375"/>
-            <y:Point x="1035.0" y="529.87646484375"/>
+          <y:Path sx="-82.66666666666674" sy="-31.5" tx="62.0" ty="40.0">
+            <y:Point x="1076.8333333333333" y="221.5"/>
+            <y:Point x="582.8333333333334" y="221.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -556,9 +575,9 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e15" source="n12" target="n0::n3">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-62.0" sy="-40.0" tx="62.0" ty="31.5">
-            <y:Point x="911.0" y="529.87646484375"/>
-            <y:Point x="757.0" y="529.87646484375"/>
+          <y:Path sx="-62.0" sy="40.0" tx="-62.0" ty="-31.5">
+            <y:Point x="458.83333333333337" y="237.5"/>
+            <y:Point x="612.8333333333334" y="237.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -569,7 +588,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e16" source="n0::n3" target="n13">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-62.0" sy="31.5" tx="-62.0" ty="-40.0"/>
+          <y:Path sx="62.0" sy="-31.5" tx="-62.0" ty="40.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -579,9 +598,11 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e17" source="n13" target="n0::n4">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="62.0" sy="-40.0" tx="-62.0" ty="31.5">
-            <y:Point x="757.0" y="513.87646484375"/>
-            <y:Point x="911.0" y="513.87646484375"/>
+          <y:Path sx="62.0" sy="40.0" tx="62.0" ty="-31.5">
+            <y:Point x="860.8333333333334" y="205.5"/>
+            <y:Point x="1389.0" y="205.5"/>
+            <y:Point x="1389.0" y="300.5"/>
+            <y:Point x="1499.5" y="300.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -592,9 +613,11 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e18" source="n0::n4" target="n14">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="62.0" sy="31.5" tx="-82.66666666666666" ty="-40.0">
-            <y:Point x="1035.0" y="513.87646484375"/>
-            <y:Point x="1168.3333333333333" y="513.87646484375"/>
+          <y:Path sx="-62.0" sy="-31.5" tx="-82.66666666666663" ty="40.0">
+            <y:Point x="1375.5" y="316.5"/>
+            <y:Point x="596.8333333333334" y="316.5"/>
+            <y:Point x="596.8333333333334" y="253.5"/>
+            <y:Point x="994.1666666666666" y="253.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -605,10 +628,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e19" source="n0::n2" target="n14">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="62.0" sy="31.5" tx="0.0" ty="-40.0">
-            <y:Point x="1313.0" y="513.87646484375"/>
-            <y:Point x="1251.0" y="513.87646484375"/>
-          </y:Path>
+          <y:Path sx="0.0" sy="-31.5" tx="82.66666666666674" ty="40.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -618,9 +638,11 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e20" source="n14" target="n0::n5">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="82.66666666666666" sy="-40.0" tx="-93.0" ty="31.5">
-            <y:Point x="1333.6666666666667" y="513.87646484375"/>
-            <y:Point x="1467.0" y="513.87646484375"/>
+          <y:Path sx="0.0" sy="40.0" tx="0.0" ty="-31.5">
+            <y:Point x="1076.8333333333333" y="189.5"/>
+            <y:Point x="1060.8333333333333" y="189.5"/>
+            <y:Point x="1060.8333333333333" y="284.5"/>
+            <y:Point x="535.3333333333334" y="284.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -631,7 +653,10 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e21" source="n0::n5" target="n15">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-31.0" sy="31.5" tx="0.0" ty="-40.0"/>
+          <y:Path sx="0.0" sy="31.5" tx="0.0" ty="-40.0">
+            <y:Point x="535.3333333333334" y="588.87646484375"/>
+            <y:Point x="402.0" y="588.87646484375"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -651,9 +676,9 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e23" source="n0::n5" target="n17">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="31.0" sy="31.5" tx="0.0" ty="-40.0">
-            <y:Point x="1591.0" y="561.87646484375"/>
-            <y:Point x="1807.0" y="561.87646484375"/>
+          <y:Path sx="-82.66666666666663" sy="31.5" tx="0.0" ty="-40.0">
+            <y:Point x="452.66666666666674" y="572.87646484375"/>
+            <y:Point x="124.0" y="572.87646484375"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -674,10 +699,7 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e25" source="n0::n5" target="n19">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="93.0" sy="31.5" tx="-62.0" ty="-40.0">
-            <y:Point x="1653.0" y="545.87646484375"/>
-            <y:Point x="2023.0" y="545.87646484375"/>
-          </y:Path>
+          <y:Path sx="82.66666666666663" sy="31.5" tx="-62.0" ty="-40.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -687,9 +709,9 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
     <edge id="e26" source="n19" target="n0::n6">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="62.0" sy="-40.0" tx="-62.0" ty="31.5">
-            <y:Point x="2147.0" y="529.87646484375"/>
-            <y:Point x="1776.0" y="529.87646484375"/>
+          <y:Path sx="62.0" sy="-40.0" tx="-82.66666666666663" ty="31.5">
+            <y:Point x="742.0" y="572.87646484375"/>
+            <y:Point x="875.3333333333334" y="572.87646484375"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -708,13 +730,9 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
       </data>
     </edge>
     <edge id="e28" source="n0::n6" target="n21">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="62.0" sy="31.5" tx="0.0" ty="-40.0">
-            <y:Point x="1900.0" y="513.87646484375"/>
-            <y:Point x="2363.0" y="513.87646484375"/>
-          </y:Path>
+          <y:Path sx="0.0" sy="31.5" tx="0.0" ty="-40.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -722,10 +740,23 @@ C++ program<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><
       </data>
     </edge>
     <edge id="e29" source="n21" target="n22">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="40.0" tx="0.0" ty="-31.5"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e30" source="n0::n6" target="n23">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="82.66666666666674" sy="31.5" tx="0.0" ty="-31.5">
+            <y:Point x="1040.6666666666667" y="620.87646484375"/>
+            <y:Point x="1236.0" y="620.87646484375"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
