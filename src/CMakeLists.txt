@@ -46,6 +46,9 @@ target_link_libraries(06_CommunityEntropy Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::S
 add_executable(07_CommunityEntropyFilter "CommunityEntropyFilter.cpp")
 target_link_libraries(07_CommunityEntropyFilter Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
 
+add_executable(08_TightCommunityDistances "TightCommunityDistances.cpp")
+target_link_libraries(08_TightCommunityDistances Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
+
 
 
 
