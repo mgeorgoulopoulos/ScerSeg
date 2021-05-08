@@ -147,7 +147,7 @@ We sample windows of 25 consecutive genes and measure Shannon entropy. Then we s
 We used a total of 100000 random samples for both windows and clouds.
 
 Unlike the "cloud" distribution which is normal, the "window" distribution differs both in shape and in its displacement towards smaller values.
-Its "staircase" shape hints a hierarchy of structure, starting from a set of very low-entropy windows (around 1.2 bits of entropy), two more less structured and more abundant sets at 1.5 and 1.7 bits and finally, after the average has been reached, the distribution collapses to normality.
+Its multimodal shape hints a hierarchy of structure, starting from a set of very low-entropy windows (around 1.2 bits of entropy), two more less structured and more abundant sets at 1.5 and 1.7 bits and finally, after the average has been reached, the distribution collapses to normality.
 
 Probably most interesting result is the first step of the staircase.
 This corresponds to a set of windows having around 1.2 bits of entropy. These account for around 1% of the samples.
@@ -171,7 +171,20 @@ plot_ly(x=tightCommunities$x, y=tightCommunities$y, z=tightCommunities$z, type="
 dbDisconnect(conn)
 ```
 
+# Distance distribution
 
+We now have sets of genes having both:
 
+* Similar histone profiles, and
+* Proximity in the linear chromosome
 
+Does this imply proximity in 3D space?
+
+To answer this, we measure the Euclidean distance in 3D space between "tight community" genes and between random pairs of genes.
+To remove the advantage of the first group, which is that they are consecutive by definition, we only sample pairs from distinct chromosomes.
+
+![Distance distributions of tight communities and random gene pairs. 28000 samples taken for each category.](images/TightCommunitiesDistancesDistribution.svg)
+
+The resulting p-value is approximately 0.57.
+Community genes do not appear to be correlated in 3D space. The multiple peaks are expected; each represents the interaction of a pair of communities.
 
