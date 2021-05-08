@@ -232,8 +232,8 @@ YPR041W YPR042C YPR043W YPR044C YPR045C YPR046W YPR047W YPR048W YPR049C YPR050C 
 
 Our criteria for inclusion of g:profiler results are:
 
-* A p-value that is less than 1%, or
-* A p-value that is less than 5% and more than 5 genes
+* An adjusted p-value that is less than 1%, or
+* An adjusted p-value that is less than 5% and more than 5 genes
 
 | Community		| Term												|
 |---------------|---------------------------------------------------|
