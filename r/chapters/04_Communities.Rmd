@@ -153,3 +153,25 @@ Probably most interesting result is the first step of the staircase.
 This corresponds to a set of windows having around 1.2 bits of entropy. These account for around 1% of the samples.
 
 The entire bubble lies in an area of low (<0.001) p-value with respect to the cloud distribution. An entropy limit of 1.28 bits corresponds to that p-value. We can filter our windows based on that.
+
+# Tight communities
+
+Windows of 25 genes, filtered for a maximum of 1.28 bits of entropy.
+
+## 2D view
+
+![Tight communities on linear chromosome](images/TightCommunities.svg)
+
+## 3D view
+
+```{r echo=FALSE}
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+tightCommunities <- dbGetQuery(conn, "SELECT Gene, x, y, z, CASE WHEN Gene IN (SELECT Gene FROM TightCommunities) THEN 'Tight' ELSE 'Random' END AS Tightness FROM Loci")
+plot_ly(x=tightCommunities$x, y=tightCommunities$y, z=tightCommunities$z, type="scatter3d", mode="markers", text=tightCommunities$Gene, color=tightCommunities$Tightness, colors=c("#000000", "#FF0000"))
+dbDisconnect(conn)
+```
+
+
+
+
+
