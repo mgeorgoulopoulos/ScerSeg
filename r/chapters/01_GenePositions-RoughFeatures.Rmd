@@ -6,22 +6,24 @@ output:
   pdf_document: default
 ---
 
+# Genes in 3D and rough features
+
 ```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
 library(plotly)
 library(RSQLite)
 ```
 
-# Gene positions
+## Gene positions
 
 We used the haploid genome model by Duan et al. to extract positions of all Sacharomyces cerevisiae genes.
 
-## Why the model can adequately place genes in space.
+### Why the model can adequately place genes in space.
 
-## What do the 3D positions mean
+### What do the 3D positions mean
 
 Not a static configuration. Position implies "preferred neighborhood".
 
-# Rough feature annotation
+## Rough feature annotation
 
 We have observed and annotated three rough regions of the genome:
 
@@ -51,7 +53,7 @@ END Label
 FROM Loci
 ```
 
-## Rough features visualizeed
+### Rough features visualizeed
 
 ```{r, message=FALSE, warning=FALSE}
 conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
@@ -60,7 +62,7 @@ Loci JOIN RoughFeatures ON Loci.Gene = RoughFeatures.Gene")
 plot_ly(x=genePositionsLabels$x, y=genePositionsLabels$y, z=genePositionsLabels$z, type="scatter3d", mode="markers", text=genePositionsLabels$Gene, color=genePositionsLabels$Label)
 dbDisconnect(conn)
 ```
-## Promoter histone modfications and rough features
+### Promoter histone modfications and rough features
 
 Histone modifications are agnostic to our structural domain labels.
 

@@ -11,7 +11,9 @@ library(plotly)
 library(RSQLite)
 ```
 
-# Original data
+# Preprocessing of histone signals
+
+## Original data
 
 The input file consists of rows, each beginning with a gene name and followed by tab-separated real numbers forming the columns. Each column corresponds to a histone modification.
 
@@ -21,7 +23,7 @@ A lot of cells have missing values. I think this means "no reads" or just a few 
 
 Citation required here: what is the origin of the file?
 
-# Selection of histone modifications
+## Selection of histone modifications
 
 During visual inspection of the input file, we notice that a lot of the columns are too sparse.
 
@@ -45,7 +47,7 @@ These still have occassional missing values.
 
 ![Occassional missing values](images/OccassionalMissingValues.png)
 
-# Patching the missing values
+## Patching the missing values
 
 Consider each gene as a vector of 9 dimensions.
 We patch the missing value using the following rule:

@@ -13,7 +13,9 @@ library(RSQLite)
 library(RColorBrewer)
 ```
 
-# Distance maps
+# Histone distance maps
+
+## Distance maps
 
 We visualize the distance (as a heatmap), between each gene and every other gene.
 
@@ -54,7 +56,7 @@ plotChromosome(3)
 
 All chromosomes yield a similar picture.
 
-# Evaluating the distance maps
+## Evaluating the distance maps
 
 The black diagonal corresponds to a zero distance (all genes have a zero distance to themselves).
 
@@ -64,7 +66,7 @@ The interesting thing though is that we get these unique profiles in clusters in
 
 ![Community in distance map](images/Community.png)
 
-# Histone communities
+## Histone communities
 
 We will call these local groups "Histone communities", as they consist of genes with similar and unique histone modifications that converge together in space.
 
