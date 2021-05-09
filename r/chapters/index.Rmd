@@ -1,0 +1,19 @@
+---  
+title: "Compartmentalization of S. cerevisiae genome based on promoter-site histone modifications"
+output:
+  html_document:
+    toc: yes
+  bookdown::pdf_book: default
+---
+
+```{r child = '01_GenePositions-RoughFeatures.Rmd'}
+```
+
+```{r child = '02_HistonesPreprocessing.Rmd'}
+```
+
+```{r child = '03_HistoneDistanceMaps.Rmd'}
+```
+
+```{r child = '04_Communities.Rmd'}
+```
