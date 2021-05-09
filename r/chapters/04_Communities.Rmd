@@ -232,10 +232,14 @@ YPR041W YPR042C YPR043W YPR044C YPR045C YPR046W YPR047W YPR048W YPR049C YPR050C 
 
 ## Gene enrichments
 
-Our criteria for inclusion of g:profiler results are:
+In order to establish citeria for enrichment p-values returned by g:profiler, we first input random sets of 30 genes and note the returned p-value (or '1' if nothing was returned):
+
+0.008 0.015 0.021 0.023 0.03 0.041 0.05 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+Our criteria for inclusion of g:profiler results become:
 
 * An adjusted p-value that is less than 1%, or
-* An adjusted p-value that is less than 5% and more than 5 genes
+* An adjusted p-value that is less than 5% and more than 5 genes appear in the enrichment category
 
 | Community		| Term												|
 |---------------|---------------------------------------------------|
