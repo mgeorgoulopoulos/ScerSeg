@@ -24,6 +24,9 @@ Vector class that represents points in 3D space. Initially I used GLM, but I
 decided it was not worth the dependency.
 */
 
+#ifndef _VEC_3D_H_
+#define _VEC_3D_H_
+
 #include <cmath>
 
 class Vec3D {
@@ -80,3 +83,5 @@ class Vec3D {
 		return Vec3D(mix(a.x, b.x, t), mix(a.y, b.y, t), mix(a.z, b.z, t));
 	}
 };
+
+#endif // _VEC_3D_H_
