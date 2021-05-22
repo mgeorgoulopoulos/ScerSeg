@@ -1,5 +1,5 @@
 ---  
-title: "Compartmentalization of S. cerevisiae genome based on promoter-site histone modifications"
+title: "Segmentation of S. cerevisiae genome based on promoter-site histone modifications"
 output:
   html_document:
     toc: yes
