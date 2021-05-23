@@ -152,3 +152,8 @@ The table below summarizes the more prominent tendencies for Over- and Under-rep
 | G | H3NTerm, H4NTerm | H2B, H4              |
 
 Tendencies of cluster D have been parenthesized, to show that these are not most dominant among the group. Rest of the table contains most dominant tendencies per histone variant.
+
+## Discussion
+
+What makes the clusters statistically significant is not a substantial shift in histone modification profiles. It is a subtle tendency towards over- or under-representation of each histone variant. Statistical significance is therefore explained by the entire gene group's decision to move towards one or the other side.
+We didn't select the groups for this. The statistical test was histone-space compactness. Thus, the groups must be of reduced variance. Let's add a figure to illustrate that.
