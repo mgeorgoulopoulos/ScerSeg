@@ -1,0 +1,42 @@
+# Abstract
+
+In this work, we explore the yeast genome with the intention of finding areas of local similarity regarding given characteristics. We utilize such characteristics (collectively referred to as "signals") as promoter-site histone modification profiles, transcription factor binding motifs, gene co-expression and conservation scores. These signals are sparsely sampled over the genome, at a resolution of one sample per gene. We consider signal locality in both linear and three-dimensional space and uncover a number of locally similar segments. Our findings indicate that yeast genome is abundant with sites of subtle, yet statistically significant similarity.
+
+Single paragraph, 200-300 words
+
+
+# Introduction
+
+What is the problem?
+
+# Materials and Methods
+ 
+How did I solve the problem?
+
+All positions and signals are quantized to genes.
+	
+
+# Results 
+
+What did I find out?
+
+
+# Discussion
+
+What does it mean?
+	
+
+# Acknowledgments
+
+
+Who helped me out?
+	
+
+ 
+
+# Literature Cited
+
+Whose work did I refer to?
+	
+
+# Appendix I: Assumptions
