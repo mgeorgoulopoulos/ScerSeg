@@ -9,6 +9,9 @@ output:
 ```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
 library(plotly)
 library(RSQLite)
+library(reticulate)
+library(gplots)
+library(RColorBrewer)
 ```
 
 # Sphere test
@@ -85,3 +88,67 @@ promoterFields <- dbGetQuery(conn, sql)
 plot_ly(x=promoterFields$x, y=promoterFields$y, z=promoterFields$z, type="scatter3d", mode="markers", text=promoterFields$Gene, color=promoterFields$Field, colors=fieldColors)
 dbDisconnect(conn)
 ```
+
+## Histone profiles
+
+We then attempt a pair plot of all 9 histone modifications and their associated classes.
+
+```
+
+# Disabling because this takes a long time to produce. Add ```{r} to enable again.
+
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+histoneProfiles <- dbGetQuery(conn, "SELECT H3K4, H3K36, H3NTerm, H4NTerm, H2A, H2B, H3, H4, H2AZ, Field FROM HistonesPromoterPatched h JOIN PromoterFields p ON h.Gene = p.Gene")
+
+
+use_python('C:\\Users\\ProteinMetrics\\AppData\\Local\\Programs\\Python\\Python38\\python.exe')
+sns <- import('seaborn')
+plt <- import('matplotlib.pyplot')
+pd <- import('pandas')
+
+plot <- sns$pairplot(r_to_py(histoneProfiles), hue = 'Field')
+plot$savefig("images/PromoterFieldsHistonePairPlot.png")
+#plt$show()
+
+```
+![Histone modification profiles pair plot](images/PromoterFieldsHistonePairPlot.png)
+
+Calling the histone profiles by absolute value is not possible. All distributions are almost identical to the overall histone modification distribution.
+
+What differs, however, is a gentle displacement of the average in each dimension. The distinguishing characteristic of our clusters is the accumulation of such tendencies in multiple dimensions. This lowers the average histone profile distance to statistically significant levels.
+
+The natural way to represent our data is therefore a quantification of the gentle shifts for each cluster.
+
+For each histone modification, we calculate the average of each group. Then we consider the distribution of the averages and assign a z-score to each group. The 9-vector of z-scores will then characterize the collective tendencies of the group.
+
+```{r}
+colors <- c("#FF0000", "#FF0000", "#000000", "#00FF00", "#00FF00")
+colors <- colorRampPalette(colors)(25)
+
+tendencies <- read.table(
+  "../../Results/PromoterFieldsTendencies.tsv",
+  sep="\t", header=TRUE, row.names=1)
+tendenciesScaled <- scale(tendencies)
+heatmap.2(tendenciesScaled, col=colors)
+```
+
+Observations:
+
+* Every cluster occupies its own spot in the space of possible tendencies.
+* The histogram drawn over the color key verifies the deviation behavior. The distribution is bimodal. 
+* The 2 smaller clusters (A and B) are similar: they overrepresent H2A, H2B, H3 and H4.
+* The largest cluster, G, is roughly antithetical to the smaller ones (A and B)
+
+The table below summarizes the more prominent tendencies for Over- and Under-representation observed in each cluster:
+
+|   | Over             | Under                |
+|---|------------------|----------------------|
+| A | H3K36, H3, H4    |                      |
+| B | H2A, H2B         | H3K4, H3K36, H3NTerm |
+| C | H3K4             |                      |
+| D | (H3NTerm)        | (H2A)                |
+| E |                  | H4NTerm, H3, H2AZ    |
+| F | H2AZ             | H2A                  |
+| G | H3NTerm, H4NTerm | H2B, H4              |
+
+Tendencies of cluster D have been parenthesized, to show that these are not most dominant among the group. Rest of the table contains most dominant tendencies per histone variant.
