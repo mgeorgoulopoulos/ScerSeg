@@ -7,6 +7,7 @@ output:
 ---
 
 ```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
+library(ggplot2)
 library(plotly)
 library(RSQLite)
 library(reticulate)
@@ -99,6 +100,7 @@ We then attempt a pair plot of all 9 histone modifications and their associated 
 
 conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
 histoneProfiles <- dbGetQuery(conn, "SELECT H3K4, H3K36, H3NTerm, H4NTerm, H2A, H2B, H3, H4, H2AZ, Field FROM HistonesPromoterPatched h JOIN PromoterFields p ON h.Gene = p.Gene")
+dbDisconnect(conn)
 
 
 use_python('C:\\Users\\ProteinMetrics\\AppData\\Local\\Programs\\Python\\Python38\\python.exe')
@@ -108,7 +110,6 @@ pd <- import('pandas')
 
 plot <- sns$pairplot(r_to_py(histoneProfiles), hue = 'Field')
 plot$savefig("images/PromoterFieldsHistonePairPlot.png")
-#plt$show()
 
 ```
 ![Histone modification profiles pair plot](images/PromoterFieldsHistonePairPlot.png)
@@ -157,3 +158,15 @@ Tendencies of cluster D have been parenthesized, to show that these are not most
 
 What makes the clusters statistically significant is not a substantial shift in histone modification profiles. It is a subtle tendency towards over- or under-representation of each histone variant. Statistical significance is therefore explained by the entire gene group's decision to move towards one or the other side.
 We didn't select the groups for this. The statistical test was histone-space compactness. Thus, the groups must be of reduced variance. Let's add a figure to illustrate that.
+
+## Gene ontology enrichment
+
+Only the larger clusters produce enriched terms:
+
+|   | Term                                | PAdj |
+|---|-------------------------------------|------|
+| D | Terpenoid backbone biosynthesis     | 4%   |
+| E | Ribosomal small subunit binding     | 5%   |
+| F | Factor: HSF; motif: AGAANAGAANAGAAN | 2%   |
+| G | Factor: HSF; motif: NTTCTAGAANAGAAN | 1%   |
+
