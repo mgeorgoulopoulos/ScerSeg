@@ -13,3 +13,4 @@ r/chapters/*.html
 r/chapters/_main.Rmd
 r/chapters/_main.tex
 Results/pValues.PromoterFields.tsv
+PrimarySources/Conservation.csv
