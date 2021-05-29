@@ -1,0 +1,108 @@
+# Summary
+
+## Rough feature annotation
+
+* Manually subdivide genome into: "Hat", "Internal" and "External" genes.
+* Genome bubble is hollow.
+* "Internal" genes are below the average of distances from bubble's centroid.
+
+## Promoter-site histone modification signal preprocessing
+
+* Selected 9 signals that are mostly populated: H3K4, H3K6, H3NTerm, H4NTerm, H2A, H2B, H3, H4, H2AZ.
+* Filled-in the rest as median of the closest 3 histone-profile-space vectors.
+
+## Histone communities
+
+* Extracted all genes with CommunityScore > 2. Read: "twice as distant from all other genes than local group of 5".
+* x-means to get 7 histone-profile clusters.
+* knn (k=3) to classify all genes in each of the 7 classes.
+* Measuring entropy on a sliding window of 25 bp.
+* Distribution of entropy of sliding windows is shifted compared to that of random sets of 25.
+* Distribution of window-entropy shows a small peak at p-value < 0.1%.
+* We filter all windows by that threshold (corresponding to 1.28 bits of entropy).
+* Resulting segments (named by chromosome): II, IV-A, IV-B, VII-A, VII-B, X, XI-A, XI-B, XIII, XIV-A, XIV-B, XVI.
+* The vast majority of their genes lies within the "Internal" rough feature.
+
+A few segments have significant gene enrichments:
+
+| Community		| Term												|
+|---------------|---------------------------------------------------|
+| II			| acetyl-CoA transmembrane transporter activity		|
+| IV-A			| Factor: Gal4p, Factor: Gal4p, Factor: SWI4P		|
+| VII-B			| Factor: DAL81										|
+| X				| Factor: Mbp1p, Factor: ARG						|
+
+## Sphere test
+
+* Sample random spheres of set radius. Center x,y,z drawn from uniform distribution.
+* Each sphere contains 50-150 genes.
+* Compute a different statistic per signal.
+* Calculate p-value by comparing against 10000 random samples of the same gene count.
+* Adjust p-values and filter for an FDR of 1% or 5% depending on the signal.
+* Glue overlapping spheres together. Stop at 5% overlap, which we consider distinct.
+
+### Promoter-site histone profile
+
+Statistic: average pairwise histone-space Euclidean distance.
+
+#### Geometry
+
+* 7 clusters, completely distinct (no need to apply the 5% rule).
+* All clusters are in the bubble region.
+* They appear on one side of the bubble, penetrating the whole side, from surface to the hollow core.
+* They never extend to the other side of the bubble.
+
+#### Histone profile
+
+* The distribution of each histone variant is almost identical to the general distribution.
+* What changes is a subtle tendency of over- or under-representing a histone variant.
+* Albeit shifted, the cluster distribution remains within the general distribution because of its reduced variance.
+* Statistical significance for each cluster is achieved by the entire group of genes moving to the same over/under direction for all histone variants.
+* If we plot the distribution of means of all clusters and all histone variants, we get a multimodal distribution.
+* The distribution of means has zero density at the mean of the general population.
+* All 7 clusters occupy a different spot in the over/under-representation space.
+
+#### Gene ontology enrichment
+
+Only the larger clusters produce enrichments:
+
+|   | Term                                | PAdj |
+|---|-------------------------------------|------|
+| D | Terpenoid backbone biosynthesis     | 4%   |
+| E | Ribosomal small subunit binding     | 5%   |
+| F | Factor: HSF; motif: AGAANAGAANAGAAN | 2%   |
+| G | Factor: HSF; motif: NTTCTAGAANAGAAN | 1%   |
+
+#### Relationship to SSD & WGD
+
+* Without exception all 7 clusters under-represent duplicated genes (enrichments of ~0.7)
+* Cluster D is the extreme case where we get enrichment ~0.5 for both SSD & WGD
+
+### Transcription factor binding motifs
+
+Statistic: Average pairwise Jaccard distance in motif presence / absence in a sphere.
+Double-tailed p-value. So these are both spheres of lower and greater than normal Jaccard distance.
+
+#### Geometry
+
+* 4 small clusters.
+* 3 of them are found at the centromeric pole.
+* The 4th, which is the smaller one, takes up a quarter of the "Hat" region.
+
+#### Gene ontology enrichment
+
+Cluster A produces a rich g:profiler result because of 4 "special" "genes it contains: YLR160C, YLR158C, YLR155C, YLR157C.
+
+|   | Term                                                            | PAdj   | TF motif enrichment            |
+|---|-----------------------------------------------------------------|--------|--------------------------------|
+| A | Cyanoamino acid metabolism                                      | 0.001% |                                |
+| B | ATPase-coupled transmembrane transporter activity               | 2%     | Factor: MAC1; motif: TTTGCTCAM |
+| C | Regulation of attachment of spindle microtubules to kinetochore | 0.9%   |                                |
+| D |                                                                 |        | Factor: GCR2; motif: GCTTCCN   |
+
+### Signals not yielding clusters
+
+These seem to be randomly distributed in 3D space:
+
+* SSD / WGD / gene duplication in general
+* Number of species where each gene is present, encompassing taxon enrichment.

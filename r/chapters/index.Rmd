@@ -6,6 +6,9 @@ output:
   bookdown::pdf_book: default
 ---
 
+```{r child = '00_Summary.Rmd'}
+```
+
 ```{r child = '01_GenePositions-RoughFeatures.Rmd'}
 ```
 
