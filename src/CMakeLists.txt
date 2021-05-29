@@ -59,6 +59,9 @@ target_link_libraries(08_TightCommunityDistances Qt5::Core	Qt5::Gui Qt5::Widgets
 add_executable(09_PromoterSpheres "PromoterSpheres.cpp")
 target_link_libraries(09_PromoterSpheres Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
 
+add_executable(10_ConservationSpheres "ConservationSpheres.cpp")
+target_link_libraries(10_ConservationSpheres Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
+
 
 
 

@@ -21,24 +21,36 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*
 This program implements the sphere sampling algorithm discussed in accompanying
-documentation. We use promoter-site histone modifications as input.
+documentation. We use number of species having each gene as input.
 */
+
+// Define / undefine this to switch between taxon and species count tests
+#define TAXON_TEST
 
 // Settings
 namespace {
 
 // Description of the test. This will appear in STDOUT
-const char *statisticDescription =
-	"Average gene Euclidean distance of the group, in histone space.";
+#ifdef TAXON_TEST
+	const char *statisticDescription =
+		"Maximum taxon absolute log enrichment.";
+#else
+	const char *statisticDescription =
+	"Standard deviation in number of species having a gene.";
+#endif
 
 // Table name in the DB, where the resulting clusters will be persisted.
-const char *tableName = "PromoterFields";
+#ifdef TAXON_TEST
+	const char *tableName = "TaxonFields";
+#else
+const char *tableName = "ConservationFields";
+#endif
 
 // Radius of the sampling sphere
-const double sphereRadius = 15.0;
+const double sphereRadius = 10.0;
 
 // Threshold to disregard mostly empty spheres
-const int minimumGeneCount = 50;
+const int minimumGeneCount = 20;
 
 // Minimum/maximum x,y,z dimension of the gene box. This box is where random
 // spheres are picked from.
@@ -48,13 +60,13 @@ const double boxMaximum = 210.0;
 // Pay attention to this: it is how many sphere samples we get and
 // subsequently: how many random samples of the same size for each
 // sphere. So processing time is O(n^2) to this.
-const int sampleCount = 10000;
+const int sampleCount = 20000;
 
 // Filter sphere samples by adjusted p-value. I propose to run this program
 // twice: on first run p-values can be examined (they are written to text file).
 // Subsequently, you can set this to a sane value, so that only significant
 // spheres are taken into consideration. Typical values range from 1% to 5%.
-const double pAdjThreshold = 0.01;
+const double pAdjThreshold = 0.05;
 
 // Used for hierarchical clustering of overlapping spheres into the
 // final result. Less than this overlap defines two distinct clusters.
@@ -97,29 +109,20 @@ namespace {
 struct Gene {
 	QString name;
 	Vec3D position;
-	QVector<double> histones;
-
-	double histonesDistance(const Gene &other) const {
-		if (histones.size() != other.histones.size())
-			throw(QString("Histone count mismatch: gene %1(%2) - gene %3(%4)")
-					  .arg(name)
-					  .arg(histones.size())
-					  .arg(other.name)
-					  .arg(other.histones.size()));
-
-		double distanceSquared = 0.0;
-		for (int i = 0; i < histones.size(); i++) {
-			const double d = other.histones[i] - histones[i];
-			distanceSquared += d * d;
-		}
-		return sqrt(distanceSquared);
-	}
+	int speciesCount;
+	QString taxon;
 
 	// Implement this function to define what is considered more extreme
 	static bool randomIsMoreExtreme(double randomStatistic,
 									double testStatistic) {
-		// Average histone-space distance: less is considered extreme.
+		
+#ifdef TAXON_TEST
+		// Taxon enrichment: greater is considered extreme.
+		return randomStatistic >= testStatistic;
+#else
+		// Standard deviation of species count: less is considered extreme.
 		return randomStatistic <= testStatistic;
+#endif
 	}
 
 	// Implement this to calculate p-value. Single- and Double-tailed tests may
@@ -141,9 +144,7 @@ struct Gene {
 QVector<Gene> loadGenes(QSqlDatabase &db, const QString &whereClause = "") {
 	QVector<Gene> result;
 
-	const QString sql = QString("SELECT l.Gene, x, y, z, h.* FROM "
-								"Loci l JOIN HistonesPromoterPatched h ON "
-								"l.Gene = h.Gene ORDER BY Chromosome, Start");
+	const QString sql = QString("SELECT l.Gene, x,y,z, SpeciesCount, Taxon FROM Loci l JOIN Conservation c ON l.Gene = c.Gene ORDER BY Chromosome, Start");
 	QSqlQuery query(sql, db);
 	while (query.next()) {
 		Gene gene;
@@ -151,10 +152,8 @@ QVector<Gene> loadGenes(QSqlDatabase &db, const QString &whereClause = "") {
 		gene.position.x = query.value(1).toDouble();
 		gene.position.y = query.value(2).toDouble();
 		gene.position.z = query.value(3).toDouble();
-		const QString nameRepeated = query.value(4).toString();
-		for (int i = 5; i < 5 + HISTONE_COLUMN_COUNT; i++) {
-			gene.histones.push_back(query.value(i).toDouble());
-		}
+		gene.speciesCount = query.value(4).toInt();
+		gene.taxon = query.value(5).toString();
 
 		result.push_back(gene);
 	}
@@ -167,6 +166,11 @@ QVector<Gene> loadGenes(QSqlDatabase &db, const QString &whereClause = "") {
 	return result;
 }
 
+#ifdef TAXON_TEST
+using TaxonFrequencyMap = QMap<QString, double>;
+TaxonFrequencyMap taxonFrequency;
+#endif
+
 // This implements the sphere test statistic for our particular test.
 double sphereTestStatistic(const QVector<const Gene *> &genes) {
 	if (genes.isEmpty())
@@ -174,28 +178,67 @@ double sphereTestStatistic(const QVector<const Gene *> &genes) {
 	if (genes.size() == 1)
 		return 0.0;
 
-	double totalDistance = 0.0;
-	int count = 0;
-	for (int i = 0; i < genes.size(); i++) {
-		for (double j = i + 1; j < genes.size(); j++) {
-			totalDistance += genes[i]->histonesDistance(*genes[j]);
-			count++;
-		}
+
+#ifdef TAXON_TEST
+	// Compute frequencies in group
+	TaxonFrequencyMap taxonFrequencyInGroup;
+	for (const Gene *gene : genes) {
+		taxonFrequencyInGroup[gene->taxon] += 1.0;
+	}
+	for (const QString &taxon : taxonFrequencyInGroup.keys()) {
+		taxonFrequencyInGroup[taxon] /= (double)genes.size();
 	}
 
-	return totalDistance / (double)count;
+	// For each taxon, calculate enrichment and keep the best
+	double bestLogEnrichment = 0.0;
+	for (const QString &taxon : taxonFrequencyInGroup.keys()) {
+		const double enrichment = taxonFrequencyInGroup[taxon] / taxonFrequency[taxon];
+		const double logEnrichment = log(enrichment);
+		bestLogEnrichment = std::max(bestLogEnrichment, std::abs(logEnrichment));
+	}
+
+	return bestLogEnrichment;
+#else
+	// First, calculate average species count
+	double averageSpeciesCount = 0.0;
+	for (const Gene *gene : genes) {
+		averageSpeciesCount += (double)gene->speciesCount;
+	}
+	averageSpeciesCount /= (double)genes.size();
+
+	// Then variance
+	double variance = 0.0;
+	for (const Gene *gene : genes) {
+		const double distanceFromAverage = (double)gene->speciesCount - averageSpeciesCount;
+		variance += distanceFromAverage * distanceFromAverage;
+	}
+
+	return sqrt(variance);
+#endif // TAXON_TEST
 }
 
 // This function performs the sphere test. An almost identical copy of this
 // function exists in all similar sphere-test programs. This is a compromise
 // between reusability and flexibility. Heavy parts of the procedure have been
 // extracted to SphereTest.h.
-void extractPromoterFields(QSqlDatabase &db) {
+void extractConservationFields(QSqlDatabase &db) {
 	printf("Description of measured statistic:\n\t%s\n", statisticDescription);
 
 	// Load genes
 	const QVector<Gene> genes = loadGenes(db);
 	printf("%d genes\n", genes.size());
+
+#ifdef TAXON_TEST
+	// Calculate general population taxon frequency
+	for (const Gene &gene : genes) {
+		taxonFrequency[gene.taxon] += 1.0;
+	}
+	printf("Base taxon frequencies:\n");
+	for (const QString &taxon : taxonFrequency.keys()) {
+		taxonFrequency[taxon] /= (double)genes.size();
+		printf("\t%s: %.02f\n", taxon.toUtf8().data(), taxonFrequency[taxon]);
+	}
+#endif // TAXON_TEST
 
 	QElapsedTimer timer;
 	timer.start();
@@ -335,7 +378,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	try {
-		extractPromoterFields(db);
+		extractConservationFields(db);
 	} catch (QString errorMessage) {
 		printf("ERROR: %s\n", errorMessage.toUtf8().data());
 		return 0;
