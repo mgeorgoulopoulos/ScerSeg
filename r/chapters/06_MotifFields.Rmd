@@ -1,0 +1,32 @@
+---
+title: "Motif fields"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
+library(ggplot2)
+library(plotly)
+library(RSQLite)
+library(reticulate)
+library(gplots)
+library(RColorBrewer)
+```
+
+# Motif fields
+
+Same test structure, different metric.
+
+We now measure average pairwise Jaccard distance in presence / absence of 102 transcription factor motifs found in a gene group.
+
+```{r, message=FALSE, warning=FALSE}
+sql <- "SELECT l.*, CASE WHEN Field IS NULL THEN 'None' ELSE Field END AS Field FROM Loci l LEFT JOIN MotifFields f ON l.Gene = f.Gene"
+fieldColors <- c("#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#4488AA", "#FF00FF", "#000000")
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+motifFields <- dbGetQuery(conn, sql)
+plot_ly(x=motifFields$x, y=motifFields$y, z=motifFields$z, type="scatter3d", mode="markers", text=motifFields$Gene, color=motifFields$Field, colors=fieldColors)
+dbDisconnect(conn)
+```
+
