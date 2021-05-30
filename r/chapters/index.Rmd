@@ -23,3 +23,9 @@ output:
 
 ```{r child = '05_PromoterFields.Rmd'}
 ```
+
+```{r child = '06_MotifFields.Rmd'}
+```
+
+```{r child = '07_CoexFields.Rmd'}
+```
