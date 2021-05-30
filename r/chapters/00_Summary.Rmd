@@ -100,9 +100,41 @@ Cluster A produces a rich g:profiler result because of 4 "special" "genes it con
 | C | Regulation of attachment of spindle microtubules to kinetochore | 0.9%   |                                |
 | D |                                                                 |        | Factor: GCR2; motif: GCTTCCN   |
 
+### Pairwise gene coexpression score
+
+Coexpression is highly correlated with proximity. Roughly half the genome exhibits strong (PAdj < 1%) local coexpression significance.
+
+#### Geometry
+
+* The entire genome is covered by these clusters.
+* Two small coexpression clusters appear at different sectors of the Hat region.
+* These sectors do not overlap with the Motif sector (the small Motif cluster appearing on the Hat).
+* There appears to be an insulator splitting the genome in half ("left" and "right" hemispheres).
+* Each hemisphere contains half of the bubble and half of the hat.
+* The small clusters (A and B) are fully separated by the insulator and on the same hemisphere as the two large ones (F and G, respectively).
+
+#### Gene ontology enrichment
+
+There appear some enrichments in the larger clusters, but these are too generic ("intracellular anatomical structure" and such).
+
 ### Signals not yielding clusters
 
 These seem to be randomly distributed in 3D space:
 
 * SSD / WGD / gene duplication in general
 * Number of species where each gene is present, encompassing taxon enrichment.
+
+## Field overlap
+
+|Field A           |Field B       |Common genes|Min Overlap   |Max Overlap   |
+|------------------|--------------|------------|--------------|--------------|
+|PromoterFields:A  |CoexFields:G  |62          |0.04          |1.0           |
+|PromoterFields:B  |CoexFields:G  |116         |0.08          |0.97          |
+|PromoterFields:C  |CoexFields:F  |120         |0.12          |1.0           |
+|PromoterFields:D  |CoexFields:F  |160         |0.16          |1.0           |
+|PromoterFields:F  |CoexFields:G  |192         |0.13          |0.89          |
+|PromoterFields:G  |CoexFields:F  |218         |0.22          |0.96          |
+|MotifFields:B     |CoexFields:G  |82          |0.05          |0.85          |
+
+
+
