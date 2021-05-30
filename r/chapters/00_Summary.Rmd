@@ -1,3 +1,8 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
 # Summary
 
 ## Rough feature annotation
@@ -20,8 +25,8 @@
 * Distribution of entropy of sliding windows is shifted compared to that of random sets of 25.
 * Distribution of window-entropy shows a small peak at p-value < 0.1%.
 * We filter all windows by that threshold (corresponding to 1.28 bits of entropy).
-* Resulting segments (named by chromosome): II, IV-A, IV-B, VII-A, VII-B, X, XI-A, XI-B, XIII, XIV-A, XIV-B, XVI.
 * The vast majority of their genes lies within the "Internal" rough feature.
+* Resulting segments (named by chromosome): II, IV-A, IV-B, VII-A, VII-B, X, XI-A, XI-B, XIII, XIV-A, XIV-B, XVI.
 
 A few segments have significant gene enrichments:
 
@@ -126,15 +131,18 @@ These seem to be randomly distributed in 3D space:
 
 ## Field overlap
 
-|Field A           |Field B       |Common genes|Min Overlap   |Max Overlap   |
-|------------------|--------------|------------|--------------|--------------|
-|PromoterFields:A  |CoexFields:G  |62          |0.04          |1.0           |
-|PromoterFields:B  |CoexFields:G  |116         |0.08          |0.97          |
-|PromoterFields:C  |CoexFields:F  |120         |0.12          |1.0           |
-|PromoterFields:D  |CoexFields:F  |160         |0.16          |1.0           |
-|PromoterFields:F  |CoexFields:G  |192         |0.13          |0.89          |
-|PromoterFields:G  |CoexFields:F  |218         |0.22          |0.96          |
-|MotifFields:B     |CoexFields:G  |82          |0.05          |0.85          |
+* Notable overlaps always involve one of the two major coexpression clusters (F and G).
+* We notice the bipolar appearance of coexpression groups and thus divide the genome in 3+1 continents: Eurasia, America, Antarctica and Ocean.
+* Eurasia in the larger one, sitting on one side of the nucleus.
+* America is the second larger, sitting on the opposite side.
+* Both Eurasia and America encompass part of the Hat.
+* They are separated by the Ocean cluster, which splits the genome in half. Even the Hat has its own schism.
+* A separate "continent" is formed by the centromeres. We call this smaller one "Antarctica".
+* All 3 continents have a greater average gene coexpression score than random.
+* Ocean (insulator) has a lower average coexpression score than random.
 
+### Gene ontology enrichment
+
+* The Ocean (coexpression insulator) is rich in genes having to do with "Metabolic pathways" (Padj: 2%)
 
 

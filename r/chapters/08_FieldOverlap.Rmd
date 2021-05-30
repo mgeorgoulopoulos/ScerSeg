@@ -69,7 +69,7 @@ dbDisconnect(conn)
 
 And here are the respective overlaps. We have more fields overlapping now:
 
-|Field A         |Continent  |Common genes|Min Overlap|Max Overlap|
+|Field           |Continent  |Common genes|Min Overlap|Max Overlap|
 |----------------|-----------|------------|-----------|-----------|
 |PromoterFields:A|Eurasia    |62          |0.027      |1.0        |
 |PromoterFields:B|Eurasia    |116         |0.051      |0.97       |
@@ -83,3 +83,48 @@ And here are the respective overlaps. We have more fields overlapping now:
 |PromoterFields:E|Ocean      |98          |0.035      |0.57       |
 |MotifFields:A   |Ocean      |55          |0.02       |0.96       |
 |MotifFields:C   |Ocean      |76          |0.03       |0.78       |
+
+## Continent statistics
+
+1000 samples of pairwise coexpression score for each continent:
+
+```{r}
+continentCoexpression <- read.table(file = '../../Results/ContinentCoexpressionScoreSamples.tsv', sep = '\t', header = TRUE)
+boxplot(continentCoexpression, outline=FALSE)
+```
+
+## Gene ontology enrichment
+
+"Ocean" (coexpression insulator) cluster has a 2% PAdj for "Metabolit pathways".
+
+## TightCommunities are continent-agnostic
+
+These "Internal" gene sets have parts in all continents:
+
+```
+SELECT Chromosome, Continent, COUNT(Continent) FROM TightCommunities JOIN Continents 
+ON TightCommunities.Gene = Continents.Gene 
+JOIN Loci ON Loci.Gene = TightCommunities.Gene
+GROUP BY Chromosome,Continent
+```
+
+|Chromosome|Continent |GeneCount|
+|----------|----------|---------|
+|2         |America   |34       |
+|4         |Antarctica|22       |
+|4         |Eurasia   |26       |
+|4         |Ocean     |13       |
+|7         |Eurasia   |21       |
+|7         |Ocean     |44       |
+|10        |Antarctica|7        |
+|10        |Eurasia   |27       |
+|10        |Ocean     |21       |
+|11        |Antarctica|22       |
+|11        |Eurasia   |25       |
+|11        |Ocean     |10       |
+|13        |America   |24       |
+|13        |Ocean     |13       |
+|14        |Eurasia   |68       |
+|16        |Eurasia   |18       |
+|16        |Ocean     |12       |
+
