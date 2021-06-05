@@ -51,10 +51,10 @@ CREATE TABLE Continents(Gene TEXT, Continent Text)
 ```
 DROP TABLE IF EXISTS Continents;
 CREATE TABLE Continents(Gene TEXT, Continent TEXT);
-INSERT INTO Continents(Gene, Continent) SELECT Gene, 'Eurasia' FROM CoexFields WHERE Field = 'B' OR Field = 'C' OR Field = 'D' OR Field = 'G';
-INSERT INTO Continents(Gene, Continent) SELECT Gene, 'America' FROM CoexFields WHERE Field = 'A' OR Field = 'F';
+INSERT INTO Continents(Gene, Continent) SELECT Gene, 'Laurasia' FROM CoexFields WHERE Field = 'B' OR Field = 'C' OR Field = 'D' OR Field = 'G';
+INSERT INTO Continents(Gene, Continent) SELECT Gene, 'Godwana' FROM CoexFields WHERE Field = 'A' OR Field = 'F';
 INSERT INTO Continents(Gene, Continent) SELECT Gene, 'Antarctica' FROM CoexFields WHERE Field = 'E';
-INSERT INTO Continents(Gene, Continent) SELECT Gene, 'Ocean' FROM Loci WHERE Gene NOT IN (SELECT Gene FROM Continents);
+INSERT INTO Continents(Gene, Continent) SELECT Gene, 'Tethys' FROM Loci WHERE Gene NOT IN (SELECT Gene FROM Continents);
 ```
 Here is how it looks:
 
@@ -71,31 +71,96 @@ And here are the respective overlaps. We have more fields overlapping now:
 
 |Field           |Continent  |Common genes|Min Overlap|Max Overlap|
 |----------------|-----------|------------|-----------|-----------|
-|PromoterFields:A|Eurasia    |62          |0.027      |1.0        |
-|PromoterFields:B|Eurasia    |116         |0.051      |0.97       |
-|PromoterFields:F|Eurasia    |192         |0.08       |0.89       |
-|MotifFields:B   |Eurasia    |82          |0.04       |0.85       |
+|PromoterFields:A|Laurasia   |62          |0.027      |1.0        |
+|PromoterFields:B|Laurasia   |116         |0.051      |0.97       |
+|PromoterFields:F|Laurasia   |192         |0.08       |0.89       |
+|MotifFields:B   |Laurasia   |82          |0.04       |0.85       |
 |----------------|-----------|------------|-----------|-----------|
-|PromoterFields:G|America    |218         |0.21       |0.96       |
-|PromoterFields:C|America    |120         |0.12       |1.0        |
-|PromoterFields:D|America    |160         |0.16       |1.0        |
+|PromoterFields:G|Godwana    |218         |0.21       |0.96       |
+|PromoterFields:C|Godwana    |120         |0.12       |1.0        |
+|PromoterFields:D|Godwana    |160         |0.16       |1.0        |
 |----------------|-----------|------------|-----------|-----------|
-|PromoterFields:E|Ocean      |98          |0.035      |0.57       |
-|MotifFields:A   |Ocean      |55          |0.02       |0.96       |
-|MotifFields:C   |Ocean      |76          |0.03       |0.78       |
+|PromoterFields:E|Tethys     |98          |0.035      |0.57       |
+|MotifFields:A   |Tethys     |55          |0.02       |0.96       |
+|MotifFields:C   |Tethys     |76          |0.03       |0.78       |
 
 ## Continent statistics
 
-1000 samples of pairwise coexpression score for each continent:
+### Box plots
+
+10000 samples of pairwise coexpression score for each continent:
 
 ```{r}
 continentCoexpression <- read.table(file = '../../Results/ContinentCoexpressionScoreSamples.tsv', sep = '\t', header = TRUE)
-boxplot(continentCoexpression, outline=FALSE)
+boxplot(continentCoexpression, outline=FALSE, las=2)
 ```
+
+The important distinction is that of "sea versus land". Any combination of the 3 land continents will yield the same (better than average) coexpression score:
+
+```{r}
+continentCoexpression <- read.table(file = '../../Results/CombinedContinentCoexpressionScoreSamples.tsv', sep = '\t', header = TRUE)
+boxplot(continentCoexpression, outline=FALSE, las=2)
+```
+
+### Statistical significance
+
+| Compartment  | p-value   |
+|-------------|------------|
+| Godwana     | 1.18e-16   |
+| Antarctica  | 1.03e-25   |
+| Laurasia    | 7.02e-09   |
+| Tethys      | 1.15e-54   |
+| Pangaea     | 7.85e-14   |
+
+### Detailed t-test results
+
+
+#### Godwana
+
+```{r}
+t.test(continentCoexpression$Godwana, continentCoexpression$Random)
+```
+
+#### Antarctica
+
+```{r}
+t.test(continentCoexpression$Antarctica, continentCoexpression$Random)
+```
+
+#### Laurasia
+
+```{r}
+t.test(continentCoexpression$Laurasia, continentCoexpression$Random)
+```
+
+#### Tethys
+
+```{r}
+t.test(continentCoexpression$Tethys, continentCoexpression$Random)
+```
+
+#### Pangaea
+```{r}
+t.test(continentCoexpression$Pangaea, continentCoexpression$Random)
+```
+
+### Land continents are also significantly different with each other
+
+```{r}
+t.test(continentCoexpression$Godwana, continentCoexpression$Pangaea)
+t.test(continentCoexpression$Antarctica, continentCoexpression$Pangaea)
+t.test(continentCoexpression$Laurasia, continentCoexpression$Pangaea)
+```
+
+### Laurasia more dependent on the others
+
+Note that Pangaea is actually more tightly coexpressed than its subset "Laurasia". Thus, Laurasian genes have a greater coexpression score with genes in Godwana and Antarctica, while the latter two are tighter than Pangaea.
+
+### Antarctica significantly different to Pangaea
 
 ## Gene ontology enrichment
 
-"Ocean" (coexpression insulator) cluster has a 2% PAdj for "Metabolit pathways".
+"Tethys" (coexpression insulator) cluster has a 2% PAdj for "Metabolit pathways".
 
 ## TightCommunities are continent-agnostic
 
@@ -110,21 +175,21 @@ GROUP BY Chromosome,Continent
 
 |Chromosome|Continent |GeneCount|
 |----------|----------|---------|
-|2         |America   |34       |
+|2         |Godwana   |34       |
 |4         |Antarctica|22       |
-|4         |Eurasia   |26       |
-|4         |Ocean     |13       |
-|7         |Eurasia   |21       |
-|7         |Ocean     |44       |
+|4         |Laurasia  |26       |
+|4         |Tethys    |13       |
+|7         |Laurasia  |21       |
+|7         |Tethys    |44       |
 |10        |Antarctica|7        |
-|10        |Eurasia   |27       |
-|10        |Ocean     |21       |
+|10        |Laurasia  |27       |
+|10        |Tethys    |21       |
 |11        |Antarctica|22       |
-|11        |Eurasia   |25       |
-|11        |Ocean     |10       |
-|13        |America   |24       |
-|13        |Ocean     |13       |
-|14        |Eurasia   |68       |
-|16        |Eurasia   |18       |
-|16        |Ocean     |12       |
+|11        |Laurasia  |25       |
+|11        |Tethys    |10       |
+|13        |Godwana   |24       |
+|13        |Tethys    |13       |
+|14        |Laurasia  |68       |
+|16        |Laurasia  |18       |
+|16        |Tethys    |12       |
 

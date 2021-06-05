@@ -113,13 +113,28 @@ void extractContinentStatistics(QSqlDatabase &db) {
 		printf("\t%s:\t%d genes\n", continent.toUtf8().data(), continents[continent].size());
 	}
 
+	
+
+//#define ADD_COMBINED_CONTINENTS
+#ifdef ADD_COMBINED_CONTINENTS
+	// Add combinations to compare average
+	continents.insert("GoLa", continents["Godwana"] + continents["Laurasia"]);
+	continents.insert("AnLa", continents["Antarctica"] + continents["Laurasia"]);
+	continents.insert("AnGo", continents["Antarctica"] + continents["Godwana"]);
+	continents.insert("Pangaea", continents["Antarctica"] + continents["Godwana"] + continents["Laurasia"]);
+
+	const QString &filename = "Results/CombinedContinentCoexpressionScoreSamples.tsv";
+#else
+	const QString &filename = "Results/ContinentCoexpressionScoreSamples.tsv";
+#endif // ADD_COMBINED_CONTINENTS
+
 	// Add a "Random" continent which is the entire genome
 	continents.insert("Random", genes);
+
 
 	const int sampleCount = 10000;
 
 	// Write to file
-	const QString &filename = "Results/ContinentCoexpressionScoreSamples.tsv";
 	printf("Writing %d coexpression score samples to %s\n", sampleCount, filename.toUtf8().data());
 	FILE *fp = fopen(filename.toUtf8().data(), "w");
 
