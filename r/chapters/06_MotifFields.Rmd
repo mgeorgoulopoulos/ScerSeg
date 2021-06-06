@@ -29,4 +29,13 @@ motifFields <- dbGetQuery(conn, sql)
 plot_ly(x=motifFields$x, y=motifFields$y, z=motifFields$z, type="scatter3d", mode="markers", text=motifFields$Gene, color=motifFields$Field, colors=fieldColors)
 dbDisconnect(conn)
 ```
+## ChromHMM overlap with field 'A'
 
+MotifFields:A overlaps 96.5% with Tethys.
+
+* PHD1 (Transcriptional activator that enhances pseudohyphal growth)
+* PHO4 ( transcription factor of the myc-family; activates transcription cooperatively with Pho2p in response to phosphate limitation)
+* MSN4 (stress responsive)
+* TEC1 (filamentous growth)
+* D IG1 (inhibitor of pseudohyphal growth, inhibits STE12 )
+* STE12 (invovled in mating and growth)

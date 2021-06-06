@@ -132,17 +132,17 @@ These seem to be randomly distributed in 3D space:
 ## Field overlap
 
 * Notable overlaps always involve one of the two major coexpression clusters (F and G).
-* We notice the bipolar appearance of coexpression groups and thus divide the genome in 3+1 continents: Eurasia, America, Antarctica and Ocean.
-* Eurasia in the larger one, sitting on one side of the nucleus.
-* America is the second larger, sitting on the opposite side.
-* Both Eurasia and America encompass part of the Hat.
-* They are separated by the Ocean cluster, which splits the genome in half. Even the Hat has its own schism.
+* We notice the bipolar appearance of coexpression groups and thus divide the genome in 3+1 continents: Laurasia, Godwana, Antarctica and Tethys.
+* Laurasia in the larger one, sitting on one side of the nucleus.
+* Godwana is the second larger, sitting on the opposite side.
+* Both Laurasia and Godwana encompass part of the Hat.
+* They are separated by the Tethys compartment, which splits the genome in half. Even the Hat has its own schism.
 * A separate "continent" is formed by the centromeres. We call this smaller one "Antarctica".
 * All 3 continents have a greater average gene coexpression score than random.
-* Ocean (insulator) has a lower average coexpression score than random.
+* Tethys (insulator) has a lower average coexpression score than random.
 
 ### Gene ontology enrichment
 
-* The Ocean (coexpression insulator) is rich in genes having to do with "Metabolic pathways" (Padj: 2%)
+* The Tethys (coexpression insulator) is rich in genes having to do with "Metabolic pathways" (Padj: 2%)
 
 

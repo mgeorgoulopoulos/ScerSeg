@@ -193,3 +193,12 @@ GROUP BY Chromosome,Continent
 |16        |Laurasia  |18       |
 |16        |Tethys    |12       |
 
+## Continent enrichment in SSD / WGD
+
+|Continent |GeneCount|SSD |SsdRatio|SsdEnrich|WGD |WGDRatio|WGDEnrich|
+|----------|---------|----|--------|---------|----|--------|---------|
+|Antarctica|417.000  |65  |0.156   |1.012    |71  |0.170   |1.015    |
+|Godwana   |1026.000 |159 |0.155   |1.006    |204 |0.199   |1.185    |
+|Laurasia  |2266.000 |345 |0.152   |0.988    |431 |0.190   |1.134    |
+|Tethys    |2787.000 |414 |0.149   |0.964    |361 |0.130   |0.772    |
+

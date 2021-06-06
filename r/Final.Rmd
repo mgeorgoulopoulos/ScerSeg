@@ -1,42 +1,324 @@
+```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
+library(plotly)
+library(RSQLite)
+library(ggplot2)
+library(reticulate)
+library(gplots)
+library(RColorBrewer)
+```
+
 # Abstract
 
-In this work, we explore the yeast genome with the intention of finding areas of local similarity regarding given characteristics. We utilize such characteristics (collectively referred to as "signals") as promoter-site histone modification profiles, transcription factor binding motifs, gene co-expression and conservation scores. These signals are sparsely sampled over the genome, at a resolution of one sample per gene. We consider signal locality in both linear and three-dimensional space and uncover a number of locally similar segments. Our findings indicate that yeast genome is abundant with sites of subtle, yet statistically significant similarity.
-
-Single paragraph, 200-300 words
-
+In this work, we explore the yeast genome with the intention of identifying areas of local similarity against certain characteristics. We utilize such characteristics (collectively referred to as "signals") as promoter-site histone modification profiles, transcription factor binding motifs, gene coexpression and conservation scores. These signals are sparsely sampled over the genome, at a resolution of one sample per gene. We consider signal locality in both index and three-dimensional space and uncover a number of locally similar gene sets. Pairwise gene coexpression score signal yields a complete compartmentalization of the three-dimensional genome. The greater compartment is of particular interest; it is characterized by a lower than average coexpression score and enriched in genes related to metabolic pathways. In addition to this natural compartmentalization, we define a second, artificial one, based on the particular geometry of the yeast genome. Certain promoter-site histone modification and transcription factor motif profiles are found to be localized in compact areas in three-dimensional space. We evaluate the corresponding gene sets with respect to gene duplication (SSD and WGD) enrichment, ontology enrichment and their topology in terms of the aforementioned compartmentalization schemas. We further investigate the histone profile signal in a more detailed fashion, taking into consideration small groups of successive genes. The tendency of local convergence is prevalent in this scale as well. Numerous gene groups of strong histone profile affinity are scattered throughout the genome. We use their particular histone profiles to classify all genes in histone profile classes and we subsequently extract a number of segments having a low entropy in these classes. In conclusion, the yeast genome seems to be abundant with sites of subtle, yet significant similarity. Furthermore, locally similar sets of genes extracted by one signal are frequently associated with sets extracted by another. It is not uncommon to find that one is a subset of another. These results hint the possibility of underlying structure. Further study, utilizing different types of signals is therefore encouraged. To this end, we propose a general-purpose algorithm that carries out such locality searches. The algorithm makes no assumption of the underlying signal distribution and requires a minimal configuration in order to adapt to a different kind of signal and thus facilitate future searches.
 
 # Introduction
 
-What is the problem?
+Recent advances in chomosome conformation capture (3C) techniques have provided insight into the spatial confguration of DNA []. The fact that such configurations are predictably reproducible [] indicates that genes have a preferred placement with respect to each other, which might reflect the presence of underlying structure.
+
+This study aims to collect and document additional evidence of a possible spatial structure of the eukaryotic genome. We focus on Sacharomyces cerevisiae, and, building on the already known [] preferred spatial organization of its genome, we search for areas where a particular property is significantly localized. We utilize multiple such properties, ranging from epigenetic (histone) modifications and functional information (as is the tendency of certain gene pairs to co-express) to innate properties of the DNA sequence itself (such as, the presence or absence of a particular transcription factor binding site) and information about gene origin (gene duplication and conservation). These properties are henceforth referred to as "signals."
+
+We consider small sets of neighboring genes and assess the local signal distribution of this area. Then, by comparng it to the global distribution we extract gene sets of a particular tendency regarding each signal. 
+
+The outcome of this process is a number of gene sets. As a convention, we will refer to these as "segments," when considering successive genes on a particular chromosome, "clusters" when the genes form a local neighborhood in three-dimensional space, and "compartments," when multiple, non-overlapping gene sets collectively account for the entire genome.
+
+We subsequently annotate the extracted gene sets using information from the literature as well as the spatial relationship with each other.
+
+We conclude that, there indeed exists a tendency of local accumulation of characteristics, whose extent varies depending on the signal under examination. Gene coexpression, for instance, is almost universally reaching its extreme score values when sets of nearby genes are considered. The entire genome is thus compartmentalized into areas of low and high coexpression. To a lesser extent, promoter-site histone modification profiles produce similar local features -however not covering the entire genome- bearing a strong correlation to the aforementioned compartments. A smaller collection of similar gene sets is produced by examining transcription factor binding motifs, again having a very particular placement with respect to the genome's spatial features.
+
 
 # Materials and Methods
  
-How did I solve the problem?
+All of the signals we used were sparsely sampled over the genome, at a resolution of one sample per gene.
 
-All positions and signals are quantized to genes.
-	
+Pairwise gene coexpression score signal, henceforth called the "coexpression" signal was taken from [] and is a sparse matrix assigning a greater score to gene pairs which are found to co-express more.
+
+Promoter-site histone modification profile signal, or the "histone profile" signal for short, comes from [] and is a z-score normalization of the relative abundance of the various histone modifications near the promoter site of each gene.
+
+Transcription factor binding motif signal (the "motif" signal), taken from [], assigns a binary vector to each gene, which corresponds to the gene's combination of presence or absence of a set of transcription factor binding sites. We consider a binding site as present when the corresponding motif appears.
+
+The "duplication" signal [] classifies each gene as duplicated or not. We further distinguish between "single source" and "whole genome" duplication events ("SSD" and "WGD," respectively).
+
+We consider gene origin signals, from []. The "conservation" signal assigns to each gene, a count of related species where the gene is present; it effectively is a conservation index. The "taxon" signal links each gene to a taxon ("Fungi" would signify a gene shared among all species of the kingdom, while "S. cerevieiae" marks species-specific genes).
+
+Finally, we leverage the three-dimensional model of the yeast genome, published by Duan et al. [] to place the aforementioned signals in space.
+
+## Pre-processing
+
+Pairwise gene coexpression score is partially defined. Only the top scores for each gene are included. We assume the rest of the scores to be zero, which is not an over-simplification, given the distribution of scores present in the input data files. The distribution fully outlines a normal distribution which means that missing values are inddeed negligible. We further process the dataset by losslessly compressing it to one byte per score, thus allowing for the subsequent complex computation. A full reference of data flow may be found in the accompanying documentation.
+
+The histone profile signal is less dense than our desired gene-resolution. However, for certain histone variants we have per-gene information. We only keep these histone variants (namely: H3K4, H3K6, H3NTerm, H4NTerm, H2A, H2B, H3, H4 and H2AZ). This yields a 9-dimensional vector assigned to each gene. We consider the associated 9-dimensional space and its Euclidean distance as a measure of histone profile similarity. Occassional missing values are imputated as the median of the 3 nearest genes in the histone profile space.
+
+The three-dimensional model of the yeast genome [] has been resampled at gene resolution. The input dataset is of adequate (kilobase) resolution to represent genes in space. We obtained gene positions by linearly interpolating the model's control points to approximate the center base pair of each gene. We assumed uniform sampling for this (see "Assumptions").
+
+## Sphere test
+
+We use the same algorithm to detect local similarity in all aforementioned signals. It is a reusable algorithm and it may be adapted to any kind of signal, when equipped with an appropriate metric. The metric is calculated for local sets of genes and subsequently statistical significance is determined by randomly sampling gene sets and calculating the same metric. Thus, the algorithm is agnostic to underlying signal distribution and may be generalized for a multitude of signal types.
+
+![Sphere-test data flow](chapters/images/SphereTestDataFlow.svg)
+
+We start by sampling a set of genes that form a local group. We achieve this by randomly placing a sphere of pre-determined radius in the three-dimensional space of the genome model. Genes that happen to lie in the sphere are collected and form a sample. We limit the minimum size of acceptable samples to roughly one third of the maximum sample size. We generally use sphere-samples of 50-150 genes.
+
+Once a local sample is defined, we then calculate the metric over the sampled gene set and extract a p-value by repeatedly calculating the same metric for a number (usually 10000) of random samples of the same gene count.
+
+Repeating this procedure many times, we cover the entire genome with random spheres, each associated with a p-value. We filter these spheres for an FDR of 1% or (in the case of "motif" signal, 5%).
+
+The resulting significant spheres are then hierarchically clustered by overlap. We define sphere overlap as the count of shared genes divided by the minimum count of genes in the pair of spheres. The most overlapping pair of spheres forms a cluster as the union of the gene sets. The recursion stops at a minimum overlap of 5%, at which point we consider the clusters as distinct.
+
+The following table summarizes the metric used for each sphere test.
+
+| Signal            | Metric
+|-------------------|---------------------------------------------------------------------------------------|
+| coexpression     | Average coexpression score of all ordered pairs in gene set                          |
+| Histone profile   | Average histone-profile space Euclidean distance of all ordered gene pairs            |
+| Motif             | Average Jaccard distance of all ordered pairs of genes                                |
+| Gene duplication  | Shannon entropy of the duplication categories "None," "SSD," "WGD" in gene set        |
+| Species count     | Standard deviation of species count in gene set                                       |
+| Taxon             | Maximum absolute logarithmic enrichment of all taxa present in the set                |
+
+## Small scale analysis of histone modification profiles
+
+We also perform a finer scale analysis for the histone profile signal in particular. In this analysis, locality is considered in terms of position in the chromosome (index space). We measure the average histone profile space Euclidean distance in groups of 5 consecutive genes. The average histone profile space distance of the middle gene of the group to all other genes in the chromosome is then divided by the local average distance to yield a "community score." 
+
+A greater community score signifies a local group possessing a greater in-group similarity than its similarity to the rest of the genome, hence the name. As a first approcimation, we consider a community score of 2 as significant (local similarity is twice as strong as global). Filtering the genes with this threshold results in a number of genes forming local communities around them. These genes are scattered throughout the entire genome.
+
+X-means clustering of these community-center genes indicates the presence of 7 characteristic histone modification profiles. In order to include the significance of locality, which is our main concern in this study, we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
+
+Having assigned a histone profile class to each gene, where the classes are known to form local communities, we then filter all chromosomes by a sliding window of 25 consecutive genes. We measure Shannon entropy in terms of the 7 classes and keep windows of a p-value that is less than 0.1%. This corresponds to approximately 1.28 bits of entropy per window. By connecting the overlapping windows we get a numebr of segments having a tighter than usual histone modification profile.
+
+## Annotation
+
+We annotate the resulting segments, clusters and compartments by both gene ontology term enrichment analysis (carried out via g:profiler []) and by cross examination of the gene sets against each other. An automated program calculates overlaps between all pairs of gene sets and reports significant overlaps. Furthermore, we also examine signals not yielding significant gene sets in the local context of the gene sets coming from other signals. Our findings are summarized in the next sections.
+
+Please refer to the accompanying documentation for a complete technical reference.
 
 # Results 
 
-What did I find out?
+This section is organized by gene set size. We start with the larger compartments, we progress with clusters and finally, we present the much smaller segments.
 
+## Compartments
+
+We provide two compartmentalizations of the yeast genome. The first one is an arbitrary segmentation of the visible features of the genome; useful as a reference to a gene set's location by location name. The second also serves the same purpose (assigning descriptive and easy to memorize names to various areas of the genome) while at the same time its areas exhibit local similarity in terms of gene coexpression score signal.
+
+### Rough features
+
+Three distinguished features can be easily extracted by mere visual inspection of the model. We call these the "Hat," "Internal" and "External" compartments.
+The Hat is a domain formed by chromosome XII. It contains multiple rDNA repetitions and acts as an insulator between the nucleolus and the rest of the chromosomes []. What remains besides the Hat, is an approximately spherical construct, which is hollow. The set of genes closer to its centroid than average are annotated as "Internal" and the rest as "External."
+
+
+```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
+conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
+genePositionsLabels <- dbGetQuery(conn, "SELECT Loci.Gene, x, y, z, Label FROM
+Loci JOIN RoughFeatures ON Loci.Gene = RoughFeatures.Gene")
+plot_ly(x=genePositionsLabels$x, y=genePositionsLabels$y, z=genePositionsLabels$z, type="scatter3d", mode="markers", text=genePositionsLabels$Gene, color=genePositionsLabels$Label)
+```
+
+### Continents
+
+Alongside this artificial compartmentalization, our sphere-test analysis of coexpression signal outlines a second set of distinct compartments. It is the norm that a sphere-sample of genes exceeds the coexpression score of a random set of the same gene count. In other words, coexpression is strongly associated with co-localization. We filter the sphere samples for a 1% false discovery rate and this results in 7 clusters of high coexpression score.
+
+Boundaries between these clusters are not always clear. Furthermore, with the exception of a single cluster, combining these together does not have a very significant effect on the average coexpression score. So, this is really a distinction between high and low coexpression areas of the genome. The exceptional cluster comprises the centromeres which converge on one pole of the genome. We therefore name this cluster "Antarctica," as a reminder of its special location and synthesis.
+
+The remaining clusters have an unaffected coexpression score, regardless of the way we combine them. Following our continent-naming scheme, we combine the clusters found at opposite sides of the genome as "Laurasia" (which is the larger) and "Godwana."
+
+The rest of the genome which is characterized by a lower than average coexpression score forms a distinct vertical barrier between these "continents" of intense coexpression and is therefore named "Tethys." The barrier extends to the Hat region as well, splitting it also in half.
+
+```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
+sql <- "SELECT l.*, Continent FROM Loci l JOIN Continents c ON l.Gene = c.Gene"
+fieldColors <- c("#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#4488AA", "#FF00FF", "#000000")
+conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
+continents <- dbGetQuery(conn, sql)
+plot_ly(x=continents$x, y=continents$y, z=continents$z, type="scatter3d", mode="markers", text=continents$Gene, color=continents$Continent, colors=fieldColors)
+```
+
+The box plot below shows the distribution of coexpression score within the compartments as compared to the entire genome ("Random" category).
+
+```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
+continentCoexpression <- read.table(file = '../Results/ContinentCoexpressionScoreSamples.tsv', sep = '\t', header = TRUE)
+boxplot(continentCoexpression, outline=FALSE, las=2, main="Pairwise coexpression score")
+```
+
+Mean coexpression score is greater than average in "land" while lower than average in "sea." A t-test verifies that these mean shifts are statistically significant.
+
+| Compartment  | p-value   |
+|-------------|------------|
+| Godwana     | 1.18e-16   |
+| Antarctica  | 1.03e-25   |
+| Laurasia    | 7.02e-09   |
+| Tethys      | 1.15e-54   |
+| Pangaea     | 7.85e-14   |
+
+The large compartment of low coexpression (Tethys) is enriched in "Metabolic pathways" genes (KEGG:01100), with an adjusted p-value of 2.0%. Less significant enrichments are found as well.
+
+![](images/gprofiler/Tethys.png)
+
+While Antarctica shows no particular preference over type of gene duplication, the greater high-coexpression compartments are enriched in WGD genes while the low-coexpression compartment is negatively enriched in WGD.
+
+|Continent |GeneCount|SSD |SsdRatio|SsdEnrich|WGD |WGDRatio|WGDEnrich|
+|----------|---------|----|--------|---------|----|--------|---------|
+|Antarctica|417      |65  |0.156   |1.012    |71  |0.170   |1.015    |
+|Godwana   |1026     |159 |0.155   |1.006    |204 |0.199   |1.185    |
+|Laurasia  |2266     |345 |0.152   |0.988    |431 |0.190   |1.134    |
+|Tethys    |2787     |414 |0.149   |0.964    |361 |0.130   |0.772    |
+
+## Clusters
+
+Smaller areas of significant local similarity were found by examining the histone profile and motif signals.
+
+### Histone profile clusters
+
+Seven smaller, completely isolated clusters are identified to have a more compact histone profile than expected by chance. We label these clusters with the letters A to G, ordering them in ascending size.
+
+```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
+sql <- "SELECT l.*, CASE WHEN Field IS NULL THEN 'None' ELSE Field END AS Field FROM Loci l LEFT JOIN PromoterFields f ON l.Gene = f.Gene"
+fieldColors <- c("#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#4488AA", "#FF00FF", "#000000")
+conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
+promoterFields <- dbGetQuery(conn, sql)
+plot_ly(x=promoterFields$x, y=promoterFields$y, z=promoterFields$z, type="scatter3d", mode="markers", text=promoterFields$Gene, color=promoterFields$Field, colors=fieldColors)
+```
+
+| Cluster   | Continent  | Common gene count    | Overlap ratio   |
+|-----------|------------|----------------------|-----------------|
+|A          |Laurasia    |62                    |1.00             |
+|B          |Laurasia    |116                   |0.97             |
+|F          |Laurasia    |192                   |0.89             |
+|C          |Godwana     |120                   |1.00             |
+|D          |Godwana     |160                   |1.00             |
+|G          |Godwana     |218                   |0.96             |
+
+
+It follows that these clusters of particular promoter-site histone modification profiles lie almost exclusively in areas of high coexpression. Three of these clusters on one side of the coexpression insulator and three on the other.
+
+Cluster E presents an exception as it is split roughly in half between Tethys and Laurasia.
+
+Each of the seven clusters has its own particular histone modification profile. Differences from the mean are subtle. However the entire group of genes moves to the same direction in each dimension (corresponding to a particular histone variant), which renders the group statistically significant.
+
+Furthermore, the shift appears to be quantized as evidenced by the multimodal distribution of shifts. Each cluster appears to consistently over- or under-represent a particular histone variant in one or two of its promoter-site nucleosomes.
+
+```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
+colors <- c("#FF0000", "#FF0000", "#000000", "#00FF00", "#00FF00")
+colors <- colorRampPalette(colors)(25)
+
+tendencies <- read.table(
+  "../Results/PromoterFieldsTendencies.tsv",
+  sep="\t", header=TRUE, row.names=1)
+tendenciesScaled <- scale(tendencies)
+heatmap.2(tendenciesScaled, col=colors, main="Shifts in histone variant abundance")
+```
+The larger among these clusters produce gene ontology enrichments.
+
+| Cluster  | Term                                | PAdj |
+|----------|--------------------------------------|------|
+| D        | Terpenoid backbone biosynthesis      | 4%   |
+| E        | Ribosomal small subunit binding      | 5%   |
+| F        | Factor: HSF; motif: AGAANAGAANAGAAN  | 2%   |
+| G        | Factor: HSF; motif: NTTCTAGAANAGAAN  | 1%   |
+
+
+### Motif clusters
+
+For the transcription factor binding motif signal, we used a double-tailed test, which resulted in 4 clusters, the smaller of which (labeler "A") has a more varied motif profile than expected by chance. The remaining three have a more compact profile.
+
+In contrast to histone modification profiles, motif profiles tend to be more randomly dispersed throughout the genome. We thus used a less strict FDR of 5% for this test.
+
+Cluster A, which has an unusually varied motif profile, almost completely (96% overlap) lies within the Tethys compartment, of low coexpression, placed in the small gap between Godwana and Eurasia in the Hat region, tracing the boundaries of these continents without overlapping with them. We find this fact remarkable, as this cluster was found by examining a different signal than the one generating the continents.
+
+Cluster A also produces a rich set of ontology enrichments. These are mostly related to a group of 4 genes associated with asparaginase activity (YLR160C,YLR158C,YLR155 and YLR157C).
+
+![](images/gprofiler/MotifsA.png)
+
+The rest of the clusters (B, C and D) are completely distinct from the histone profile clusters. They occupy a location near the centromeres, however not having a significant overlap nether with the nearby compartment of Antarctica, nor with any other compartment. They also produce a few term enrichments; most significant among them are summarized in the table below.
+
+|Cluster|Term                                                           |Adjusted p-value|
+|-------|---------------------------------------------------------------|----------------|
+|B      |Factor: MAC1; motif: TTTGCTCAM                                 |1.3%            |
+|C      |regulation of attachment of spindle microtubules to kinetochore|0.9%            |
+|D      |Factor: GCR2; motif: GCTTCCN                                   |1.0%            |
+
+## Segments
+
+Histone modification profiles tend to form small communities of a few consecutive genes. These communities become apparent in a heatmap rendering of histone-modification space Euclidean distances between all genes of a chromosome.
+
+```{r, warning=FALSE, echo=FALSE}
+colors <- c("#000000", "#FF0000", "#FF00FF")
+colors <- colorRampPalette(colors)(25)
+
+# Keep a table of genes and their 'uniqueness' value
+uniqueness <- c()
+
+plotChromosome <- function(chromosome) {
+	# Prepare SQL to get data from a single chromosome
+	whereClause <- paste("WHERE Chromosome = ", chromosome)
+	sql <- paste("SELECT h.* FROM HistonesPromoterPatched h JOIN Loci ON h.Gene = Loci.Gene ", whereClause, " ORDER BY Chromosome, Start")
+
+	# Get data
+	conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
+	histones <- dbGetQuery(conn, sql)
+	row.names(histones) <- histones$Gene
+	histones <- histones[,names(histones) != "Gene"]
+	dbDisconnect(conn)
+
+	# Plot
+	distanceMatrix <- dist(histones)
+	distanceMatrix <- as.matrix(distanceMatrix)
+	title <- paste("Chromosome ", chromosome)
+	heatmap.2(distanceMatrix, main=title, dendrogram='none', Rowv=FALSE, Colv=FALSE,trace='none', col=colors)
+}
+
+#for (chromosome in 1:16) {
+#	plotChromosome(chromosome)
+#}
+
+plotChromosome(3)
+```
+
+These communities are visible as black boxes along the diagonal, black corresponding to an approximately equal histone modification signal. We have found 203 such communities throughout the genome. Their placement does not seem to converge to any particular point in space.
+
+We group each of the associated 203 histone modification profiles into 7 clusters, using x-means. This gives us 7 classes of histone profiles which are known to produce communities around them. Subsequently, we classify all genes into these 7 classes in order to explore the possibility of the classes themselves converging towards specific areas. We then filter the genes using a sliding window of 25 genes, and a threshold of 1.28 bits of entropy. Please consult the accompanying documentation for more technical information.
+
+![](images/EntropyFiltering.svg)
+
+The result is 12 small gene sets (407 genes in total), which we annotate using a combination of the latin numeral of the chromosome they are found in and an English letter suffix to denote the order in which they appear in the chromosome, when there exist more than one.
+
+These segments are small and so we establish strict criteria for assessing the associated enrichments. We only consider enrichments where at least 5 genes appear in the term, otherwise enrichments with an adjusted p-value of less than 1%.
+
+A few segments survive our criteria. Their enrichments are summarized as follows.
+
+| Community		| Term												| Adjusted p-value  |
+|---------------|---------------------------------------------------|-------------------|
+| II			| acetyl-CoA transmembrane transporter activity		| 0.5%              |
+| IV-A			| Factor: Gal4p, Factor: Gal4p, Factor: SWI4P		| 0.1%              |
+| VII-B			| Factor: DAL81										| 0.1%              |
+| X				| Factor: Mbp1p, Factor: ARG						| 2.6%              |
+
+These segments have a slight preference to Internal compartment (273 genes) over the external (134 genes). The Hat compartment does not contain communities.
+
+## Signals not yielding clusters
+
+Gene duplication, species count and taxon signals do not converge in three-dimensional space.
 
 # Discussion
 
-What does it mean?
+
 	
 
 # Acknowledgments
 
 
-Who helped me out?
-	
+Dr. Christoforos Nikolaou is the supervisor of this work. He proposed the sphere-sampling algorithm and provided direction and prioritization of the various tests we carried out, as well as a plethora of insights on statistics, genome organization and writing. His contribution can not be overstated.
 
- 
+Athanasia Stavropoulou offered the transcription factor motif signal and insight regarding the resulting motif clusters, coming from her own work of training a hidden Markov model on the same dataset. In addition, she helped during debugging of parsing the coexpression dataset and took an active role in the creative process by both participating in the yeast-related weekly meetings and by constantly exchanging ideas and advice.
+
+Nikos Vakirlis has provided the gene species count and overarching taxon per gene dataset.
+
+CG2 team has contributed by critically discussing every aspact of this work.
+	
 
 # Literature Cited
 
 Whose work did I refer to?
 	
-
 # Appendix I: Assumptions
+
+* We assume that the three-dimensional model provided by Duan et al. in [], samples the position of monotonically and regularly increasing base-pair indices for each chromosome.
+* We assume a zero coexpression score for each pair of genes not present in [].
+* Furthermore, [] contains queries where the search term is a pair of genes. In these cases, we consider the gene whose name appears in the filename as the "source" gene.
