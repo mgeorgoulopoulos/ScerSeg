@@ -326,8 +326,19 @@ Gene duplication, species count and taxon signals do not converge in three-dimen
 
 # Discussion
 
+The more evident example of co-localization is that of pair-wise gene coexpression score signal. Indeed, it is the norm that nearby genes coexpress more. However, there exists a clear distinction between compartments of high and low coexpression. The high coexpression compartment is enriched in genes coming from a "whole genome" duplication (WGD) event. It seems logical that duplicate genes coexpress more.
+On the other hand, the low coexpression compartment (Tethys), is rich in genes having to do with metabolic pathways but not in duplicated genes. This is perhaps the result of a preferential selection against duplicated genes, because of particular stoichiometric and/or regulatory requirements of metabolism. Tethys splits the genome roughly in half, and the alignment of the splitting plane to the centromere-telomere axis is noteworthy.
 
-	
+Local condensations of post-translational promoter-site histone modification profiles show a strong preference towards the high-coexpression and WGD-rich (the "land") side of the genome. These clusters occupy unique spots in the 9-dimensional space of histone profiles. The difference in abundance of histone variants is subtle: possibly one or two nucleosomes of the promoter region account for the divergence from the average in each dimension. A more in-depth analysis, using higher-resolution data might uncover additional structure in the promoter region of these genes.
+
+Neighboring genes with similar transcription factor motif profiles can be found near the centromeric pole. This proximity might not be trivial, in light of the fact that one of these clusters is associated with the kinetochore while placed in close proximity to it.
+Among the various signals we took into consideration, the motif signal has the special property of having an area significantly more varied than expected by chance. This cluster is part of the Hat feature (see "Comparments" section) which is formed by chromosome XII. It is not negligible that this cluster exactly fits in the low-coexpression rim that bisects the Hat. 
+
+At a finer scale, histone profiles form even more deistinct groups of around 5 genes. These communities are spread around the genome without forming a discernible pattern. Their histone modification profiles appear to fall into 7 catetgories, which themselves manifest a tendency to co-localize, accompanied by a preference to the Internal compartment of the genome. Further, high-resolution analysis of these communities and the associated profiles may also yield interesting results and is therefore encouraged.
+
+In conclusion, both our research queries have been answered. There indeed exists a tendency to form local groups of genes having similar genomic and epigenomic characteristics, in both index and three-dimensional space. The respective gene sets, on the other hand, have more in common than just the characteristic used to define them. In addition, it is not uncommon to find that gene sets produced by different signals are strict (or approximate) subsets of one another.
+
+Having established these tendencies for spatial organization of the genome, further analysis is encouraged, possibly utilizing different kinds of signals. Our algorithm can be repurposed to accomodate any kind of signal, with the minimal configuration of specifying an appropriate statistic. Please refer to the complementary technical report for a complete specification and implementation of the algorithm.
 
 # Acknowledgments
 
