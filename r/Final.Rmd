@@ -179,7 +179,7 @@ Smaller areas of significant local similarity were found by examining the histon
 
 ### Histone profile clusters
 
-Seven smaller, completely isolated clusters are identified to have a more compact histone profile than expected by chance. We label these clusters with the letters A to G, ordering them in ascending size.
+Seven smaller, completely isolated clusters have a more compact histone profile than expected by chance. We label these clusters with the letters A to G, ordering them in ascending size.
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
 sql <- "SELECT l.*, CASE WHEN Field IS NULL THEN 'None' ELSE Field END AS Field FROM Loci l LEFT JOIN PromoterFields f ON l.Gene = f.Gene"
@@ -188,6 +188,8 @@ conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
 promoterFields <- dbGetQuery(conn, sql)
 plot_ly(x=promoterFields$x, y=promoterFields$y, z=promoterFields$z, type="scatter3d", mode="markers", text=promoterFields$Gene, color=promoterFields$Field, colors=fieldColors)
 ```
+
+Six out of the seven clusters lie mostly or entirely within the bounds of the two large continent clusters described in the previous section.
 
 | Cluster   | Continent  | Common gene count    | Overlap ratio   |
 |-----------|------------|----------------------|-----------------|
@@ -248,7 +250,7 @@ In contrast to histone modification profiles, motif profiles tend to be more ran
 
 Cluster A, which has an unusually varied motif profile, almost completely (96% overlap) lies within the Tethys compartment, of low coexpression, placed in the small gap between Godwana and Eurasia in the Hat region, tracing the boundaries of these continents without overlapping with them. We find this fact remarkable, as this cluster was found by examining a different signal than the one generating the continents.
 
-In addition, cluster A produces a rich set of ontology enrichments. These are mostly related to a group of 4 genes associated with asparaginase activity (YLR160C,YLR158C,YLR155 and YLR157C).
+In addition, cluster A produces a rich set of ontology associations. These are mostly related to a group of 4 genes associated with asparaginase activity (YLR160C,YLR158C,YLR155 and YLR157C).
 
 ![](images/gprofiler/MotifsA.png)
 
