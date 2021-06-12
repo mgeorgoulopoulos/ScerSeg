@@ -24,15 +24,26 @@ This program implements the sphere sampling algorithm discussed in accompanying
 documentation. We use transcription factor motif presence / absence as input.
 */
 
+// Define this to go from Jaccard distance to Jaccard index test
+//#define JACCARD_INDEX_TEST
+
 // Settings
 namespace {
 
 // Description of the test. This will appear in STDOUT
+#ifdef JACCARD_INDEX_TEST
+const char *statisticDescription =
+	"Average Jaccard index of the group, in the binary space of 102 TF motif presence/absence.";
+
+// Table name in the DB, where the resulting clusters will be persisted.
+const char *tableName = "JaccardIndexMotifFields";
+#else
 const char *statisticDescription =
 	"Average Jaccard distance of the group, in the binary space of 102 TF motif presence/absence.";
 
 // Table name in the DB, where the resulting clusters will be persisted.
 const char *tableName = "MotifFields";
+#endif
 
 // Radius of the sampling sphere
 const double sphereRadius = 15.0;
@@ -48,13 +59,21 @@ const double boxMaximum = 210.0;
 // Pay attention to this: it is how many sphere samples we get and
 // subsequently: how many random samples of the same size for each
 // sphere. So processing time is O(n^2) to this.
+#ifdef JACCARD_INDEX_TEST
+const int sampleCount = 10000;
+#else
 const int sampleCount = 50000;
+#endif
 
 // Filter sphere samples by adjusted p-value. I propose to run this program
 // twice: on first run p-values can be examined (they are written to text file).
 // Subsequently, you can set this to a sane value, so that only significant
 // spheres are taken into consideration. Typical values range from 1% to 5%.
-const double pAdjThreshold = 0.05;
+#ifdef JACCARD_INDEX_TEST
+const double pAdjThreshold = 0.01;
+#else
+const double pAdjThreshold = 0.05; // less strict for Jaccard distance
+#endif
 
 // Used for hierarchical clustering of overlapping spheres into the
 // final result. Less than this overlap defines two distinct clusters.
@@ -63,8 +82,6 @@ const double pAdjThreshold = 0.05;
 const double overlapThreshold = 0.05;
 
 } // namespace
-
-#define HISTONE_COLUMN_COUNT 9
 
 #include "utils/RandomGeneSampler.h"
 #include "utils/SaveClustersToDB.h"
@@ -101,6 +118,15 @@ struct Gene {
 	Vec3D position;
 	std::bitset<TF_COUNT> tfMotifs;
 
+	double jaccardIndex(const Gene &other) const {
+		// AND intersects, OR unites.
+		auto theUnion = tfMotifs | other.tfMotifs;
+		if (theUnion.count() == 0) return 0.0;
+
+		auto theIntersection = tfMotifs & other.tfMotifs;
+		return (double)theIntersection.count() / (double)theUnion.count();
+	}
+
 	double jaccardDistance(const Gene &other) const {
 		// Exclusive OR returns a bitset with bits set where inputs differ.
 		auto xored = tfMotifs ^ other.tfMotifs;
@@ -110,8 +136,15 @@ struct Gene {
 	// Implement this function to define what is considered more extreme
 	static bool randomIsMoreExtreme(double randomStatistic,
 									double testStatistic) {
+
+#ifdef JACCARD_INDEX_TEST
+		// Jaccard index - the bigger the better
+		return randomStatistic >= testStatistic;
+#else
 		// We'll use a double-tailed test next, so either is ok
 		return randomStatistic <= testStatistic;
+#endif
+
 	}
 
 	// Implement this to calculate p-value. Single- and Double-tailed tests may
@@ -122,8 +155,10 @@ struct Gene {
 		double pValue =
 			(double)randomMoreExtremeOccurrences / (double)totalRandomSamples;
 
+#ifndef JACCARD_INDEX_TEST
 		// Use this to convert to 2-tailed test
 		pValue = 2.0 * std::min(pValue, 1.0 - pValue);
+#endif
 
 		return pValue;
 	}
@@ -173,7 +208,12 @@ double sphereTestStatistic(const QVector<const Gene *> &genes) {
 	int pairCount = 0;
 	for (int i = 0; i < genes.size(); i++) {
 		for (int j = i + 1; j < genes.size(); j++) {
+
+#ifdef JACCARD_INDEX_TEST
+			result += genes[i]->jaccardIndex(*genes[j]);
+#else
 			result += genes[i]->jaccardDistance(*genes[j]);
+#endif
 			pairCount++;
 		}
 	}
@@ -207,13 +247,45 @@ void extractMotifFields(QSqlDatabase &db) {
 
 	// Then, for each of the samples, draw the same number of random samples of
 	// the same gene count. Calculate the same metric and calculate a p-value.
-	printf("Calculating p-values for %d sphere samples using %d random samples "
-		   "for each... ",
-		   sampleCount, sampleCount);
-#pragma omp parallel for
+
+	// Reuse random samples. We don't really need thousands of random samples for each of the thousands of sphere samples. 
+	// We need them for each *gene count*.
+	printf("Calculating statistic on %d random samples for all possible gene set sizes...", workUnits.size());
+	QMap<int, QVector<double>> geneCountToRandomStatistics;
+	for (WorkUnit<Gene> &workUnit : workUnits) {
+		const int geneCount = workUnit.genesInSphere.size();
+		if (geneCountToRandomStatistics.contains(geneCount)) continue;
+		printf("%d ", geneCount);
+
+		geneCountToRandomStatistics[geneCount].reserve(sampleCount);
+		for (int r = 0; r < sampleCount; r++) {
+			workUnit.randomSampler.sample(geneCount, &workUnit.randomGenes);
+			const double statisticInRandom = sphereTestStatistic(workUnit.randomGenes);
+			geneCountToRandomStatistics[geneCount].push_back(statisticInRandom);
+		}
+	}
+	printf("Done\n");
+
+	printf("Calculating p-value for each of %d spheres... ", workUnits.size());
 	for (int i = 0; i < workUnits.size(); i++) {
 		WorkUnit<Gene> &workUnit = workUnits[i];
-		workUnit.calculatePValue(sampleCount);
+		
+		// Calculate metric in the sphere-sample
+		const double statisticInSphere = sphereTestStatistic(workUnit.genesInSphere);
+
+		// Random samples
+		const QVector<double> &statsOnRandomSample = geneCountToRandomStatistics[workUnit.genesInSphere.size()];
+		for (const double statisticInRandom : statsOnRandomSample) {
+			// Is random more extreme than sphere?
+			if (Gene::randomIsMoreExtreme(statisticInRandom, statisticInSphere))
+				workUnit.chanceWinCount++;
+		} // end for (N random samples)
+
+		workUnit.pValue = Gene::calculatePValue(workUnit.chanceWinCount, sampleCount);
+
+		// Give benefit of the doubt to chance: replace zero pValues with the
+		// smallest we can safely say
+		workUnit.pValue = std::max(workUnit.pValue, 1.0 / (double)sampleCount);
 	}
 	printf("Done.\n");
 
@@ -296,9 +368,32 @@ void extractMotifFields(QSqlDatabase &db) {
 	}
 
 	// Report clusters
-	for (int i = 0; i < clusters.size(); i++) {
-		printf("\tCluster %d: %d genes\n", i + 1, clusters[i].size());
+	QMap<QString, Gene> nameToGene;
+	for (const Gene &gene : genes) {
+		nameToGene.insert(gene.name, gene);
 	}
+	for (int i = 0; i < clusters.size(); i++) {
+		QVector<const Gene*> tmp;
+		for (const QString &geneName : clusters[i]) {
+			tmp.push_back(&nameToGene[geneName]);
+		}
+		const double metric = sphereTestStatistic(tmp);
+
+		printf("\tCluster %d: %d genes\tMetric=%f\n", 
+			i + 1, clusters[i].size(), metric);
+	}
+
+	// Calculate the metric for the entire population to give a hint on range
+	{
+		QVector<const Gene*> tmp;
+		for (const Gene &gene : genes) {
+			tmp.push_back(&gene);
+		}
+		const double metricOverGenome = sphereTestStatistic(tmp);
+		printf("Metric calculated over the entire genome = %f\n", metricOverGenome);
+	}
+
+	return; // REMOVE ME
 
 	// Write clusters to database for further evaluation
 	if (!clusters.isEmpty()) {

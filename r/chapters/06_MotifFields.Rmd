@@ -39,3 +39,18 @@ MotifFields:A overlaps 96.5% with Tethys.
 * TEC1 (filamentous growth)
 * D IG1 (inhibitor of pseudohyphal growth, inhibits STE12 )
 * STE12 (invovled in mating and growth)
+
+## Jaccard index motif fields
+
+Using Jaccard index instead of distance, we get more significant p-values. Second tail (nwar p-value 1) is still present but amaller).
+We can now afford to use an FDR of 1% (previously 5%).
+
+
+```{r, message=FALSE, warning=FALSE}
+sql <- "SELECT l.*, CASE WHEN Field IS NULL THEN 'None' ELSE Field END AS Field FROM Loci l LEFT JOIN JaccardIndexMotifFields f ON l.Gene = f.Gene"
+fieldColors <- c("#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#4488AA", "#FF00FF", "#000000")
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+motifFields <- dbGetQuery(conn, sql)
+plot_ly(x=motifFields$x, y=motifFields$y, z=motifFields$z, type="scatter3d", mode="markers", text=motifFields$Gene, color=motifFields$Field, colors=fieldColors)
+dbDisconnect(conn)
+```
