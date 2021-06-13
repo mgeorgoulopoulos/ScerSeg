@@ -33,9 +33,9 @@ In this work, we explore the budding yeast genome with the intention of identify
 
 # Introduction
 
-Recent advances in chomosome conformation capture (3C) techniques have provided insight into the spatial confguration of DNA []. The fact that such configurations are predictably reproducible [] indicates that genes have a preferred placement with respect to one another, which might reflect the presence of underlying structure.
+Recent advances in chomosome conformation capture (3C) techniques have provided insight into the spatial confguration of DNA [3]. The fact that such configurations are predictably reproducible [2] indicates that genes have a preferred placement with respect to one another, which might reflect the presence of underlying structure.
 
-This study aims to collect and document additional evidence of a possible spatial structure of the eukaryotic genome. We focus on Sacharomyces cerevisiae, and, building on the already known [] preferred spatial organization of its genome, we search for areas where a particular property is significantly localized. We utilize multiple such properties, ranging from epigenetic (histone) modifications and functional information (as is the tendency of certain gene pairs to co-express) to innate properties of the DNA sequence itself (such as, the presence or absence of a particular transcription factor binding site) and information about gene origin (gene duplication and conservation). These properties are henceforth referred to as "signals."
+This study aims to collect and document additional evidence of a possible spatial structure of the eukaryotic genome. We focus on Sacharomyces cerevisiae, and, building on the already known [10] preferred spatial organization of its genome, we search for areas where a particular property is significantly localized. We utilize multiple such properties, ranging from epigenetic (histone) modifications and functional information (as is the tendency of certain gene pairs to co-express) to innate properties of the DNA sequence itself (such as, the presence or absence of a particular transcription factor binding site) and information about gene origin (gene duplication and conservation). These properties are henceforth referred to as "signals."
 
 The primary question under research is whether or not S. cerevisiae genes of similar properties tend to co-localize. If they do, our secondary question is whether or not they have more things in common besides that.
 
@@ -58,9 +58,9 @@ We conclude that, there indeed exists a tendency of local accumulation of charac
 
 All of the signals we used were sparsely sampled over the genome, at a resolution of one sample per gene.
 
-Pairwise gene coexpression score signal, henceforth called the "coexpression" signal was taken from [] and is a sparse matrix assigning a greater score to gene pairs which are found to co-express more.
+Pairwise gene coexpression score signal, henceforth called the "coexpression" signal was taken from [11] and is a sparse matrix assigning a greater score to gene pairs which are found to co-express more.
 
-Promoter-site histone modification profile signal, or the "histone profile" signal for short, comes from [] and is a z-score normalization of the relative abundance of the various histone variants near the promoter site of each gene.
+Promoter-site histone modification profile signal, or the "histone profile" signal for short, comes from [12] and is a z-score normalization of the relative abundance of the various histone variants near the promoter site of each gene.
 
 Transcription factor binding motif signal (the "motif" signal), taken from [], assigns a binary vector to each gene, which corresponds to the gene's combination of presence or absence of a set of transcription factor binding sites. We consider a binding site as present when the corresponding motif appears.
 
@@ -68,7 +68,7 @@ The "duplication" signal [] classifies each gene as duplicated or not. We furthe
 
 We consider gene origin signals, from []. The "conservation" signal assigns to each gene, a count of related species where the gene is present; it effectively is a conservation index. The "taxon" signal links each gene to its maximal-level taxon ("Fungi" would signify a gene shared among all species of the kingdom, while "S. cerevieiae" marks species-exclusive genes).
 
-Finally, we leverage the three-dimensional model of the yeast genome, published by Duan et al. [] to place the aforementioned signals in space.
+Finally, we leverage the three-dimensional model of the yeast genome, published by Duan et al. [10] to place the aforementioned signals in space.
 
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
@@ -98,7 +98,7 @@ The histone profile signal is less dense than our desired gene-resolution. Howev
 **Figure 3:** Resampling of the Duan et al. model by linear interpolation. The center base pair (C) of each gene is found between two successive control points (A and B) of the source model. A weighed average of these two points is assigned as the position of the gene in space.
 </font>
 
-The three-dimensional model of the yeast genome [] has been resampled at gene resolution. The input dataset is of adequate (kilobase) resolution to represent genes in space. We obtained gene positions by linearly interpolating the model's control points to approximate the center base pair of each gene. We assumed uniform sampling for this (see "Assumptions").
+The three-dimensional model of the yeast genome [10] has been resampled at gene resolution. The input dataset is of adequate (kilobase) resolution to represent genes in space. We obtained gene positions by linearly interpolating the model's control points to approximate the center base pair of each gene. We assumed uniform sampling for this (see "Assumptions").
 
 ## Sphere test
 
@@ -163,7 +163,7 @@ plot(1:maxClusterCount, withinSS,
 **Figure 5:** Within-clusters sum of squares, for different cluster count during categorization of the histone profiles that yield communities.
 </font>
 
-X-means [] clustering of these community-center genes supports the presence of 7 characteristic histone modification profiles. In order to incorporate the significance of locality (which is our main concern in this study), we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
+X-means [7] clustering of these community-center genes supports the presence of 7 characteristic histone modification profiles. In order to incorporate the significance of locality (which is our main concern in this study), we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
 
 Having assigned a histone profile class to each gene, where the classes are known to form local communities, we then filter all chromosomes by a sliding window of 25 consecutive genes. We measure Shannon entropy in terms of the 7 classes. The distribution of Shannon entropy in sliding windows is both multimodal and displaced (see Figure 1) compared to the distribution of randomly picked sets of 25 genes.
 
@@ -171,7 +171,7 @@ We filter the sliding windows, keeping those of a p-value less than 0.1%. This c
 
 ## Annotation
 
-We annotate the resulting segments, clusters and compartments by both gene ontology term enrichment analysis (carried out via g:profiler []) and by cross examination of the gene sets against each other. This is achieved by an automated program which calculates overlaps between all pairs of gene sets and reports significant overlaps. Furthermore, we examine signals not yielding significant gene sets in the vicinity of the gene sets coming from signals which do. Our findings are summarized in the next section.
+We annotate the resulting segments, clusters and compartments by both gene ontology term enrichment analysis (carried out via g:Profiler [13]) and by cross examination of the gene sets against each other. This is achieved by an automated program which calculates overlaps between all pairs of gene sets and reports significant overlaps. Furthermore, we examine signals not yielding significant gene sets in the vicinity of the gene sets coming from signals which do. Our findings are summarized in the next section.
 
 Please refer to the accompanying documentation for a complete technical reference.
 
@@ -186,7 +186,7 @@ We provide two compartmentalizations of the yeast genome. The first one is an ar
 ### Rough features
 
 Three distinguished features can be easily extracted by mere visual inspection of the model. We call these the "Hat," "Internal" and "External" compartments.
-The Hat is a domain formed by chromosome XII. It contains multiple rDNA repetitions and acts as an insulator between the nucleolus and the rest of the chromosomes []. What remains besides the Hat, is an approximately spherical construct, which follows the Rabl configuration [] and is hollow. The set of genes closer to its centroid than average are annotated as "Internal" and the rest as "External."
+The Hat is a domain formed by chromosome XII. It contains multiple rDNA repetitions and acts as an insulator between the nucleolus and the rest of the chromosomes [10]. What remains besides the Hat, is an approximately spherical construct, which follows the Rabl configuration [4] and is hollow. The set of genes closer to its centroid than average are annotated as "Internal" and the rest as "External."
 
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
@@ -261,7 +261,7 @@ The large compartment of low coexpression (Tethys) is enriched in "Metabolic pat
 ![](images/gprofiler/Tethys.png)
 
 <font size="1">
-**Figure 9:** g:profiler ontology enrichment results for Tethys compartment.
+**Figure 9:** g:Profiler ontology enrichment results for Tethys compartment.
 </font>
 
 While Antarctica shows no particular preference over type of gene duplication, the greater high-coexpression compartments are enriched in WGD genes while the low-coexpression compartment is negatively enriched in WGD.
@@ -385,7 +385,7 @@ In addition, cluster A produces a rich set of ontology associations. These are m
 ![](images/gprofiler/MotifsA.png)
 
 <font size="1">
-**Figure 12:** g:profiler ontology results for Motif cluster A.
+**Figure 12:** g:Profiler ontology results for Motif cluster A.
 </font>
 
 The rest of the clusters (B, C and D) are completely distinct from the histone profile clusters. They occupy a location near the centromeres, however not having a significant overlap nether with the nearby compartment of Antarctica, nor with any other compartment. They also produce a few term enrichments; most significant among them are summarized in the table below.
@@ -512,12 +512,25 @@ CG2 team has contributed by critically discussing every aspact of this work.
 
 # Literature Cited
 
-Whose work did I refer to?
+1. Nikolaou C, Chouvardas P, Νικολάου Χ, Χουβαρδάς Π. Υπολογιστική βιολογία.; 2015. Accessed June 12, 2021. https://repository.kallipos.gr/handle/11419/1577
+2. Dixon JR, Selvaraj S, Yue F, et al. Topological domains in mammalian genomes identified by analysis of chromatin interactions. Nature. 2012;485(7398):376-380. doi:10.1038/nature11082
+3. de Wit E, de Laat W. A decade of 3C technologies: insights into nuclear organization. Genes Dev. 2012;26(1):11-24. doi:10.1101/gad.179804.111
+4. Pouokam M, Cruz B, Burgess S, Segal MR, Vazquez M, Arsuaga J. The Rabl configuration limits topological entanglement of chromosomes in budding yeast. Sci Rep. 2019;9(1):6795. doi:10.1038/s41598-019-42967-4
+5. Osborne CS, Chakalova L, Brown KE, et al. Active genes dynamically colocalize to shared sites of ongoing transcription. Nat Genet. 2004;36(10):1065-1071. doi:10.1038/ng1423
+6. Liu Y, Nanni L, Sungalee S, et al. Systematic inference and comparison of multi-scale chromatin sub-compartments connects spatial organization to cell phenotypes. Nature Communications. 2021;12(1):2439. doi:10.1038/s41467-021-22666-3
+7. Pelleg D, Moore AW. X-means: Extending k-means with efficient estimation of the number of clusters. In: Icml. Vol 1. ; 2000:727-734.
+8. RStudio | Open source & professional software for data science teams - RStudio. Accessed April 25, 2021. https://www.rstudio.com/
+9. Hall M, Frank E, Holmes G, Pfahringer B, Reutemann P, Witten IH. The WEKA Data Mining Software: An Update. 11(1):9.
+10. Duan Z, Andronescu M, Schutz K, et al. A three-dimensional model of the yeast genome. Nature. 2010;465(7296):363-367. doi:10.1038/nature08973
+11. MacIsaac KD, Wang T, Gordon DB, Gifford DK, Stormo GD, Fraenkel E. An improved map of conserved regulatory sites for Saccharomyces cerevisiae. BMC Bioinformatics. 2006;7:113. doi:10.1186/1471-2105-7-113
+12. Cheng C, Shou C, Yip KY, Gerstein MB. Genome-wide analysis of chromatin features identifies histone modification sensitive and insensitive yeast transcription factors. Genome Biology. 2011;12(11):R111. doi:10.1186/gb-2011-12-11-r111
+13. g:Profiler – a web server for functional enrichment analysis and conversions of gene lists. Accessed June 13, 2021. https://biit.cs.ut.ee/gprofiler/gost
+
 	
 # Appendix I: Assumptions
 
-* We assume that the three-dimensional model provided by Duan et al. in [], samples the position of monotonically and regularly increasing base-pair indices for each chromosome.
-* We assume a zero coexpression score for each pair of genes not present in [].
+* We assume that the three-dimensional model provided by Duan et al. in [10], samples the position of monotonically and regularly increasing base-pair indices for each chromosome.
+* We assume a zero coexpression score for each pair of genes not present in [11].
 * Furthermore, [] contains queries where the search term is a pair of genes. In these cases, we consider the gene whose name appears in the filename as the "source" gene.
 
 # Appendix II: Summary in Greek and English
