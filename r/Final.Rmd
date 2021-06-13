@@ -129,6 +129,10 @@ The following table summarizes the metric used for each sphere test.
 | Species count     | Standard deviation of species count in gene set                                 |
 | Taxon             | Maximum absolute logarithmic enrichment of all taxa present in the set          |
 
+<font size="1">
+**Table 1:** Signals used and respective statistics computed.
+</font>
+
 ## Small scale analysis of histone modification profiles
 
 We additionally perform a finer scale analysis for the histone profile signal in particular. In this analysis, locality is considered in terms of position in the chromosome (index space). We measure the average histone profile space Euclidean distance in groups of 5 consecutive genes. The average histone profile space distance of the middle gene of the group to all other genes in the chromosome is then divided by the local average distance to yield a "community score." 
@@ -248,6 +252,10 @@ Mean coexpression score is greater than average in "land" while lower than avera
 | Tethys      | 1.15e-54   |
 | Pangaea     | 7.85e-14   |
 
+<font size="1">
+**Table 2:** Statistical significance of the difference in coexpression between each of the compartments and the entire genome.
+</font>
+
 The large compartment of low coexpression (Tethys) is enriched in "Metabolic pathways" genes (KEGG:01100), with an adjusted p-value of 2.0%. Less significant enrichments are found as well.
 
 ![](images/gprofiler/Tethys.png)
@@ -264,6 +272,10 @@ While Antarctica shows no particular preference over type of gene duplication, t
 |Godwana   |1026      |159 |0.155    |1.006         |204 |0.199    |1.185         |
 |Laurasia  |2266      |345 |0.152    |0.988         |431 |0.190    |1.134         |
 |Tethys    |2787      |414 |0.149    |0.964         |361 |0.130    |0.772         |
+
+<font size="1">
+**Table 3:** Enrichment in "whole genome" (WGD) and "small scale" (SSD) duplicated genes in each of the continent compartments.
+</font>
 
 ## Clusters
 
@@ -301,6 +313,10 @@ Six out of the seven clusters lie mostly or entirely within the bounds of the tw
 |D          |Godwana     |160                   |1.00             |
 |G          |Godwana     |218                   |0.96             |
 
+<font size="1">
+**Table 4:** Overlap of histone profile clusters with the continent compartments. Clusters of local similarity regarding histone modification profiles have a strong preference towards "land" compartments, which in turn are characterized by increased coexpression and enrichment in WGD genes.
+</font>
+
 
 It follows that these clusters of particular promoter-site histone modification profiles lie almost exclusively in areas of high coexpression. Three of these clusters are on one side of the coexpression insulator and three on the other.
 
@@ -334,6 +350,10 @@ The larger among these clusters produce gene ontology enrichments.
 | F        | Factor: HSF; motif: AGAANAGAANAGAAN  | 2%   |
 | G        | Factor: HSF; motif: NTTCTAGAANAGAAN  | 1%   |
 
+<font size="1">
+**Table 5:** Enriched gene ontology terms found in histone profile clusters.
+</font>
+
 The smaller 4 clusters follow the same trend found in continents, of over-representing WGD genes.
 
 
@@ -347,6 +367,10 @@ The smaller 4 clusters follow the same trend found in continents, of over-repres
 |F      |216       |29 |0.13     |0.87          |26 |0.12     |0.72          |
 |G      |226       |43 |0.19     |1.23          |38 |0.17     |1.00          |
 
+
+<font size="1">
+**Table 6:** Enrichments in SSD and WGD per histone profile cluster. 
+</font>
 
 ### Motif clusters
 
@@ -371,6 +395,10 @@ The rest of the clusters (B, C and D) are completely distinct from the histone p
 |B      |Factor: MAC1; motif: TTTGCTCAM                                 |1.3%            |
 |C      |regulation of attachment of spindle microtubules to kinetochore|0.9%            |
 |D      |Factor: GCR2; motif: GCTTCCN                                   |1.0%            |
+
+<font size="1">
+**Table 7:** Gene ontology enrichments per motif cluster.
+</font>
 
 ## Segments
 
@@ -437,6 +465,10 @@ A few segments survive our criteria. Their enrichments are summarized as follows
 | IV-A			| Factor: Gal4p, Factor: Gal4p, Factor: SWI4P		| 0.1%              |
 | VII-B			| Factor: DAL81										| 0.1%              |
 | X				| Factor: Mbp1p, Factor: ARG						| 2.6%              |
+
+<font size="1">
+**Table 8:** Gene ontology enrichments per histone profile community.
+</font>
 
 These segments have a slight preference to Internal compartment (273 genes) over the external (134 genes). Figure 6 shows a comparison of distances between genes picked from segments against that of randomly picked genes; the segments distribution is poor in large distances. The Hat compartment does not contain communities.
 
