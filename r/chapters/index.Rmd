@@ -1,5 +1,5 @@
 ---  
-title: "Segmentation of S. cerevisiae genome based on promoter-site histone modifications"
+title: "Segmentation methods of eukaryotic genomes based on sparse genomic, expression and epigenetic data."
 output:
   html_document:
     toc: yes

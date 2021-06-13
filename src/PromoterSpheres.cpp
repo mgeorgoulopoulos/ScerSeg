@@ -222,6 +222,21 @@ void extractPromoterFields(QSqlDatabase &db) {
 	}
 	printf("Done.\n");
 
+	// Write statistic measure for sphere and random to file for further processing
+	{
+		const QString filename =
+			QString("Results/StatInSphereAndRandom.%1.tsv").arg(tableName);
+		printf("Writing statistics in and out of spheres to file: %s\n", filename.toUtf8().data());
+		QFile file(filename);
+		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+			throw QString("Failed to open file %1 for writing\n").arg(filename);
+		QTextStream out(&file);
+		for (const WorkUnit<Gene> &workUnit : workUnits) {
+			out << workUnit.statisticInSphere << '\t' << workUnit.statisticInRandom << '\n';
+		}
+		file.close();
+	}
+
 	// Adjust p-values
 	printf("Adjusting p-values using Benjamini-Hochberg method... ");
 	benjamini(workUnits);

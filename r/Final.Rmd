@@ -30,7 +30,7 @@ This study aims to collect and document additional evidence of a possible spatia
 
 The primary question under research is whether or not S. cerevisiae genes of similar properties tend to co-localize. If they do, our secondary question is whether or not they have more things in common besides that.
 
-XXX Add figure: distribution shifts for histones
+![**Figure 1:** Distribution of histone-profile average in-group Euclidean distance (top) and distribution of histone profile class Shannon entropy (bottom) of local gene sets (clusters and segments, respectively) in contrast to distribution of the same quantity in random samples of the same gene count. Both are characterized by a shift towards smaller values, which signifies a tendency of similar histone modification profiles to co-localize in space.](chapters/images/DistributionShifts.svg)
 
 We consider small sets of neighboring genes and assess the local signal distribution of this area. Then, by comparng it to the global distribution we extract gene sets of a particular tendency regarding each signal. 
 

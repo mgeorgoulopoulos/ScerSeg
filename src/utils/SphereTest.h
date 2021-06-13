@@ -48,6 +48,10 @@ template <class Gene> struct WorkUnit {
 	// Buffer for sampling random sets
 	QVector<const Gene *> randomGenes;
 
+	// Keep these 2 for further processing - random is the last of the random tests
+	double statisticInSphere = 0.0;
+	double statisticInRandom = 0.0;
+
 	// P-value rank and Benjamini-Hochberg-adjusted version of it.
 	int rank = 0;
 	double adjustedPValue = 1.0;
@@ -66,12 +70,12 @@ template <class Gene> struct WorkUnit {
 
 	void calculatePValue(int randomSampleCount) {
 		// Calculate metric in the sphere-sample
-		const double statisticInSphere = sphereTestStatistic(genesInSphere);
+		statisticInSphere = sphereTestStatistic(genesInSphere);
 
 		// Random samples
 		for (int r = 0; r < randomSampleCount; r++) {
 			randomSampler.sample(genesInSphere.size(), &randomGenes);
-			const double statisticInRandom = sphereTestStatistic(randomGenes);
+			statisticInRandom = sphereTestStatistic(randomGenes);
 
 			// Is random more extreme than sphere?
 			if (Gene::randomIsMoreExtreme(statisticInRandom, statisticInSphere))
