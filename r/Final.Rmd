@@ -1,5 +1,5 @@
 ---  
-title: Segmentation methods of eukaryotic genomes based on sparse genomic, expression
+title: Methods of segmentation of eukaryotic genomes based on sparse genomic, expression
   and epigenetic data
 output:
   html_document:
