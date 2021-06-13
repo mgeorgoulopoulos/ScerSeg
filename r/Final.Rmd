@@ -80,13 +80,13 @@ The resulting significant spheres are then hierarchically clustered by overlap. 
 The following table summarizes the metric used for each sphere test.
 
 | Signal            | Metric
-|-------------------|---------------------------------------------------------------------------------------|
-| Coexpression     | Average coexpression score of all ordered pairs in gene set                          |
-| Histone profile   | Average histone-profile space Euclidean distance of all ordered gene pairs            |
-| Motif             | Average Jaccard distance of all ordered pairs of genes                                |
-| Gene duplication  | Shannon entropy of the duplication categories "None," "SSD," "WGD" in gene set        |
-| Species count     | Standard deviation of species count in gene set                                       |
-| Taxon             | Maximum absolute logarithmic enrichment of all taxa present in the set                |
+|-------------------|---------------------------------------------------------------------------------|
+| Coexpression      | Average coexpression score of all ordered pairs in gene set                     |
+| Histone profile   | Average histone-profile space Euclidean distance of all ordered gene pairs      |
+| Motif             | Average Jaccard distance of all ordered pairs of genes                          |
+| Gene duplication  | Shannon entropy of the duplication categories "None," "SSD," "WGD" in gene set  |
+| Species count     | Standard deviation of species count in gene set                                 |
+| Taxon             | Maximum absolute logarithmic enrichment of all taxa present in the set          |
 
 ## Small scale analysis of histone modification profiles
 
