@@ -1,5 +1,5 @@
 ---  
-title: "Segmentation methods of eukaryotic genomes based on sparse genomic, expression and epigenetic data."
+title: "Segmentation methods of eukaryotic genomes based on sparse genomic, expression and epigenetic data"
 output:
   html_document:
     toc: yes
@@ -30,6 +30,8 @@ This study aims to collect and document additional evidence of a possible spatia
 
 The primary question under research is whether or not S. cerevisiae genes of similar properties tend to co-localize. If they do, our secondary question is whether or not they have more things in common besides that.
 
+XXX Add figure: distribution shifts for histones
+
 We consider small sets of neighboring genes and assess the local signal distribution of this area. Then, by comparng it to the global distribution we extract gene sets of a particular tendency regarding each signal. 
 
 The outcome of this process is a number of gene sets. As a convention, we will refer to these as "segments," when considering successive genes on a particular chromosome, "clusters" when the genes form a local neighborhood in three-dimensional space, and "compartments," when multiple, non-overlapping gene sets collectively account for the entire genome.
@@ -55,11 +57,15 @@ We consider gene origin signals, from []. The "conservation" signal assigns to e
 
 Finally, we leverage the three-dimensional model of the yeast genome, published by Duan et al. [] to place the aforementioned signals in space.
 
+XXX Plot-ly SSD and WGD as an example of placing signals in space
+
 ## Pre-processing
 
 Pairwise gene coexpression score is partially defined. Only the top scores for each gene are included. We assume the rest of the scores to be zero, which is not an over-simplification, given the distribution of scores present in the input data files. The distribution fully outlines a normal distribution down to its minimal p-value tails which means that missing values are inddeed negligible. We further process the dataset by losslessly compressing it to one byte per score, thus allowing for the subsequent complex computation. A full reference of data flow may be found in the accompanying documentation.
 
 The histone profile signal is less dense than our desired gene-resolution. However, for certain histone variants we have per-gene information. We only keep these histone variants (namely: H3K4, H3K6, H3NTerm, H4NTerm, H2A, H2B, H3, H4 and H2AZ). This yields a 9-dimensional vector assigned to each gene. We consider the associated 9-dimensional space and its Euclidean distance as a measure of histone profile similarity. Occassional missing values are imputated as the median of the 3 nearest genes in the histone profile space.
+
+XXX Linear interpolation of vertices
 
 The three-dimensional model of the yeast genome [] has been resampled at gene resolution. The input dataset is of adequate (kilobase) resolution to represent genes in space. We obtained gene positions by linearly interpolating the model's control points to approximate the center base pair of each gene. We assumed uniform sampling for this (see "Assumptions").
 
@@ -94,11 +100,13 @@ We additionally perform a finer scale analysis for the histone profile signal in
 
 A greater community score signifies a local group possessing a greater in-group similarity than its similarity to the rest of the genome, hence the name. As a first approcimation, we consider a community score of 2 as significant (local similarity is twice as strong as global). Filtering the genes using this threshold results in a number of genes forming local communities around them. These genes are scattered throughout the entire genome.
 
+XXX - Elbow method
+
 X-means [] clustering of these community-center genes supports the presence of 7 characteristic histone modification profiles. In order to incorporate the significance of locality (which is our main concern in this study), we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
 
 Having assigned a histone profile class to each gene, where the classes are known to form local communities, we then filter all chromosomes by a sliding window of 25 consecutive genes. We measure Shannon entropy in terms of the 7 classes. The distribution of Shannon entropy in sliding windows is both multimodal and displaced compared to the distribution of randomly picked sets of 25 genes.
 
-XXX Image required
+XXX Image required - actually refer to figure 1 for this
 
 We filter the sliding windows, keeping those of a p-value less than 0.1%. This corresponds to approximately 1.28 bits of entropy per window and aims to capture the left-most mode of the distribution. By connecting the overlapping windows we get a numebr of segments having a tighter than usual histone modification profile.
 
@@ -327,6 +335,8 @@ A few segments survive our criteria. Their enrichments are summarized as follows
 | X				| Factor: Mbp1p, Factor: ARG						| 2.6%              |
 
 These segments have a slight preference to Internal compartment (273 genes) over the external (134 genes). The Hat compartment does not contain communities.
+
+XXX Add figure for distance distribution
 
 ## Signals not yielding clusters
 
