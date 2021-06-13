@@ -1,10 +1,19 @@
 ---  
-title: "Segmentation methods of eukaryotic genomes based on sparse genomic, expression and epigenetic data"
+title: Segmentation methods of eukaryotic genomes based on sparse genomic, expression
+  and epigenetic data
 output:
   html_document:
     toc: yes
   bookdown::pdf_book: default
+  pdf_document:
+    toc: yes
 ---
+
+```{css, echo=FALSE}
+figureText {
+  font-size: 2;
+}
+```
 
 ```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
 library(plotly)
@@ -30,7 +39,11 @@ This study aims to collect and document additional evidence of a possible spatia
 
 The primary question under research is whether or not S. cerevisiae genes of similar properties tend to co-localize. If they do, our secondary question is whether or not they have more things in common besides that.
 
-![**Figure 1:** Distribution of histone-profile average in-group Euclidean distance (top) and distribution of histone profile class Shannon entropy (bottom) of local gene sets (clusters and segments, respectively) in contrast to distribution of the same quantity in random samples of the same gene count. Both are characterized by a shift towards smaller values, which signifies a tendency of similar histone modification profiles to co-localize in space.](chapters/images/DistributionShifts.svg)
+![](chapters/images/DistributionShifts.svg)
+
+<font size="1">
+**Figure 1:** Distribution of histone-profile average in-group Euclidean distance (top) and distribution of histone profile class Shannon entropy (bottom) of local gene sets (clusters and segments, respectively) in contrast to distribution of the same quantity in random samples of the same gene count. Both are characterized by a shift towards smaller values, which signifies a tendency of similar histone modification profiles to co-localize in space.
+</font>
 
 We consider small sets of neighboring genes and assess the local signal distribution of this area. Then, by comparng it to the global distribution we extract gene sets of a particular tendency regarding each signal. 
 
@@ -63,7 +76,11 @@ Finally, we leverage the three-dimensional model of the yeast genome, published 
 #duplicateGenes <- dbGetQuery(conn, "SELECT l.Gene, x, y, z, CASE WHEN Category IS NULL THEN 'None' ELSE Category END AS Category FROM Loci l LEFT JOIN GeneDuplication d ON l.Gene = d.Gene")
 #plot_ly(x=duplicateGenes$x, y=duplicateGenes$y, z=duplicateGenes$z, type="scatter3d", mode="markers", text=duplicateGenes$Gene, color=duplicateGenes$Category)
 ```
-![**Figure 2:** Gene duplication signal mapped to three-dimensional space.](images/GeneDuplicationSignal3D.png)
+![](images/GeneDuplicationSignal3D.png)
+
+<font size="1">
+**Figure 2:** Gene duplication signal mapped to three-dimensional space.
+</font>
 
 ## Pre-processing
 
@@ -71,7 +88,11 @@ Pairwise gene coexpression score is partially defined. Only the top scores for e
 
 The histone profile signal is less dense than our desired gene-resolution. However, for certain histone variants we have per-gene information. We only keep these histone variants (namely: H3K4, H3K6, H3NTerm, H4NTerm, H2A, H2B, H3, H4 and H2AZ). This yields a 9-dimensional vector assigned to each gene. We consider the associated 9-dimensional space and its Euclidean distance as a measure of histone profile similarity. Occassional missing values are imputated as the median of the 3 nearest genes in the histone profile space.
 
-XXX Linear interpolation of vertices
+![](chapters/images/LinearInterpolation.svg)
+
+<font size="1">
+**Figure 3:** Resampling of the Duan et al. model by linear interpolation. The center base pair (C) of each gene is found between two successive control points (A and B) of the source model. A weighed average of these two points is assigned as the position of the gene in space.
+</font>
 
 The three-dimensional model of the yeast genome [] has been resampled at gene resolution. The input dataset is of adequate (kilobase) resolution to represent genes in space. We obtained gene positions by linearly interpolating the model's control points to approximate the center base pair of each gene. We assumed uniform sampling for this (see "Assumptions").
 
@@ -79,7 +100,11 @@ The three-dimensional model of the yeast genome [] has been resampled at gene re
 
 We use the same algorithm to detect local similarity in all aforementioned signals. It is a reusable algorithm and it may be adapted to any kind of signal, when equipped with an appropriate metric. The metric is calculated for local sets of genes and subsequently statistical significance is determined by randomly sampling gene sets and calculating the same metric. Thus, the algorithm is agnostic to underlying signal distribution and may be generalized for a multitude of signal types.
 
-![Sphere-test data flow](chapters/images/SphereTestDataFlow.svg)
+![](chapters/images/SphereTestDataFlow.svg)
+
+<font size="1">
+**Figure 4:** Sphere-test data flow.
+</font>
 
 We start by sampling a set of genes that form a local group. We achieve this by randomly placing a sphere of pre-determined radius in the three-dimensional space of the genome model. Genes that happen to lie in the sphere are collected and form a sample. We limit the minimum size of acceptable samples to roughly one third of the maximum sample size. We generally use sphere-samples of 50-150 genes.
 
@@ -106,7 +131,29 @@ We additionally perform a finer scale analysis for the histone profile signal in
 
 A greater community score signifies a local group possessing a greater in-group similarity than its similarity to the rest of the genome, hence the name. As a first approcimation, we consider a community score of 2 as significant (local similarity is twice as strong as global). Filtering the genes using this threshold results in a number of genes forming local communities around them. These genes are scattered throughout the entire genome.
 
-XXX - Elbow method
+```{r warning=FALSE, echo=FALSE}
+## Genes selected for being community-centers
+sql <- "SELECT h.* FROM HistonesPromoterPatched h JOIN CommunityScores s ON h.Gene = s.Gene WHERE Score >= 2"
+conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
+centers <- dbGetQuery(conn, sql)
+row.names(centers) <- centers$Gene
+centers <- centers[,names(centers) != "Gene"]
+centers <- as.matrix(centers)
+dbDisconnect(conn)
+
+maxClusterCount <- 10
+withinSS <- sapply(1:maxClusterCount, 
+              function(k){kmeans(centers, k, nstart=50,iter.max = 20 )$tot.withinss})
+plot(1:maxClusterCount, withinSS,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Cluster count",
+     ylab="Within-clusters total sum of squares")
+ 
+```
+
+<font size="1">
+**Figure 5:** Within-clusters sum of squares, for different cluster count during categorization of the histone profiles that yield communities.
+</font>
 
 X-means [] clustering of these community-center genes supports the presence of 7 characteristic histone modification profiles. In order to incorporate the significance of locality (which is our main concern in this study), we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
 
