@@ -9,13 +9,13 @@ output:
     toc: yes
 ---
 
-```{css, echo=FALSE}
-figureText {
-  font-size: 2;
-}
-```
 
 ```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
+
+# Enable / disable interactive figures
+ENABLE_INTERACTIVE_FIGURES = FALSE
+
+
 library(plotly)
 library(RSQLite)
 library(ggplot2)
@@ -72,11 +72,15 @@ Finally, we leverage the three-dimensional model of the yeast genome, published 
 
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
-#conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
-#duplicateGenes <- dbGetQuery(conn, "SELECT l.Gene, x, y, z, CASE WHEN Category IS NULL THEN 'None' ELSE Category END AS Category FROM Loci l LEFT JOIN GeneDuplication d ON l.Gene = d.Gene")
-#plot_ly(x=duplicateGenes$x, y=duplicateGenes$y, z=duplicateGenes$z, type="scatter3d", mode="markers", text=duplicateGenes$Gene, color=duplicateGenes$Category)
+conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
+duplicateGenes <- dbGetQuery(conn, "SELECT l.Gene, x, y, z, CASE WHEN Category IS NULL THEN 'None' ELSE Category END AS Category FROM Loci l LEFT JOIN GeneDuplication d ON l.Gene = d.Gene")
+if (ENABLE_INTERACTIVE_FIGURES) {
+	plot_ly(x=duplicateGenes$x, y=duplicateGenes$y, z=duplicateGenes$z, type="scatter3d", mode="markers", text=duplicateGenes$Gene, color=duplicateGenes$Category)
+}
+dbDisconnect(conn)
 ```
-![](images/GeneDuplicationSignal3D.png)
+
+`r if(!ENABLE_INTERACTIVE_FIGURES){"![](images/GeneDuplicationSignal3D.png)"}`
 
 <font size="1">
 **Figure 2:** Gene duplication signal mapped to three-dimensional space.
@@ -157,9 +161,7 @@ plot(1:maxClusterCount, withinSS,
 
 X-means [] clustering of these community-center genes supports the presence of 7 characteristic histone modification profiles. In order to incorporate the significance of locality (which is our main concern in this study), we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
 
-Having assigned a histone profile class to each gene, where the classes are known to form local communities, we then filter all chromosomes by a sliding window of 25 consecutive genes. We measure Shannon entropy in terms of the 7 classes. The distribution of Shannon entropy in sliding windows is both multimodal and displaced compared to the distribution of randomly picked sets of 25 genes.
-
-XXX Image required - actually refer to figure 1 for this
+Having assigned a histone profile class to each gene, where the classes are known to form local communities, we then filter all chromosomes by a sliding window of 25 consecutive genes. We measure Shannon entropy in terms of the 7 classes. The distribution of Shannon entropy in sliding windows is both multimodal and displaced (see Figure 1) compared to the distribution of randomly picked sets of 25 genes.
 
 We filter the sliding windows, keeping those of a p-value less than 0.1%. This corresponds to approximately 1.28 bits of entropy per window and aims to capture the left-most mode of the distribution. By connecting the overlapping windows we get a numebr of segments having a tighter than usual histone modification profile.
 
@@ -187,8 +189,16 @@ The Hat is a domain formed by chromosome XII. It contains multiple rDNA repetiti
 conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
 genePositionsLabels <- dbGetQuery(conn, "SELECT Loci.Gene, x, y, z, Label FROM
 Loci JOIN RoughFeatures ON Loci.Gene = RoughFeatures.Gene")
-plot_ly(x=genePositionsLabels$x, y=genePositionsLabels$y, z=genePositionsLabels$z, type="scatter3d", mode="markers", text=genePositionsLabels$Gene, color=genePositionsLabels$Label)
+if (ENABLE_INTERACTIVE_FIGURES) {
+	plot_ly(x=genePositionsLabels$x, y=genePositionsLabels$y, z=genePositionsLabels$z, type="scatter3d", mode="markers", text=genePositionsLabels$Gene, color=genePositionsLabels$Label)
+}
+dbDisconnect(conn)
 ```
+`r if(!ENABLE_INTERACTIVE_FIGURES){"![](images/RoughFeatures.png)"}`
+
+<font size="1">
+**Figure 6:** Rough features of S. cerevisiae genome.
+</font>
 
 ### Continents
 
@@ -205,8 +215,17 @@ sql <- "SELECT l.*, Continent FROM Loci l JOIN Continents c ON l.Gene = c.Gene"
 fieldColors <- c("#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#4488AA", "#FF00FF", "#000000")
 conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
 continents <- dbGetQuery(conn, sql)
-plot_ly(x=continents$x, y=continents$y, z=continents$z, type="scatter3d", mode="markers", text=continents$Gene, color=continents$Continent, colors=fieldColors)
+if (ENABLE_INTERACTIVE_FIGURES) {
+	plot_ly(x=continents$x, y=continents$y, z=continents$z, type="scatter3d", mode="markers", text=continents$Gene, color=continents$Continent, colors=fieldColors)
+}
+dbDisconnect(conn)
 ```
+
+`r if(!ENABLE_INTERACTIVE_FIGURES){"![](images/Continents.png)"}`
+
+<font size="1">
+**Figure 7:** Continent-inspired compartmentalization of the yeast genome. The primary distinction is between areas of high (land) and low (sea) coexpression scores.
+</font>
 
 The box plot below shows the distribution of coexpression score within the compartments as compared to the entire genome ("Random" category).
 
@@ -214,6 +233,10 @@ The box plot below shows the distribution of coexpression score within the compa
 continentCoexpression <- read.table(file = '../Results/ContinentCoexpressionScoreSamples.tsv', sep = '\t', header = TRUE)
 boxplot(continentCoexpression, outline=FALSE, las=2, main="Pairwise coexpression score")
 ```
+
+<font size="1">
+**Figure 8:** Box plot of average coexpression score between all ordered gene pairs of each continent compartment. The low coexpression score compartment (Tethys) is below average (Random, which is the global average of all possible gene pairs), while "land" compartments (Laurasia, Godwana, Antarctica) are above average.
+</font>
 
 Mean coexpression score is greater than average in "land" while lower than average in "sea." A t-test verifies that these mean shifts are statistically significant.
 
@@ -228,6 +251,10 @@ Mean coexpression score is greater than average in "land" while lower than avera
 The large compartment of low coexpression (Tethys) is enriched in "Metabolic pathways" genes (KEGG:01100), with an adjusted p-value of 2.0%. Less significant enrichments are found as well.
 
 ![](images/gprofiler/Tethys.png)
+
+<font size="1">
+**Figure 9:** g:profiler ontology enrichment results for Tethys compartment.
+</font>
 
 While Antarctica shows no particular preference over type of gene duplication, the greater high-coexpression compartments are enriched in WGD genes while the low-coexpression compartment is negatively enriched in WGD.
 
@@ -251,8 +278,17 @@ sql <- "SELECT l.*, CASE WHEN Field IS NULL THEN 'None' ELSE Field END AS Field 
 fieldColors <- c("#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#4488AA", "#FF00FF", "#000000")
 conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
 promoterFields <- dbGetQuery(conn, sql)
-plot_ly(x=promoterFields$x, y=promoterFields$y, z=promoterFields$z, type="scatter3d", mode="markers", text=promoterFields$Gene, color=promoterFields$Field, colors=fieldColors)
+if (ENABLE_INTERACTIVE_FIGURES) {
+	plot_ly(x=promoterFields$x, y=promoterFields$y, z=promoterFields$z, type="scatter3d", mode="markers", text=promoterFields$Gene, color=promoterFields$Field, colors=fieldColors)
+}
+dbDisconnect(conn)
 ```
+
+`r if(!ENABLE_INTERACTIVE_FIGURES){"![](images/PromoterFields.png)"}`
+
+<font size="1">
+**Figure 10:** Histone profile clusters. Collections of genes having a lower than average (adjusted p-value less than 1%) variance in histone modification profile than average. Each of these clusters has a unique histone modification profile.
+</font>
 
 Six out of the seven clusters lie mostly or entirely within the bounds of the two large continent clusters described in the previous section.
 
@@ -284,6 +320,11 @@ tendencies <- read.table(
 tendenciesScaled <- scale(tendencies)
 heatmap.2(tendenciesScaled, col=colors, main="Shifts in histone variant abundance")
 ```
+
+<font size="1">
+**Figure 11:** Heatmap visualization and hierarchical clustering of shifts in histone variant abundance for each cluster. Over-representation of a particular histone variant is colored in green, under-representation in red. Notice the gap between over- and under-representation. All locally similar clusters are shifted in all 9 dimensions with a quantized (step-wise) shift.
+</font>
+
 The larger among these clusters produce gene ontology enrichments.
 
 | Cluster  | Term                                | PAdj |
@@ -318,6 +359,10 @@ Cluster A, which has an unusually varied motif profile, almost completely (96% o
 In addition, cluster A produces a rich set of ontology associations. These are mostly related to a group of 4 genes associated with asparaginase activity (YLR160C,YLR158C,YLR155 and YLR157C).
 
 ![](images/gprofiler/MotifsA.png)
+
+<font size="1">
+**Figure 12:** g:profiler ontology results for Motif cluster A.
+</font>
 
 The rest of the clusters (B, C and D) are completely distinct from the histone profile clusters. They occupy a location near the centromeres, however not having a significant overlap nether with the nearby compartment of Antarctica, nor with any other compartment. They also produce a few term enrichments; most significant among them are summarized in the table below.
 
@@ -364,15 +409,21 @@ plotChromosome <- function(chromosome) {
 plotChromosome(3)
 ```
 
+<font size="1">
+**Figure 13:** Heatmap visualization of histone profile space Euclidean distance between all pairs of genes in chromosome III. Small communities of very similar histone profiles can be seen along the diagonal, as black rectangles.
+</font>
+
 These communities are visible as black boxes along the diagonal, black corresponding to an approximately equal histone modification signal. We have found 203 such communities throughout the genome. Their placement does not seem to converge to any particular point in space.
 
-We group each of the associated 203 histone modification profiles into 7 clusters, using x-means. This gives us 7 classes of histone profiles which are known to produce communities around them. Subsequently, we classify all genes into these 7 classes in order to explore the possibility of the classes themselves converging towards specific areas.
-
-XXX Reference figure with distribution of entropies
+We group each of the associated 203 histone modification profiles into 7 clusters, using x-means. This number of clusters minimizes the Bayesian information criterion (BIC). The resulting classes of histone profiles which are known to produce communities around them. Subsequently, we classify all genes into these 7 classes in order to explore the possibility of the classes themselves converging towards specific areas. Figure 1 shows the distribution of Shannon entropy in sliding windows and sets of random genes of the same size. The mean has moved to lower values which means that the classes indeed have a tendency to co-localize.
 
 We then filter the genes using a sliding window of 25 genes, and a threshold of 1.28 bits of entropy.
 
 ![](images/EntropyFiltering.svg)
+
+<font size="1">
+**Figure 14:** Color encoding of histone class per gene. Each of the 7 histone classes is assigned a different color. Filtering by entropy uncovers segments of reduced histone profile variance.
+</font>
 
 The result is 12 small gene sets (407 genes in total), which we annotate using a combination of the latin numeral of the chromosome they are found in and an English letter suffix to denote the order in which they appear in the chromosome, when there exist more than one.
 
@@ -387,9 +438,13 @@ A few segments survive our criteria. Their enrichments are summarized as follows
 | VII-B			| Factor: DAL81										| 0.1%              |
 | X				| Factor: Mbp1p, Factor: ARG						| 2.6%              |
 
-These segments have a slight preference to Internal compartment (273 genes) over the external (134 genes). The Hat compartment does not contain communities.
+These segments have a slight preference to Internal compartment (273 genes) over the external (134 genes). Figure 6 shows a comparison of distances between genes picked from segments against that of randomly picked genes; the segments distribution is poor in large distances. The Hat compartment does not contain communities.
 
-XXX Add figure for distance distribution
+![](chapters/images/TightCommunitiesDistancesDistribution.svg)
+
+<font size="1">
+**Figure 15:** Gene pair distance distribution. Comparison between gene pairs picked from the histone class entropy-filtered segments against randomly-picked gene pairs.
+</font>
 
 ## Signals not yielding clusters
 
@@ -407,7 +462,7 @@ Among the various signals we took into consideration, the motif signal has the s
 
 At a finer scale, histone profiles form even more deistinct groups of around 5 genes. These communities are spread around the genome without forming a discernible pattern. Their histone modification profiles appear to fall into 7 catetgories, which themselves manifest a tendency to co-localize, accompanied by a preference to the Internal compartment of the genome. Further, high-resolution analysis of these communities and the associated profiles may also yield interesting results and is therefore encouraged.
 
-In conclusion, both our research queries have been answered. There indeed exists a tendency to form local groups of genes having similar genomic and epigenomic characteristics, in both index and three-dimensional space. The respective gene sets, on the other hand, have more in common than just the characteristic used to define them. In addition, it is not uncommon to find that gene sets produced by different signals are strict (or approximate) subsets of one another.
+In conclusion, both our research queries have been addressed. There indeed exists a tendency to form local groups of genes having similar genomic and epigenomic characteristics, in both index and three-dimensional space. The respective gene sets, on the other hand, have more in common than just the characteristic used to define them. In addition, it is not uncommon to find that gene sets produced by different signals are strict (or approximate) subsets of one another.
 
 Having established these tendencies for spatial organization of the genome, further analysis is encouraged, possibly utilizing different kinds of signals. Our algorithm can be repurposed to accomodate any kind of signal, with the minimal configuration of specifying an appropriate statistic. Please refer to the complementary technical report for a complete specification and implementation of the algorithm.
 
