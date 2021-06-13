@@ -57,7 +57,13 @@ We consider gene origin signals, from []. The "conservation" signal assigns to e
 
 Finally, we leverage the three-dimensional model of the yeast genome, published by Duan et al. [] to place the aforementioned signals in space.
 
-XXX Plot-ly SSD and WGD as an example of placing signals in space
+
+```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
+#conn <- dbConnect(RSQLite::SQLite(), "../Results/yeast.sqlite")
+#duplicateGenes <- dbGetQuery(conn, "SELECT l.Gene, x, y, z, CASE WHEN Category IS NULL THEN 'None' ELSE Category END AS Category FROM Loci l LEFT JOIN GeneDuplication d ON l.Gene = d.Gene")
+#plot_ly(x=duplicateGenes$x, y=duplicateGenes$y, z=duplicateGenes$z, type="scatter3d", mode="markers", text=duplicateGenes$Gene, color=duplicateGenes$Category)
+```
+![**Figure 2:** Gene duplication signal mapped to three-dimensional space.](images/GeneDuplicationSignal3D.png)
 
 ## Pre-processing
 
