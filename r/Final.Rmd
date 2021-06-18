@@ -1,13 +1,13 @@
 ---  
-title: Segmentation of the Sacharomyces cerevisiae genome based on sparse genomic, expression
+title: Segmentation of the *Sacharomyces cerevisiae* genome based on sparse genomic, expression
   and epigenetic data
 output:
-  word_document:
+  html_document:
     toc: yes
   bookdown::pdf_book: default
   pdf_document:
     toc: yes
-  html_document:
+  word_document:
     toc: yes
 ---
 
@@ -37,11 +37,11 @@ In conclusion, the yeast genome seems to be organized in extended regions of sub
 
 # Introduction
 
-Recent advances in chromosome conformation capture (3C) techniques have provided insight into the spatial configuration of DNA [3]. The fact that such configurations are predictably reproducible [2] indicates that genes have a preferred placement with respect to one another, which might reflect the presence of underlying structure.
+Recent advances in chromosome conformation capture (3C) techniques have provided insight into the spatial configuration of DNA [3]. The fact that such configurations are predictably reproducible [2] suggests that there exist an underlying structure in all eukaryote genomes. Additional studies that focus on similarities of gene expression in the linear dimension (Tsochatzidou et al, 2017; Nikolaou 2018) indicate that genes have a preferred placement with respect to one another, which might reflect the presence of this underlying structure.
 
-This study aims to collect and document additional evidence of a possible spatial structure of the eukaryotic genome. We focus on Sacharomyces cerevisiae, and, building on the already known [10] preferred spatial organization of its genome, we search for areas where a particular property is significantly localized. We utilize multiple such properties, ranging from epigenetic (histone) modifications and functional information (as is the tendency of certain gene pairs to co-express) to innate properties of the DNA sequence itself (such as, the presence or absence of a particular transcription factor binding site) and information about gene origin (gene duplication and conservation). These properties are henceforth referred to as "signals."
+This study aims to collect and document additional evidence of a possible spatial structure of the eukaryotic genome. We focus on *Sacharomyces cerevisiae*, and, building on the already known [10] preferred spatial organization of its genome, we search for areas where a particular property is significantly localized. We utilize multiple such properties, ranging from epigenetic (histone) modifications and functional information (as is the tendency of certain gene pairs to co-express) to innate properties of the DNA sequence itself (such as, the presence or absence of a particular transcription factor binding site) and information about gene origin (gene duplication and conservation). These properties are henceforth referred to as "signals."
 
-The primary question under research is whether or not S. cerevisiae genes of similar properties tend to co-localize. If they do, our secondary question is whether or not they have more things in common besides that.
+The primary question under research is whether or not *S. cerevisiae* genes of similar properties tend to co-localize. If they do, our secondary question is whether or not they have more things in common besides that.
 
 ![](chapters/images/DistributionShifts.svg)
 
@@ -49,7 +49,7 @@ The primary question under research is whether or not S. cerevisiae genes of sim
 **Figure 1:** Distribution of histone-profile average in-group Euclidean distance (top) and distribution of histone profile class Shannon entropy (bottom) of local gene sets (clusters and segments, respectively) in contrast to distribution of the same quantity in random samples of the same gene count. Both are characterized by a shift towards smaller values, which signifies a tendency of similar histone modification profiles to co-localize in space.
 </font>
 
-We consider small sets of neighboring genes and assess the local signal distribution of this area. Then, by comparng it to the global distribution we extract gene sets of a particular tendency regarding each signal. 
+We consider small sets of neighboring genes and assess the local signal distribution of this area. Then, by comparing it to the global distribution we extract gene sets of a particular tendency regarding each signal. 
 
 The outcome of this process is a number of gene sets. As a convention, we will refer to these as "segments," when considering successive genes on a particular chromosome, "clusters" when the genes form a local neighborhood in three-dimensional space, and "compartments," when multiple, non-overlapping gene sets collectively account for the entire genome.
 
@@ -205,7 +205,7 @@ dbDisconnect(conn)
 `r if(!ENABLE_INTERACTIVE_FIGURES){"![](images/RoughFeatures.png)"}`
 
 <font size="1">
-**Figure 6:** Rough features of S. cerevisiae genome.
+**Figure 6:** Rough features of *S. cerevisiae* genome.
 </font>
 
 ### Continents
@@ -526,7 +526,7 @@ CG2 team has contributed by critically discussing every aspact of this work.
 8. RStudio | Open source & professional software for data science teams - RStudio. Accessed April 25, 2021. https://www.rstudio.com/
 9. Hall M, Frank E, Holmes G, Pfahringer B, Reutemann P, Witten IH. The WEKA Data Mining Software: An Update. 11(1):9.
 10. Duan Z, Andronescu M, Schutz K, et al. A three-dimensional model of the yeast genome. Nature. 2010;465(7296):363-367. doi:10.1038/nature08973
-11. MacIsaac KD, Wang T, Gordon DB, Gifford DK, Stormo GD, Fraenkel E. An improved map of conserved regulatory sites for Saccharomyces cerevisiae. BMC Bioinformatics. 2006;7:113. doi:10.1186/1471-2105-7-113
+11. MacIsaac KD, Wang T, Gordon DB, Gifford DK, Stormo GD, Fraenkel E. An improved map of conserved regulatory sites for *Saccharomyces cerevisiae*. BMC Bioinformatics. 2006;7:113. doi:10.1186/1471-2105-7-113
 12. Cheng C, Shou C, Yip KY, Gerstein MB. Genome-wide analysis of chromatin features identifies histone modification sensitive and insensitive yeast transcription factors. Genome Biology. 2011;12(11):R111. doi:10.1186/gb-2011-12-11-r111
 13. g:Profiler – a web server for functional enrichment analysis and conversions of gene lists. Accessed June 13, 2021. https://biit.cs.ut.ee/gprofiler/gost
 14. Harbison CT, Gordon DB, Lee TI, et al. Transcriptional regulatory code of a eukaryotic genome. Nature. 2004;431(7004):99-104. doi:10.1038/nature02800
