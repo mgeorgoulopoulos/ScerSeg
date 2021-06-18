@@ -37,7 +37,7 @@ In conclusion, the yeast genome seems to be organized in extended regions of sub
 
 # Introduction
 
-Recent advances in chomosome conformation capture (3C) techniques have provided insight into the spatial confguration of DNA [3]. The fact that such configurations are predictably reproducible [2] indicates that genes have a preferred placement with respect to one another, which might reflect the presence of underlying structure.
+Recent advances in chromosome conformation capture (3C) techniques have provided insight into the spatial configuration of DNA [3]. The fact that such configurations are predictably reproducible [2] indicates that genes have a preferred placement with respect to one another, which might reflect the presence of underlying structure.
 
 This study aims to collect and document additional evidence of a possible spatial structure of the eukaryotic genome. We focus on Sacharomyces cerevisiae, and, building on the already known [10] preferred spatial organization of its genome, we search for areas where a particular property is significantly localized. We utilize multiple such properties, ranging from epigenetic (histone) modifications and functional information (as is the tendency of certain gene pairs to co-express) to innate properties of the DNA sequence itself (such as, the presence or absence of a particular transcription factor binding site) and information about gene origin (gene duplication and conservation). These properties are henceforth referred to as "signals."
 
