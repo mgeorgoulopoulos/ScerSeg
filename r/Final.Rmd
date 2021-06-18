@@ -2,10 +2,12 @@
 title: Methods of segmentation of eukaryotic genomes based on sparse genomic, expression
   and epigenetic data
 output:
-  html_document:
+  word_document:
     toc: yes
   bookdown::pdf_book: default
   pdf_document:
+    toc: yes
+  html_document:
     toc: yes
 ---
 
@@ -62,7 +64,7 @@ Pairwise gene coexpression score signal, henceforth called the "coexpression" si
 
 Promoter-site histone modification profile signal, or the "histone profile" signal for short, comes from [12] and is a z-score normalization of the relative abundance of the various histone variants near the promoter site of each gene.
 
-Transcription factor binding motif signal (the "motif" signal), taken from [], assigns a binary vector to each gene, which corresponds to the gene's combination of presence or absence of a set of transcription factor binding sites. We consider a binding site as present when the corresponding motif appears.
+Transcription factor binding motif signal (the "motif" signal), taken from [14], assigns a binary vector to each gene, which corresponds to the gene's combination of presence or absence of a set of transcription factor binding sites. We consider a binding site as present when the corresponding motif appears.
 
 The "duplication" signal [] classifies each gene as duplicated or not. We further distinguish between "small scale" and "whole genome" duplication events ("SSD" and "WGD," respectively).
 
@@ -160,7 +162,7 @@ plot(1:maxClusterCount, withinSS,
 ```
 
 <font size="1">
-**Figure 5:** Within-clusters sum of squares, for different cluster count during categorization of the histone profiles that yield communities.
+**Figure 5:** Variance within clusters for different selections of cluster count, during extracting histone profiles that are representative of communities. Bayesian information criterion is minimized when using 7 clusters.
 </font>
 
 X-means [7] clustering of these community-center genes supports the presence of 7 characteristic histone modification profiles. In order to incorporate the significance of locality (which is our main concern in this study), we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
@@ -253,7 +255,7 @@ Mean coexpression score is greater than average in "land" while lower than avera
 | Pangaea     | 7.85e-14   |
 
 <font size="1">
-**Table 2:** Statistical significance of the difference in coexpression between each of the compartments and the entire genome.
+**Table 2:** Statistical significance of the difference in coexpression between each of the compartments and the entire genome. A combination of all high-coexpression compartments, named Pangaea, maintains statistical significance against the whole genome.
 </font>
 
 The large compartment of low coexpression (Tethys) is enriched in "Metabolic pathways" genes (KEGG:01100), with an adjusted p-value of 2.0%. Less significant enrichments are found as well.
@@ -525,13 +527,15 @@ CG2 team has contributed by critically discussing every aspact of this work.
 11. MacIsaac KD, Wang T, Gordon DB, Gifford DK, Stormo GD, Fraenkel E. An improved map of conserved regulatory sites for Saccharomyces cerevisiae. BMC Bioinformatics. 2006;7:113. doi:10.1186/1471-2105-7-113
 12. Cheng C, Shou C, Yip KY, Gerstein MB. Genome-wide analysis of chromatin features identifies histone modification sensitive and insensitive yeast transcription factors. Genome Biology. 2011;12(11):R111. doi:10.1186/gb-2011-12-11-r111
 13. g:Profiler – a web server for functional enrichment analysis and conversions of gene lists. Accessed June 13, 2021. https://biit.cs.ut.ee/gprofiler/gost
+14. Harbison CT, Gordon DB, Lee TI, et al. Transcriptional regulatory code of a eukaryotic genome. Nature. 2004;431(7004):99-104. doi:10.1038/nature02800
+
 
 	
 # Appendix I: Assumptions
 
 * We assume that the three-dimensional model provided by Duan et al. in [10], samples the position of monotonically and regularly increasing base-pair indices for each chromosome.
 * We assume a zero coexpression score for each pair of genes not present in [11].
-* Furthermore, [] contains queries where the search term is a pair of genes. In these cases, we consider the gene whose name appears in the filename as the "source" gene.
+* Furthermore, [11] contains queries where the search term is a pair of genes. In these cases, we consider the gene whose name appears in the filename as the "source" gene.
 
 # Appendix II: Summary in Greek and English
 
