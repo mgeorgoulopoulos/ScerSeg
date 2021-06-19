@@ -37,9 +37,9 @@ In conclusion, the yeast genome seems to be organized in extended regions of sub
 
 # Introduction
 
-Recent advances in chromosome conformation capture (3C) techniques have provided insight into the spatial configuration of DNA [3]. The fact that such configurations are predictably reproducible [2] suggests that there exist an underlying structure in all eukaryote genomes. Additional studies that focus on similarities of gene expression in the linear dimension [](Tsochatzidou et al, 2017; Nikolaou 2018) indicate that genes have a preferred placement with respect to one another, which might reflect the presence of this underlying structure. Tsochatzidou et al. (2017) extract a number of topologically co-regulated gene clusters of the yeast genome, from their response to stress (induced by thermal deactivation of DNA topoisomerase II). Clusters that are down-regulated as a response to stress are located in cenntromeric, gene-dense regions, while those that are up-regulated are in the nuclear periphery. Nikolaou (2018) extracts topologically associated domains by applying a simple boundary-calling criterion on the raw 3C data. These domains are subsequently clustered into 6+1 classes by hierarchical clustering of their nucleosomal density distribution around the transcription start site. These classes vary significantly in conservation, size and distance from centromeres.
+Recent advances in chromosome conformation capture (3C) techniques have provided insight into the spatial configuration of DNA (de Wit & de Laat, 2012). The fact that such configurations are predictably reproducible (Dixon et al., 2012) suggests that there exist an underlying structure in all eukaryote genomes. Additional studies that focus on similarities of gene expression in the linear dimension (Nikolaou, 2018; Tsochatzidou et al., 2017) indicate that genes have a preferred placement with respect to one another, which might reflect the presence of this underlying structure. Tsochatzidou et al. (2017) extract a number of topologically co-regulated gene clusters of the yeast genome, from their response to stress (induced by thermal deactivation of DNA topoisomerase II). Clusters that are down-regulated as a response to stress are located in cenntromeric, gene-dense regions, while those that are up-regulated are in the nuclear periphery. Nikolaou (2018) extracts topologically associated domains by applying a simple boundary-calling criterion on the raw 3C data. These domains are subsequently clustered into 6+1 classes by hierarchical clustering of their nucleosomal density distribution around the transcription start site. These classes vary significantly in conservation, size and distance from centromeres.
 
-This study aims to collect and document additional evidence of a possible spatial structure of the eukaryotic genome. We focus on *Sacharomyces cerevisiae*, and, building on the already known [10] preferred spatial organization of its genome, we search for areas where a particular property is significantly localized. We utilize multiple such properties, ranging from epigenetic (histone) modifications and functional information (as is the tendency of certain gene pairs to co-express) to innate properties of the DNA sequence itself (such as, the presence or absence of a particular transcription factor binding site) and information about gene origin (gene duplication and conservation). These properties are henceforth referred to as "signals."
+This study aims to collect and document additional evidence of a possible spatial structure of the eukaryotic genome. We focus on *Sacharomyces cerevisiae*, and, building on the already known (Duan et al., 2010) preferred spatial organization of its genome, we search for areas where a particular property is significantly localized. We utilize multiple such properties, ranging from epigenetic (histone) modifications and functional information (as is the tendency of certain gene pairs to co-express) to innate properties of the DNA sequence itself (such as, the presence or absence of a particular transcription factor binding site) and information about gene origin (gene duplication and conservation). These properties are henceforth referred to as "signals."
 
 The primary question under research is whether or not *S. cerevisiae* genes of similar properties tend to co-localize. If they do, our secondary question is whether or not they have more things in common besides that.
 
@@ -56,17 +56,17 @@ We conclude that, there indeed exists a tendency of local accumulation of charac
 
 All of the signals we used were sparsely sampled over the genome, at a resolution of one sample per gene.
 
-Pairwise gene coexpression score signal, henceforth called the "coexpression" signal was taken from [11] and is a sparse matrix assigning a greater score to gene pairs which are found to co-express more.
+Pairwise gene coexpression score signal, henceforth called the "coexpression" signal was taken from (MacIsaac et al., 2006) and is a sparse matrix assigning a greater score to gene pairs which are found to co-express more.
 
-Promoter-site histone modification profile signal, or the "histone profile" signal for short, comes from [12] and is a z-score normalization of the relative abundance of the various histone variants near the promoter site of each gene.
+Promoter-site histone modification profile signal, or the "histone profile" signal for short, comes from (Cheng et al., 2011) and is a z-score normalization of the relative abundance of the various histone variants near the promoter site of each gene.
 
-Transcription factor binding motif signal (the "motif" signal), taken from [14], assigns a binary vector to each gene, which corresponds to the gene's combination of presence or absence of a set of transcription factor binding sites. We consider a binding site as present when the corresponding motif appears.
+Transcription factor binding motif signal (the "motif" signal), taken from (Harbison et al., 2004), assigns a binary vector to each gene, which corresponds to the gene's combination of presence or absence of a set of transcription factor binding sites. We consider a binding site as present when the corresponding motif appears.
 
-The "duplication" signal [Fares] classifies each gene as duplicated or not. We further distinguish between "small scale" and "whole genome" duplication events ("SSD" and "WGD," respectively).
+The "duplication" signal (Fares et al., 2013) classifies each gene as duplicated or not. We further distinguish between "small scale" and "whole genome" duplication events ("SSD" and "WGD," respectively).
 
-For the "conservation" signal, we use the average phastCons score [] which assigns to each gene, a count of related species where the gene is present; it effectively is a conservation index. The "taxon" signal links each gene to its maximal-level taxon ("Fungi" would signify a gene shared among all species of the kingdom, while *"S. cerevieiae"* marks species-exclusive genes).
+For the "conservation" signal, we use the average phastCons score (Siepel et al., 2005) which assigns to each gene, a count of related species where the gene is present; it effectively is a conservation index. The "taxon" signal links each gene to its maximal-level taxon ("Fungi" would signify a gene shared among all species of the kingdom, while *"S. cerevieiae"* marks species-exclusive genes).
 
-Finally, we leverage the three-dimensional model of the yeast genome, published by Duan et al. [10] to place the aforementioned signals in space.
+Finally, we leverage the three-dimensional model of the yeast genome, published by (Duan et al., 2010) to place the aforementioned signals in space.
 
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
@@ -96,7 +96,7 @@ The histone profile signal is less dense than our desired per-gene resolution. H
 **Figure 3:** Resampling of the Duan et al. model by linear interpolation. The center base pair (C) of each gene is found between two successive control points (A and B) of the source model. A weighed average of these two points is assigned as the position of the gene in space.
 </font>
 
-The three-dimensional model of the yeast genome [10] has been resampled at gene resolution. The input dataset is of adequate (kilobase) resolution to represent genes in space. We obtained gene positions by linearly interpolating the model's control points to approximate the center base pair of each gene. We assumed uniform sampling for this (see "Assumptions").
+The three-dimensional model of the yeast genome (Duan et al., 2010) has been resampled at gene resolution. The input dataset is of adequate (kilobase) resolution to represent genes in space. We obtained gene positions by linearly interpolating the model's control points to approximate the center base pair of each gene. We assumed uniform sampling for this (see "Assumptions").
 
 ## Sphere test
 
@@ -191,7 +191,7 @@ plot(1:maxClusterCount, withinSS,
 **Figure 5:** Within-cluster variance as a function of cluster count. No abrupt drop in variance can be found, which makes it impractical to select a cluster count via the "elbow" method. We resort to x-means, which optimizes the Bayesian information criterion. Under this criterion, a model of 7 clusters best explains the data.
 </font>
 
-X-means [7] clustering of these community-center genes supports the presence of 7 characteristic histone modification profiles. In order to incorporate the significance of locality (which is our main concern in this study), we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
+X-means (Pelleg & Moore, 2000) clustering of these community-center genes supports the presence of 7 characteristic histone modification profiles. In order to incorporate the significance of locality (which is our main concern in this study), we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
 
 Having assigned a histone profile class to each gene, where the classes are known to form local communities, we then filter all chromosomes by a sliding window of 25 consecutive genes. We measure Shannon entropy in terms of the 7 classes. The distribution of Shannon entropy in sliding windows is both multimodal and displaced (see Figure 1) compared to the distribution of randomly picked sets of 25 genes.
 
@@ -199,7 +199,7 @@ We filter the sliding windows, keeping those of a p-value less than 0.1%. This c
 
 ## Annotation
 
-We annotate the resulting segments, clusters and compartments by both gene ontology term enrichment analysis (carried out via g:Profiler [13]) and by cross examination of the gene sets against each other. This is achieved by an automated program which calculates overlaps between all pairs of gene sets and reports significant overlaps. Furthermore, we examine signals not yielding significant gene sets in the vicinity of the gene sets coming from signals which do. Our findings are summarized in the next section.
+We annotate the resulting segments, clusters and compartments by both gene ontology term enrichment analysis (carried out via g:Profiler) and by cross examination of the gene sets against each other. This is achieved by an automated program which calculates overlaps between all pairs of gene sets and reports significant overlaps. Furthermore, we examine signals not yielding significant gene sets in the vicinity of the gene sets coming from signals which do. Our findings are summarized in the next section.
 
 Please refer to the accompanying documentation for a complete technical reference.
 
@@ -214,7 +214,7 @@ We provide two compartmentalizations of the yeast genome. The first one is an ar
 ### Rough features
 
 Three distinguished features can be easily extracted by mere visual inspection of the model. We call these the "Hat," "Internal" and "External" compartments.
-The Hat is a domain formed by chromosome XII. It contains multiple rDNA repetitions and acts as an insulator between the nucleolus and the rest of the chromosomes [10]. What remains besides the Hat, is an approximately spherical construct, which follows the Rabl configuration [4] and is hollow. The set of genes closer than average to its centroid are annotated as "Internal" and the rest as "External."
+The Hat is a domain formed by chromosome XII. It contains multiple rDNA repetitions and acts as an insulator between the nucleolus and the rest of the chromosomes (Duan et al., 2010). What remains besides the Hat, is an approximately spherical construct, which follows the Rabl configuration (Pouokam et al., 2019) and is hollow. The set of genes closer than average to its centroid are annotated as "Internal" and the rest as "External."
 
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
@@ -284,7 +284,7 @@ Mean coexpression score is greater than average in "land" while lower than avera
 **Table 2:** Statistical significance of the difference in coexpression between each of the compartments and the entire genome. A combination of all high-coexpression compartments, named Pangaea, maintains statistical significance against the whole genome.
 </font>
 
-The large compartment of low coexpression (Tethys) is enriched in "Metabolic pathways" genes (KEGG:01100), with an adjusted p-value of 2.0%. Less significant enrichments are found as well. *Rap1* in particular, is a transcription factor that is associated with telomeres. The prevalence of genes with variable expression in telomeric regions has been hinted at in related works [](Tsochatzidou et al, 2017)
+The large compartment of low coexpression (Tethys) is enriched in "Metabolic pathways" genes (KEGG:01100), with an adjusted p-value of 2.0%. Less significant enrichments are found as well. *Rap1* in particular, is a transcription factor that is associated with telomeres. The prevalence of genes with variable expression in telomeric regions has been hinted at in related works (Tsochatzidou et al., 2017).
 
 ![](images/gprofiler/Tethys.png)
 
@@ -579,9 +579,9 @@ CG2 team has contributed by critically discussing every aspact of this work.
 	
 # Appendix I: Assumptions
 
-* We assume that the three-dimensional model provided by Duan et al. in [10], samples the position of monotonically and regularly increasing base-pair indices for each chromosome.
-* We assume a zero coexpression score for each pair of genes not present in [11].
-* Furthermore, [11] contains queries where the search term is a pair of genes. In these cases, we consider the gene whose name appears in the filename as the "source" gene.
+* We assume that the three-dimensional model provided by Duan et al. in (Duan et al., 2010), samples the position of monotonically and regularly increasing base-pair indices for each chromosome.
+* We assume a zero coexpression score for each pair of genes not present in (MacIsaac et al., 2006).
+* Furthermore, (MacIsaac et al., 2006) contains queries where the search term is a pair of genes. In these cases, we consider the gene whose name appears in the filename as the "source" gene.
 
 # Appendix II: Summary in Greek and English
 
