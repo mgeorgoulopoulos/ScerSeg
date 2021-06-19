@@ -68,9 +68,9 @@ Promoter-site histone modification profile signal, or the "histone profile" sign
 
 Transcription factor binding motif signal (the "motif" signal), taken from [14], assigns a binary vector to each gene, which corresponds to the gene's combination of presence or absence of a set of transcription factor binding sites. We consider a binding site as present when the corresponding motif appears.
 
-The "duplication" signal [] classifies each gene as duplicated or not. We further distinguish between "small scale" and "whole genome" duplication events ("SSD" and "WGD," respectively).
+The "duplication" signal [Fares] classifies each gene as duplicated or not. We further distinguish between "small scale" and "whole genome" duplication events ("SSD" and "WGD," respectively).
 
-We consider gene origin signals, from []. The "conservation" signal assigns to each gene, a count of related species where the gene is present; it effectively is a conservation index. The "taxon" signal links each gene to its maximal-level taxon ("Fungi" would signify a gene shared among all species of the kingdom, while "S. cerevieiae" marks species-exclusive genes).
+For the "conservation" signal, we use the average phastCons score [] which assigns to each gene, a count of related species where the gene is present; it effectively is a conservation index. The "taxon" signal links each gene to its maximal-level taxon ("Fungi" would signify a gene shared among all species of the kingdom, while *"S. cerevieiae"* marks species-exclusive genes).
 
 Finally, we leverage the three-dimensional model of the yeast genome, published by Duan et al. [10] to place the aforementioned signals in space.
 
