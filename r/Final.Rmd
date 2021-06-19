@@ -471,7 +471,24 @@ plotChromosome(3)
 
 These communities are visible as black boxes along the diagonal, black corresponding to an approximately equal histone modification signal. We have found 203 such communities throughout the genome. Their placement does not seem to converge to any particular point in space.
 
-We group each of the associated 203 histone modification profiles into 7 clusters, using x-means. This number of clusters minimizes the Bayesian information criterion (BIC). The resulting classes of histone profiles which are known to produce communities around them. Subsequently, we classify all genes into these 7 classes in order to explore the possibility of the classes themselves converging towards specific areas. Figure 1 shows the distribution of Shannon entropy in sliding windows and sets of random genes of the same size. The mean has moved to lower values which means that the classes indeed have a tendency to co-localize.
+We group each of the associated 203 histone modification profiles into 7 clusters, using x-means. This number of clusters optimizes the Bayesian information criterion (BIC). The resulting classes of histone profiles which are known to produce communities around them. Subsequently, we classify all genes into these 7 classes in order to explore the possibility of the classes themselves converging towards specific areas. Figure 1 shows the distribution of Shannon entropy in sliding windows and sets of random genes of the same size. The mean has moved to lower values which means that the classes indeed have a tendency to co-localize.
+
+Divergence from average in histone variant abundance is not as subtle as in the case of histone profile clusters. Each of the 7 histone profiles has more pronounced differences from average, but not for all histone variants. This allows us to visualize the histone profiles using the original signal (instead of plotting tendencies). Figure ?? shows a heatmap visualization of these profiles. The distribution is bimodal, similar to the distribution of histone profile clusters, with the gap around zero meaning that these profiles distinguish themslves from average.
+
+```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
+colors <- c("#FF0000", "#FF0000", "#000000", "#00FF00", "#00FF00")
+colors <- colorRampPalette(colors)(25)
+
+tendencies <- read.table(
+  "../Results/CommunityHistoneTendencies.tsv",
+  sep="\t", header=TRUE, row.names=10)
+tendencies <- as.matrix(tendencies)
+heatmap.2(tendencies, col=colors, main="Histone variant abundance")
+```
+
+<font size="1">
+**Figure ??:** Heatmap visualization and hierarchical clustering of histone variant abundance for each of the 7 histone profile classes.  Differences from average are more pronounced in the case of communities (in contrast to histone profile clusters), which allows us to plot the original signal, instead of the shifts from average.
+</font>
 
 We then filter the genes using a sliding window of 25 genes, and a threshold of 1.28 bits of entropy.
 
