@@ -9,7 +9,6 @@ r/.RData
 r/.Rhistory
 PrimarySources/SelectedHistonesPromoter.csv
 Results/SelectedHistonesPromoter-Patched.csv
-r/chapters/*.html
 r/chapters/_main.Rmd
 r/chapters/_main.tex
 Results/pValues.PromoterFields.tsv
@@ -20,3 +19,14 @@ r/chapters/00_Summary.docx
 ~$ePageSummary.docx
 PrimarySources/GeneDuplication.csv
 r/Final.docx
+r/chapters/00_Summary.html
+r/chapters/01_GenePositions-RoughFeatures.html
+r/chapters/02_HistonesPreprocessing.html
+r/chapters/03_HistoneDistanceMaps.html
+r/chapters/04_Communities.html
+r/chapters/05_PromoterFields.html
+r/chapters/06_MotifFields.html
+r/chapters/07_CoexFields.html
+r/chapters/08_FieldOverlap.html
+r/chapters/09_Technical.html
+r/chapters/index.nb.html
