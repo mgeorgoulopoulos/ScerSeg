@@ -92,9 +92,9 @@ dbDisconnect(conn)
 
 ## Pre-processing
 
-Pairwise gene coexpression score is partially defined. Only the top scores for each gene are included. We assume the rest of the scores to be zero, which is not an over-simplification, given the distribution of scores present in the input data files. The distribution fully outlines a normal distribution down to its minimal p-value tails which means that missing values are inddeed negligible. We further process the dataset by losslessly compressing it to one byte per score, thus allowing for the subsequent complex computation. A full reference of data flow may be found in the accompanying documentation.
+Pairwise gene coexpression score is partially defined. Only the top scores for each gene are included. We assume the rest of the scores to be zero, which is not an over-simplification, given the distribution of scores present in the input data files. The distribution fully outlines a normal distribution down to its minimal p-value tails which means that missing values are indeed negligible. We further process the dataset by losslessly compressing it to one byte per score, thus allowing for the subsequent complex computation. The interested reader is referred to the accompanying documentation, where a full reference of data flow may be found.
 
-The histone profile signal is less dense than our desired gene-resolution. However, for certain histone variants we have per-gene information. We only keep these histone variants (namely: H3K4, H3K6, H3NTerm, H4NTerm, H2A, H2B, H3, H4 and H2AZ). This yields a 9-dimensional vector assigned to each gene. We consider the associated 9-dimensional space and its Euclidean distance as a measure of histone profile similarity. Occassional missing values are imputated as the median of the 3 nearest genes in the histone profile space.
+The histone profile signal is less dense than our desired per-gene resolution. However, for certain histone variants we have per-gene information. We only keep these histone variants (namely: H3K4, H3K6, H3NTerm, H4NTerm, H2A, H2B, H3, H4 and H2AZ). This yields a 9-dimensional vector assigned to each gene. We consider the associated 9-dimensional space and its Euclidean distance as a measure of histone profile dissimilarity. Occassional missing values are imputated as the median of the 3 nearest genes in the histone profile space.
 
 ![](chapters/images/LinearInterpolation.svg)
 
@@ -106,7 +106,7 @@ The three-dimensional model of the yeast genome [10] has been resampled at gene 
 
 ## Sphere test
 
-We use the same algorithm to detect local similarity in all aforementioned signals. It is a reusable algorithm and it may be adapted to any kind of signal, when equipped with an appropriate metric. The metric is calculated for local sets of genes and subsequently statistical significance is determined by randomly sampling gene sets and calculating the same metric. Thus, the algorithm is agnostic to underlying signal distribution and may be generalized for a multitude of signal types.
+We use the same algorithm to detect local similarity in all aforementioned signals. It is a reusable algorithm and it may be adapted to any kind of signal, when equipped with an appropriate summary function, or "metric". For each local set of genes under consideration, we calculate the metric, which is a real number characterizing the set of genes. We pick the metric in such a way that, extreme values of the metric correspond to extreme similarity. Subsequently statistical significance of the extreme values is determined by randomly sampling gene sets and calculating the same metric. Thus, the algorithm is agnostic to underlying signal distribution and may be generalized for a multitude of signal types.
 
 ![](chapters/images/SphereTestDataFlow.svg)
 
@@ -114,13 +114,36 @@ We use the same algorithm to detect local similarity in all aforementioned signa
 **Figure 4:** Sphere-test data flow.
 </font>
 
-We start by sampling a set of genes that form a local group. We achieve this by randomly placing a sphere of pre-determined radius in the three-dimensional space of the genome model. Genes that happen to lie in the sphere are collected and form a sample. We limit the minimum size of acceptable samples to roughly one third of the maximum sample size. We generally use sphere-samples of 50-150 genes.
+We start by sampling a set of genes that form a local group. We achieve this by randomly placing a sphere of pre-determined radius in the three-dimensional space of the genome model. Genes that happen to lie within the sphere are collected and form a sample. We limit the minimum size of acceptable samples to roughly one third of the maximum sample size. We generally use sphere-samples of 50-150 genes.
 
-Once a local sample is defined, we then calculate the metric over the sampled gene set and extract a p-value by repeatedly calculating the same metric for a number (usually 10000) of random samples of the same gene count.
+Once a local sample is defined, we then calculate the metric over the sampled gene set and extract a p-value by repeatedly calculating the same metric for a number (usually 10000) of random samples of the same gene count, picked from the entire genome.
 
 Repeating this procedure multiple times, we cover the entire genome with random spheres, each associated with a p-value. We filter these spheres for a FDR of 1% or (in the case of "motif" signal) 5%.
 
 The resulting significant spheres are then hierarchically clustered by overlap. We define sphere overlap as the count of shared genes divided by the minimum count of genes in the pair of spheres. The pair of spheres overlapping the most, forms a cluster as the union of the gene sets. The recursion stops at a minimum overlap of 5%, at which point we consider the clusters as distinct.
+
+### Metrics used
+
+As a summary function, or "metric", we define any function whose domain is a set of genes and its value is a real number. By "metric" we shall refer to both the function itself and its value. The latter will always be in the context of a given gene set G.
+
+$m = M(G)$
+
+<font size="1">
+**Equation 1:** General form of the metric function (M). It assigns a real value (m) to any set of genes (G).
+</font>
+
+For the *coexpression* signal, the metric function begins by enumerating all possible ordered pairs of genes in G (see Equation 1). The coexpression signal defines a coexpression score for each of the pairs. M is the average of all scores. A greater value of this metric signifies a sphere of genes that coexpress more.
+
+For the *histone profile* signal, we define M to be the average Eucliden distance of all unordered pairs within set G. We use unordered pairs as Euclidean distance is symmetric. As we noted earlier, Euclidean distance in histone space is a measure of dissimilarity, so an extreme low value of this metric signifies a sphere of genes having similar histone modification profiles.
+
+In the same fashion, Jaccard distance is used as a metric for the *motif* signal. Jaccard is a distance metric, which (like Euclidean distance) signifies dissimilarity. Low values of this metric characterize gene sets having similar transcription factor binding sites.
+
+*Gene duplication* is a categorical signal. It assigns one of the categories "None," "SSD" or "WGD" to each gene. Of course, a sphere containing only one of these categories (for instance a sphere of purely non-duplicated genes) is interesting. To a lesser extent, a sphere of mostly one category is interesting too. We formulate the prevalence of one category using the Sannon entropy of set G. Low values of this metric signify a more prevalent category.
+
+Regarding the *species count* signal, we are interested in finding gene sets of similar conservation index (which in this case is species count), so the standard deviation of species count within G is used. A set of genes (G) will be deemed interesting when most of its genes are conserved or most are not. In both cases there is a low variance in species count.
+
+The *taxon* signal is also categorical. Instead of reusing the Shannon entropy metric (which we applied to gene duplication signal), for this one we consider enrichment of the taxa. Enrichment is defined as $observed / expected$, where "observed" is the ratio of genes of set G in the given taxon, and "expected" is the ratio of the taxon in the entire genome. This signal is dominated by the "Fungi" taxon, so gene sets consisting mostly of "Fungi" genes are not of particular interest. On the other hand, gene sets extremely over- or under-representing a taxon are. We compute the natural logarithm of enrichment of all categories present in G, which makes over- and under-representation comparable, and we get the absolute value of this logarithm, which makes under-representations yield the same metric as over-representations of equal magnitude. Finally, we summarize all these absolute logarithmic enrichments (one for each taxon present in G) by keeping the maximum among them, which becomes our metric. A great value of this metric signifies a set of genes having a significant over- or under-representation of one of the taxa.
+
 
 The following table summarizes the metric used for each sphere test.
 
