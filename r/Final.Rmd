@@ -37,7 +37,7 @@ In conclusion, the yeast genome seems to be organized in extended regions of sub
 
 # Introduction
 
-Recent advances in chromosome conformation capture (3C) techniques have provided insight into the spatial configuration of DNA [3]. The fact that such configurations are predictably reproducible [2] suggests that there exist an underlying structure in all eukaryote genomes. Additional studies that focus on similarities of gene expression in the linear dimension (Tsochatzidou et al, 2017; Nikolaou 2018) indicate that genes have a preferred placement with respect to one another, which might reflect the presence of this underlying structure.
+Recent advances in chromosome conformation capture (3C) techniques have provided insight into the spatial configuration of DNA [3]. The fact that such configurations are predictably reproducible [2] suggests that there exist an underlying structure in all eukaryote genomes. Additional studies that focus on similarities of gene expression in the linear dimension [](Tsochatzidou et al, 2017; Nikolaou 2018) indicate that genes have a preferred placement with respect to one another, which might reflect the presence of this underlying structure.
 
 This study aims to collect and document additional evidence of a possible spatial structure of the eukaryotic genome. We focus on *Sacharomyces cerevisiae*, and, building on the already known [10] preferred spatial organization of its genome, we search for areas where a particular property is significantly localized. We utilize multiple such properties, ranging from epigenetic (histone) modifications and functional information (as is the tendency of certain gene pairs to co-express) to innate properties of the DNA sequence itself (such as, the presence or absence of a particular transcription factor binding site) and information about gene origin (gene duplication and conservation). These properties are henceforth referred to as "signals."
 
@@ -214,7 +214,7 @@ We provide two compartmentalizations of the yeast genome. The first one is an ar
 ### Rough features
 
 Three distinguished features can be easily extracted by mere visual inspection of the model. We call these the "Hat," "Internal" and "External" compartments.
-The Hat is a domain formed by chromosome XII. It contains multiple rDNA repetitions and acts as an insulator between the nucleolus and the rest of the chromosomes [10]. What remains besides the Hat, is an approximately spherical construct, which follows the Rabl configuration [4] and is hollow. The set of genes closer to its centroid than average are annotated as "Internal" and the rest as "External."
+The Hat is a domain formed by chromosome XII. It contains multiple rDNA repetitions and acts as an insulator between the nucleolus and the rest of the chromosomes [10]. What remains besides the Hat, is an approximately spherical construct, which follows the Rabl configuration [4] and is hollow. The set of genes closer than average to its centroid are annotated as "Internal" and the rest as "External."
 
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
@@ -234,13 +234,13 @@ dbDisconnect(conn)
 
 ### Continents
 
-Alongside this artificial compartmentalization, our sphere-test analysis of coexpression signal outlines a second set of distinct compartments. It is the norm that a sphere-sample of genes exceeds the coexpression score of a random set of the same gene count. In other words, coexpression is strongly associated with co-localization. We filter the sphere samples for a 1% false discovery rate and this results in 7 clusters of high coexpression score.
+Alongside this arbitrary compartmentalization, our sphere-test analysis of coexpression signal outlines a second set of distinct compartments. It is the norm that a sphere-sample of genes exceeds the coexpression score of a random set of the same gene count. In other words, coexpression is strongly associated with co-localization. We filter the sphere samples for a 1% false discovery rate and this results in 7 clusters of high coexpression score.
 
 Boundaries between these clusters are not always clear. Furthermore, with the exception of a single cluster, combining these together does not have a very significant effect on the average coexpression score. So, this is really a distinction between high and low coexpression areas of the genome. An exceptional cluster has a slightly raised coexpression score (even compared to the other high-coexpression clusters) comprises the centromeres which converge on one pole of the genome. We therefore name this cluster "Antarctica," as a reminder of its special location and synthesis.
 
 The remaining clusters have an unaffected coexpression score, regardless of the way we combine them. Following our continent-naming scheme, we combine the clusters found at opposite sides of the genome as "Laurasia" (which is the larger) and "Godwana."
 
-The rest of the genome which is characterized by a lower than average coexpression score forms a distinct vertical (parallel to the line connecting the centromeric and telomeric pole) barrier between these "continents" of intense coexpression and is therefore named "Tethys." The barrier extends to the Hat region as well, splitting it also in half.
+The rest of the genome which is characterized by a lower than average coexpression score forms a distinct vertical (parallel to the line connecting the centromeric and telomeric pole) barrier between these "continents" of intense coexpression and is therefore named "Tethys." The barrier extends to the Hat region as well, also splitting it in half.
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE}
 sql <- "SELECT l.*, Continent FROM Loci l JOIN Continents c ON l.Gene = c.Gene"
@@ -284,7 +284,7 @@ Mean coexpression score is greater than average in "land" while lower than avera
 **Table 2:** Statistical significance of the difference in coexpression between each of the compartments and the entire genome. A combination of all high-coexpression compartments, named Pangaea, maintains statistical significance against the whole genome.
 </font>
 
-The large compartment of low coexpression (Tethys) is enriched in "Metabolic pathways" genes (KEGG:01100), with an adjusted p-value of 2.0%. Less significant enrichments are found as well.
+The large compartment of low coexpression (Tethys) is enriched in "Metabolic pathways" genes (KEGG:01100), with an adjusted p-value of 2.0%. Less significant enrichments are found as well. *Rap1* in particular, is a transcription factor that is associated with telomeres. The prevalence of genes with variable expression in telomeric regions has been hinted at in related works [](Tsochatzidou et al, 2017)
 
 ![](images/gprofiler/Tethys.png)
 
@@ -292,7 +292,7 @@ The large compartment of low coexpression (Tethys) is enriched in "Metabolic pat
 **Figure 9:** g:Profiler ontology enrichment results for Tethys compartment.
 </font>
 
-While Antarctica shows no particular preference over type of gene duplication, the greater high-coexpression compartments are enriched in WGD genes while the low-coexpression compartment is negatively enriched in WGD.
+While Antarctica shows no particular preference over any type of gene duplication, the greater high-coexpression compartments are enriched in WGD genes while the low-coexpression compartment is negatively enriched in WGD.
 
 |Continent |Gene count|SSD |SSD ratio|SSD enrichment|WGD |WGD ratio|WGD enrichment|
 |----------|----------|----|---------|--------------|----|---------|--------------|
