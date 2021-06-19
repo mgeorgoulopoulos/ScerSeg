@@ -416,7 +416,7 @@ In addition, cluster A produces a rich set of ontology associations. These are m
 **Figure 12:** g:Profiler ontology results for Motif cluster A.
 </font>
 
-The rest of the clusters (B, C and D) are completely distinct from the histone profile clusters. They occupy a location near the centromeres, however not having a significant overlap nether with the nearby compartment of Antarctica, nor with any other compartment. They also produce a few term enrichments; most significant among them are summarized in the table below.
+The rest of the clusters (B, C and D) are completely distinct from the histone profile clusters. They occupy a location near the centromeres, but without having a significant overlap neither with the nearby compartment of Antarctica, nor with any other compartment. They also produce a few term enrichments; most significant among them are summarized in the table below.
 
 |Cluster|Term                                                           |Adjusted p-value|
 |-------|---------------------------------------------------------------|----------------|
