@@ -43,12 +43,6 @@ This study aims to collect and document additional evidence of a possible spatia
 
 The primary question under research is whether or not *S. cerevisiae* genes of similar properties tend to co-localize. If they do, our secondary question is whether or not they have more things in common besides that.
 
-![](chapters/images/DistributionShifts.svg)
-
-<font size="1">
-**Figure 1:** Distribution of histone-profile average in-group Euclidean distance (top) and distribution of histone profile class Shannon entropy (bottom) of local gene sets (clusters and segments, respectively) in contrast to distribution of the same quantity in random samples of the same gene count. Both are characterized by a shift towards smaller values, which signifies a tendency of similar histone modification profiles to co-localize in space.
-</font>
-
 We consider small sets of neighboring genes and assess the local signal distribution of this area. Then, by comparing it to the global distribution we extract gene sets of a particular tendency regarding each signal. 
 
 The outcome of this process is a number of gene sets. As a convention, we will refer to these as "segments," when considering successive genes on a particular chromosome, "clusters" when the genes form a local neighborhood in three-dimensional space, and "compartments," when multiple, non-overlapping gene sets collectively account for the entire genome.
@@ -162,7 +156,14 @@ The following table summarizes the metric used for each sphere test.
 
 ## Small scale analysis of histone modification profiles
 
-We additionally perform a finer scale analysis for the histone profile signal in particular. In this analysis, locality is considered in terms of position in the chromosome (index space). We measure the average histone profile space Euclidean distance in groups of 5 consecutive genes. The average histone profile space distance of the middle gene of the group to all other genes in the chromosome is then divided by the local average distance to yield a "community score." 
+We additionally perform a finer scale analysis for the histone profile signal in particular. In this analysis, locality is considered in terms of position in the chromosome (*linear* or *index* space). We measure the average histone profile space Euclidean distance in groups of 5 consecutive genes. The average histone profile space distance of the middle gene of the group to all other genes in the chromosome is then divided by the local average distance to yield a "community score." 
+
+![](chapters/images/DistributionShifts.svg)
+
+<font size="1">
+**Figure 1:** Distribution of histone-profile average in-group Euclidean distance (top) and distribution of histone profile class Shannon entropy (bottom) of local gene sets (clusters and segments, respectively) in contrast to distribution of the same quantity in random samples of the same gene count. Both are characterized by a shift towards smaller values, which signifies a tendency of similar histone modification profiles to co-localize in space.
+</font>
+
 
 A greater community score signifies a local group possessing a greater in-group similarity than its similarity to the rest of the genome, hence the name. As a first approcimation, we consider a community score of 2 as significant (local similarity is twice as strong as global). Filtering the genes using this threshold results in a number of genes forming local communities around them. These genes are scattered throughout the entire genome.
 
@@ -187,14 +188,14 @@ plot(1:maxClusterCount, withinSS,
 ```
 
 <font size="1">
-**Figure 5:** Variance within clusters for different selections of cluster count, during extracting histone profiles that are representative of communities. Bayesian information criterion is minimized when using 7 clusters.
+**Figure 5:** Within-cluster variance as a function of cluster count. No abrupt drop in variance can be found, which makes it impractical to select a cluster count via the "elbow" method. We resort to x-means, which optimizes the Bayesian information criterion. Under this criterion, a model of 7 clusters best explains the data.
 </font>
 
 X-means [7] clustering of these community-center genes supports the presence of 7 characteristic histone modification profiles. In order to incorporate the significance of locality (which is our main concern in this study), we classify all genes in these 7 classes. We do so by k-nearest neighbors classification, with a k value of 3.
 
 Having assigned a histone profile class to each gene, where the classes are known to form local communities, we then filter all chromosomes by a sliding window of 25 consecutive genes. We measure Shannon entropy in terms of the 7 classes. The distribution of Shannon entropy in sliding windows is both multimodal and displaced (see Figure 1) compared to the distribution of randomly picked sets of 25 genes.
 
-We filter the sliding windows, keeping those of a p-value less than 0.1%. This corresponds to approximately 1.28 bits of entropy per window and aims to capture the left-most mode of the distribution. By connecting the overlapping windows we get a numebr of segments having a tighter than usual histone modification profile.
+We filter the sliding windows, keeping those of a p-value less than 0.1%. This corresponds to approximately 1.28 bits of entropy per window and aims to capture the left-most mode of the distribution. By connecting the overlapping windows we get a number of segments having a tighter than usual histone modification profile.
 
 ## Annotation
 
