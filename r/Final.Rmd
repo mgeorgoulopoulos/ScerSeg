@@ -273,12 +273,12 @@ boxplot(continentCoexpression, outline=FALSE, las=2, main="Pairwise coexpression
 Mean coexpression score is greater than average in "land" while lower than average in "sea." A t-test verifies that these mean shifts are statistically significant.
 
 | Compartment  | p-value   |
-|-------------|------------|
-| Godwana     | 1.18e-16   |
-| Antarctica  | 1.03e-25   |
-| Laurasia    | 7.02e-09   |
-| Tethys      | 1.15e-54   |
-| Pangaea     | 7.85e-14   |
+|-------------|-------------------------|
+| Godwana     | $1.18\times 10^{-16}$   |
+| Antarctica  | $1.03\times 10^{-25}$   |
+| Laurasia    | $7.02\times 10^{-09}$   |
+| Tethys      | $1.15\times 10^{-54}$   |
+| Pangaea     | $7.85\times 10^{-14}$   |
 
 <font size="1">
 **Table 2:** Statistical significance of the difference in coexpression between each of the compartments and the entire genome. A combination of all high-coexpression compartments, named Pangaea, maintains statistical significance against the whole genome.
