@@ -555,23 +555,26 @@ Nikos Vakirlis has provided the gene species count and overarching taxon per gen
 CG2 team has contributed by critically discussing every aspact of this work.
 	
 
-# Literature Cited
+# References
 
-1. Nikolaou C, Chouvardas P, Νικολάου Χ, Χουβαρδάς Π. Υπολογιστική βιολογία.; 2015. Accessed June 12, 2021. https://repository.kallipos.gr/handle/11419/1577
-2. Dixon JR, Selvaraj S, Yue F, et al. Topological domains in mammalian genomes identified by analysis of chromatin interactions. Nature. 2012;485(7398):376-380. doi:10.1038/nature11082
-3. de Wit E, de Laat W. A decade of 3C technologies: insights into nuclear organization. Genes Dev. 2012;26(1):11-24. doi:10.1101/gad.179804.111
-4. Pouokam M, Cruz B, Burgess S, Segal MR, Vazquez M, Arsuaga J. The Rabl configuration limits topological entanglement of chromosomes in budding yeast. Sci Rep. 2019;9(1):6795. doi:10.1038/s41598-019-42967-4
-5. Osborne CS, Chakalova L, Brown KE, et al. Active genes dynamically colocalize to shared sites of ongoing transcription. Nat Genet. 2004;36(10):1065-1071. doi:10.1038/ng1423
-6. Liu Y, Nanni L, Sungalee S, et al. Systematic inference and comparison of multi-scale chromatin sub-compartments connects spatial organization to cell phenotypes. Nature Communications. 2021;12(1):2439. doi:10.1038/s41467-021-22666-3
-7. Pelleg D, Moore AW. X-means: Extending k-means with efficient estimation of the number of clusters. In: Icml. Vol 1. ; 2000:727-734.
-8. RStudio | Open source & professional software for data science teams - RStudio. Accessed April 25, 2021. https://www.rstudio.com/
-9. Hall M, Frank E, Holmes G, Pfahringer B, Reutemann P, Witten IH. The WEKA Data Mining Software: An Update. 11(1):9.
-10. Duan Z, Andronescu M, Schutz K, et al. A three-dimensional model of the yeast genome. Nature. 2010;465(7296):363-367. doi:10.1038/nature08973
-11. MacIsaac KD, Wang T, Gordon DB, Gifford DK, Stormo GD, Fraenkel E. An improved map of conserved regulatory sites for *Saccharomyces cerevisiae*. BMC Bioinformatics. 2006;7:113. doi:10.1186/1471-2105-7-113
-12. Cheng C, Shou C, Yip KY, Gerstein MB. Genome-wide analysis of chromatin features identifies histone modification sensitive and insensitive yeast transcription factors. Genome Biology. 2011;12(11):R111. doi:10.1186/gb-2011-12-11-r111
-13. g:Profiler – a web server for functional enrichment analysis and conversions of gene lists. Accessed June 13, 2021. https://biit.cs.ut.ee/gprofiler/gost
-14. Harbison CT, Gordon DB, Lee TI, et al. Transcriptional regulatory code of a eukaryotic genome. Nature. 2004;431(7004):99-104. doi:10.1038/nature02800
-
+* Nikolaou, C. (2018). Invisible cities: Segregated domains in the yeast genome with distinct structural and functional attributes. Current Genetics, 64(1), 247–258. https://doi.org/10.1007/s00294-017-0731-6
+* Tsochatzidou, M., Malliarou, M., Papanikolaou, N., Roca, J., & Nikolaou, C. (2017). Genome urbanization: Clusters of topologically co-regulated genes delineate functional compartments in the genome of Saccharomyces cerevisiae. Nucleic Acids Research, 45. https://doi.org/10.1093/nar/gkx198
+* Cheng, C., Shou, C., Yip, K. Y., & Gerstein, M. B. (2011). Genome-wide analysis of chromatin features identifies histone modification sensitive and insensitive yeast transcription factors. Genome Biology, 12(11), R111. https://doi.org/10.1186/gb-2011-12-11-r111
+* Fares, M. A., Keane, O. M., Toft, C., Carretero-Paulet, L., & Jones, G. W. (2013). The Roles of Whole-Genome and Small-Scale Duplications in the Functional Specialization of Saccharomyces cerevisiae Genes. PLoS Genetics, 9(1). https://doi.org/10.1371/journal.pgen.1003176
+* Harbison, C. T., Gordon, D. B., Lee, T. I., Rinaldi, N. J., Macisaac, K. D., Danford, T. W., Hannett, N. M., Tagne, J.-B., Reynolds, D. B., Yoo, J., Jennings, E. G., Zeitlinger, J., Pokholok, D. K., Kellis, M., Rolfe, P. A., Takusagawa, K. T., Lander, E. S., Gifford, D. K., Fraenkel, E., & Young, R. A. (2004). Transcriptional regulatory code of a eukaryotic genome. Nature, 431(7004), 99–104. h* ttps://doi.org/10.1038/nature02800
+* MacIsaac, K. D., Wang, T., Gordon, D. B., Gifford, D. K., Stormo, G. D., & Fraenkel, E. (2006). An improved map of conserved regulatory sites for Saccharomyces cerevisiae. BMC Bioinformatics, 7, 113. https://doi.org/10.1186/1471-2105-7-113
+* Siepel, A., Bejerano, G., Pedersen, J. S., Hinrichs, A. S., Hou, M., Rosenbloom, K., Clawson, H., Spieth, J., Hillier, L. W., Richards, S., Weinstock, G. M., Wilson, R. K., Gibbs, R. A., Kent, W. J., Miller, W., & Haussler, D. (2005). Evolutionarily conserved elements in vertebrate, insect, worm, and yeast genomes. Genome Research, 15(8), 1034–1050. https://doi.org/10.1101/gr.3715005
+* de Wit, E., & de Laat, W. (2012). A decade of 3C technologies: Insights into nuclear organization. Genes & Development, 26(1), 11–24. https://doi.org/10.1101/gad.179804.111
+* Dixon, J. R., Selvaraj, S., Yue, F., Kim, A., Li, Y., Shen, Y., Hu, M., Liu, J. S., & Ren, B. (2012). Topological domains in mammalian genomes identified by analysis of chromatin interactions. Nature, 485(7398), 376–380. https://doi.org/10.1038/nature11082
+* Duan, Z., Andronescu, M., Schutz, K., McIlwain, S., Kim, Y. J., Lee, C., Shendure, J., Fields, S., Blau, C. A., & Noble, W. S. (2010). A three-dimensional model of the yeast genome. Nature, 465(7296), 363–367. https://doi.org/10.1038/nature08973
+* G:Profiler – a web server for functional enrichment analysis and conversions of gene lists. (n.d.). Retrieved June 13, 2021, from https://biit.cs.ut.ee/gprofiler/gost
+* Hall, M., Frank, E., Holmes, G., Pfahringer, B., Reutemann, P., & Witten, I. H. (n.d.). The WEKA Data Mining Software: An Update. 11(1), 9.
+* Liu, Y., Nanni, L., Sungalee, S., Zufferey, M., Tavernari, D., Mina, M., Ceri, S., Oricchio, E., & Ciriello, G. (2021). Systematic inference and comparison of multi-scale chromatin sub-compartments connects spatial organization to cell phenotypes. Nature Communications, 12(1), 2439. https://doi.org/10.1038/s41467-021-22666-3
+* Nikolaou, C., Chouvardas, P., Νικολάου, Χ., & Χουβαρδάς, Π. (2015). Υπολογιστική βιολογία. https://repository.kallipos.gr/handle/11419/1577
+* Osborne, C. S., Chakalova, L., Brown, K. E., Carter, D., Horton, A., Debrand, E., Goyenechea, B., Mitchell, J. A., Lopes, S., Reik, W., & Fraser, P. (2004). Active genes dynamically colocalize to shared sites of ongoing transcription. Nature Genetics, 36(10), 1065–1071. https://doi.org/10.1038/ng1423
+* Pelleg, D., & Moore, A. W. (2000). X-means: Extending k-means with efficient estimation of the number of clusters. Icml, 1, 727–734.
+* Pouokam, M., Cruz, B., Burgess, S., Segal, M. R., Vazquez, M., & Arsuaga, J. (2019). The Rabl configuration limits topological entanglement of chromosomes in budding yeast. Scientific Reports, 9(1), 6795. https://doi.org/10.1038/s41598-019-42967-4
+* RStudio | Open source & professional software for data science teams—RStudio. (n.d.). Retrieved April 25, 2021, from https://www.rstudio.com/
 
 	
 # Appendix I: Assumptions
