@@ -15,7 +15,7 @@ output:
 ```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
 
 # Enable / disable interactive figures
-ENABLE_INTERACTIVE_FIGURES = FALSE
+ENABLE_INTERACTIVE_FIGURES = TRUE
 
 
 library(plotly)
