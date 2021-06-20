@@ -543,7 +543,7 @@ In conclusion, both our research queries have been addressed. There indeed exist
 
 Having established these tendencies for spatial organization of the genome, further analysis is encouraged, possibly utilizing different kinds of signals. Our algorithm can be repurposed to accomodate any kind of signal, with the minimal configuration of specifying an appropriate statistic. Please refer to the complementary technical report for a complete specification and implementation of the algorithm.
 
-# Acknowledgments
+# Acknowledgements
 
 
 Dr. Christoforos Nikolaou is the supervisor of this work. He proposed the sphere-sampling algorithm and provided direction and prioritization of the various tests we carried out, as well as a plethora of insights on statistics, genome organization and writing. His contribution can not be overstated.
