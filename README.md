@@ -1,6 +1,6 @@
 # ScerSeg - Segmentation of S. cerevisiae genome
 
-<table border="0"><tr>
+<table style="border: none;"><tr>
 
 <td>
 This repository serves as an accompanying resource to my master thesis, in which we segment the budding yeast genome into areas of local similarity.
