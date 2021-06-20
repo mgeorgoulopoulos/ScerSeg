@@ -9,7 +9,7 @@ This repository serves as an accompanying resource to my master thesis, in which
 </td>
 
 <td width="40%">
-[[/r/images/PromoterFields.png]]
+![](https://raw.githubusercontent.com/mgeorgoulopoulos/ScerSeg/main/r/images/PromoterFields.png)
 </td>
 
 </tr></table>
