@@ -583,7 +583,24 @@ CG2 team has contributed by critically discussing every aspact of this work.
 * We assume a zero coexpression score for each pair of genes not present in (MacIsaac et al., 2006).
 * Furthermore, (MacIsaac et al., 2006) contains queries where the search term is a pair of genes. In these cases, we consider the gene whose name appears in the filename as the "source" gene.
 
-# Appendix II: Summary in Greek and English
+# Appendix II: Accompanying material
+<table><tr>
+<td>
+Source code, result datasets and a full technical report may be found at the public git repository:
+
+> https://github.com/mgeorgoulopoulos/ScerSeg
+
+This repository also contains an [interactive version of this document](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/r/Final.html), allowing to explore the 3D plots of the yeast genome.
+</td>
+<td width="5%"></td>
+<td width="20%">
+![](images/GitHubQR.png)
+</td>
+</tr></table>
+
+
+
+# Appendix III: Summary in Greek and English
 
 ## Summary in Greek
 
