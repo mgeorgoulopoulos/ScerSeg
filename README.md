@@ -2,7 +2,7 @@
 
 This repository serves as an accompanying resource to my master thesis.
 
-Both the [thesis document](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/r/Final.html) and [full technical reference](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/r/chapters/index.html) are data-driven and automatically generated from the data. I highly suggest reading these, instead of the word document of my thesis, as these have interactive 3D plots, allowing you to explore the yeast genome in 3D. To view these files, follow the corresponding links and download the html files to your system. Then open locally.
+Both the [thesis document](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/r/Final.html) and [full technical reference](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/r/chapters/index.html) are data-driven and automatically generated from the data. I highly recommend reading these, instead of the word document of my thesis, as these have interactive 3D plots, allowing you to explore the yeast genome in 3D. To view these files, follow the corresponding links and download the html files to your system. Then open locally.
 
 
 # Potentially useful resources
@@ -12,7 +12,7 @@ Feel free to browse the [Results](https://github.com/mgeorgoulopoulos/ScerSeg/tr
 [ScerGenePositions.tsv](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/Results/ScerGenePositions.tsv) is a tab-separated file containing x,y,z coordinates of all S. cerevisiae genes, corresponding to (Duan et al. , 2010) three-dimensional model of the yeast genome. Added here with Dr. Duan's permission.
 
 
-In [src](https://github.com/mgeorgoulopoulos/ScerSeg/tree/main/src), one can find a collection of C++ programs. Most of these implement the "sphere-test" algorithm outlined in the thesis document and can serve as a basic for adapting the algorithm to new data.  [CsvPatcher](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/src/CsvPatcher.cpp) is a simple program that can fill missing values in CSV files, based on the surrounding cells.
+In [src](https://github.com/mgeorgoulopoulos/ScerSeg/tree/main/src), one can find a collection of C++ programs. Most of these implement the "sphere-test" algorithm outlined in the thesis document and can serve as a basis for adapting the algorithm to new data.  [CsvPatcher](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/src/CsvPatcher.cpp) is a simple program that can fill missing values in CSV files, based on the surrounding cells.
 
 [One page summary](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/OnePageSummary.docx) is a word file describing in short methodology and findings of this work.
 
