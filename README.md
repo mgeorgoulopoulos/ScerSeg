@@ -7,7 +7,7 @@ Both the [thesis document](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main
 
 # Potentially useful resources
 
-Feel free to browse the [Results](https://github.com/mgeorgoulopoulos/ScerSeg/tree/main/Results) directory for comma- and tab-separated files containing my results.
+Feel free to browse the [Results](https://github.com/mgeorgoulopoulos/ScerSeg/tree/main/Results) directory for comma- and tab-separated files containing my results. The [GeneSets](https://github.com/mgeorgoulopoulos/ScerSeg/tree/main/Results/GeneSets) subdirectory contains the resulting gene sets along with a brief description for each.
 
 [ScerGenePositions.tsv](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/Results/ScerGenePositions.tsv) is a tab-separated file containing x,y,z coordinates of all S. cerevisiae genes, corresponding to (Duan et al. , 2010) three-dimensional model of the yeast genome. Added here with Dr. Duan's permission.
 
