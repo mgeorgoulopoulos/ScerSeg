@@ -1,18 +1,11 @@
 # ScerSeg - Segmentation of S. cerevisiae genome
 
-<table><tr>
-
-<td>
 This repository serves as an accompanying resource to my master thesis, in which we segment the budding yeast genome into areas of local similarity.
 
 [One page summary](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/OnePageSummary.docx) is a word file describing in short this work's methodology and findings.
-</td>
 
-<td width="40%">
-![[/r/images/PromoterFields.png]]
-</td>
 
-</tr></table>
+<img width="100%" src="https://raw.githubusercontent.com/mgeorgoulopoulos/ScerSeg/main/r/images/PromoterFields.png"/>
 
 Both the [thesis document](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/r/Final.html) and [full technical reference](https://github.com/mgeorgoulopoulos/ScerSeg/blob/main/r/chapters/index.html) are data-driven and automatically generated from the data. I highly recommend reading these, instead of the word document of my thesis, as these have interactive 3D plots, allowing you to explore the yeast genome in 3D. To view these files, follow the corresponding links and download the html files to your system. Then open locally.
 
