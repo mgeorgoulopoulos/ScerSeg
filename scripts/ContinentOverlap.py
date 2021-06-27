@@ -7,7 +7,7 @@
 
 import sqlite3
 
-tables = ["PromoterFields", "MotifFields", "ContinentFields"]
+tables = ["PromoterFields", "MotifFields", "ReplicationTimingFields", "ContinentFields"]
 
 
 def getDistinctFields(cur, tableName):
