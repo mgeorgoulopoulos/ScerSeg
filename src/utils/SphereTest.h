@@ -93,7 +93,6 @@ template <class Gene> struct WorkUnit {
 // Creates a number of randomized WorkUnits.
 template <class Gene>
 QVector<WorkUnit<Gene>> createWorkUnits(double sphereRadius,
-										int minimumGeneCount,
 										const QVector<Gene> &genes, int count,
 										int *averageGenesInASphere) {
 	QVector<WorkUnit<Gene>> result;
@@ -108,7 +107,7 @@ QVector<WorkUnit<Gene>> createWorkUnits(double sphereRadius,
 		WorkUnit<Gene> workUnit(genes);
 
 		workUnit.genesInSphere = sphereSampler.sample(sphereRadius);
-		if (workUnit.genesInSphere.size() < minimumGeneCount) {
+		if (!Gene::acceptSample(workUnit.genesInSphere)) {
 			// Reject sample - we don't want spheres in mostly empty space
 			continue;
 		}

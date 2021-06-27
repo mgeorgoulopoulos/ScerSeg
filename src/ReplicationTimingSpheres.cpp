@@ -21,18 +21,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*
 This program implements the sphere sampling algorithm discussed in accompanying
-documentation. We use gene pair coexpression score as input.
+documentation. We use replication timing as input.
 */
 
 // Settings
 namespace {
 
 // Description of the test. This will appear in STDOUT
-const char *statisticDescription =
-	"Average pairwise coexpression score of the group.";
+const char *statisticDescription = "Standard deviation of replication timing in sphere.";
 
 // Table name in the DB, where the resulting clusters will be persisted.
-const char *tableName = "CoexFields";
+const char *tableName = "ReplicationTImingFields";
 
 // Radius of the sampling sphere
 const double sphereRadius = 15.0;
@@ -54,7 +53,7 @@ const int sampleCount = 10000;
 // twice: on first run p-values can be examined (they are written to text file).
 // Subsequently, you can set this to a sane value, so that only significant
 // spheres are taken into consideration. Typical values range from 1% to 5%.
-const double pAdjThreshold = 0.01;
+const double pAdjThreshold = 0.05;
 
 // Used for hierarchical clustering of overlapping spheres into the
 // final result. Less than this overlap defines two distinct clusters.
@@ -63,8 +62,6 @@ const double pAdjThreshold = 0.01;
 const double overlapThreshold = 0.05;
 
 } // namespace
-
-#include "utils/PackedCoex.h"
 
 #include "utils/RandomGeneSampler.h"
 #include "utils/SaveClustersToDB.h"
@@ -87,6 +84,8 @@ const double overlapThreshold = 0.05;
 #include <bitset>
 #include <random>
 
+#define TF_COUNT 102
+
 namespace {
 
 // Define your Gene structure here. It is required that Gene at least contains:
@@ -97,15 +96,13 @@ namespace {
 struct Gene {
 	QString name;
 	Vec3D position;
-
-	// Index to square table of coexpression scores. This is both column and row index of the gene.
-	// We use this to avoid searching gene pair coexpressions by name, thus improving performance.
-	int coexIndex = 0;
+	double replicationTiming = 0.0;
+	int orderInGenome;
 
 	// Implement this function to define what is considered more extreme
 	static bool randomIsMoreExtreme(double randomStatistic,
 									double testStatistic) {
-		// Average coexpression - greater is considered more extreme.
+		// More varied than random seems to be the rare thing here.
 		return randomStatistic >= testStatistic;
 	}
 
@@ -125,26 +122,36 @@ struct Gene {
 
 	// Define this to control when a sphere-sample is acceptable
 	static bool acceptSample(const QVector<const Gene *> &genes) {
-		return genes.size() >= minimumGeneCount;
+		if (genes.size() < minimumGeneCount)
+			return false;
+
+		// Replication timing is a smooth signal. Therefore we want spheres that
+		// conver more than one chromosome, or more than one locations of the
+		// same chromosome. We encode this as a gene index jump of at least 100
+		// genes.
+		QVector<const Gene *> sorted = genes;
+		std::sort(sorted.begin(), sorted.end(),
+				  [](const Gene *a, const Gene *b) {
+					  return a->orderInGenome < b->orderInGenome;
+				  });
+		const int minimumIndexSpaceJump = 100;
+		for (int i = 1; i < sorted.size(); i++) {
+			if (sorted[i]->orderInGenome - sorted[i - 1]->orderInGenome >=
+				minimumIndexSpaceJump)
+				return true;
+		}
+
+		return false;
 	}
-
-	// One to rule them all
-	static PackedCoex packedCoex;
 };
-
-PackedCoex Gene::packedCoex;
 
 // Load set of genes from DB
 QVector<Gene> loadGenes(QSqlDatabase &db, const QString &whereClause = "") {
-	// Load packed coexpressions
-	const QString coexFilename = QStringLiteral("Results/CoexPacked.bin");
-	Gene::packedCoex.load(coexFilename);
-	printf("Loaded packed coexpressions from file: %s\n",
-		coexFilename.toUtf8().data());
-
 	QVector<Gene> result;
 
-	const QString sql = QString("SELECT Gene, x, y, z FROM Loci");
+	const QString sql = QString(
+		"SELECT l.Gene, x, y, z, ReplicationTiming FROM Loci l JOIN "
+		"ReplicationTiming r ON l.Gene = r.Gene ORDER BY Chromosome, Start");
 	QSqlQuery query(sql, db);
 	while (query.next()) {
 		Gene gene;
@@ -152,14 +159,8 @@ QVector<Gene> loadGenes(QSqlDatabase &db, const QString &whereClause = "") {
 		gene.position.x = query.value(1).toDouble();
 		gene.position.y = query.value(2).toDouble();
 		gene.position.z = query.value(3).toDouble();
-		
-		if (!Gene::packedCoex.geneToIndex.contains(gene.name)) {
-			// Ignore genes where we don't know their coexpressions
-			continue;
-		}
-
-		// Assign index to square table and we are done.
-		gene.coexIndex = Gene::packedCoex.geneToIndex[gene.name];
+		gene.replicationTiming = query.value(4).toDouble();
+		gene.orderInGenome = result.size();
 
 		result.push_back(gene);
 	}
@@ -177,34 +178,30 @@ double sphereTestStatistic(const QVector<const Gene *> &genes) {
 	if (genes.isEmpty())
 		throw(QString("Empty gene list provided!"));
 
-	if (genes.size() == 1) return 0.0;
-
-	double result = 0.0;
-	int pairCount = 0;
-
-	for (int i = 0; i < genes.size(); i++) {
-		for (int j = 0; j < genes.size(); j++) {
-			if (i == j) continue;
-
-			const Gene &gene1 = *genes[i];
-			const Gene &gene2 = *genes[j];
-
-			double coexScore =
-				(double)Gene::packedCoex.lookup(gene1.coexIndex, gene2.coexIndex);
-			coexScore *= 0.1; // divide by 10 to return to coex score space.
-			result += coexScore;
-			pairCount++;
-		}
+	// Calculate average
+	double average = 0.0;
+	for (const Gene *gene : genes) {
+		average += gene->replicationTiming;
 	}
-	result /= (double)pairCount;
-	return result;
+	average /= (double)genes.size();
+
+	double variance = 0.0;
+	for (const Gene *gene : genes) {
+		double averageDiff = gene->replicationTiming - average;
+		variance += averageDiff * averageDiff;
+	}
+	variance /= (double)genes.size();
+
+	const double stdev = sqrt(variance);
+
+	return stdev;
 }
 
 // This function performs the sphere test. An almost identical copy of this
 // function exists in all similar sphere-test programs. This is a compromise
 // between reusability and flexibility. Heavy parts of the procedure have been
 // extracted to SphereTest.h.
-void extractCoexFields(QSqlDatabase &db) {
+void extractReplicationTimingFields(QSqlDatabase &db) {
 	printf("Description of measured statistic:\n\t%s\n", statisticDescription);
 
 	// Load genes
@@ -218,21 +215,60 @@ void extractCoexFields(QSqlDatabase &db) {
 
 	printf("Generating %d sphere samples... ", sampleCount);
 	int averageGenesInASphere = 0;
-	QVector<WorkUnit<Gene>> workUnits =
-		createWorkUnits(sphereRadius, genes, sampleCount,
-						&averageGenesInASphere);
+	QVector<WorkUnit<Gene>> workUnits = createWorkUnits(
+		sphereRadius, genes, sampleCount, &averageGenesInASphere);
 	printf("Done.\n");
 	printf("Average genes in a sphere: %d\n", averageGenesInASphere);
 
 	// Then, for each of the samples, draw the same number of random samples of
 	// the same gene count. Calculate the same metric and calculate a p-value.
-	printf("Calculating p-values for %d sphere samples using %d random samples "
-		   "for each... ",
-		   sampleCount, sampleCount);
-#pragma omp parallel for
+
+	// Reuse random samples. We don't really need thousands of random samples
+	// for each of the thousands of sphere samples. We need them for each *gene
+	// count*.
+	printf("Calculating statistic on %d random samples for all possible gene "
+		   "set sizes...",
+		   workUnits.size());
+	QMap<int, QVector<double>> geneCountToRandomStatistics;
+	for (WorkUnit<Gene> &workUnit : workUnits) {
+		const int geneCount = workUnit.genesInSphere.size();
+		if (geneCountToRandomStatistics.contains(geneCount))
+			continue;
+		printf("%d ", geneCount);
+
+		geneCountToRandomStatistics[geneCount].reserve(sampleCount);
+		for (int r = 0; r < sampleCount; r++) {
+			workUnit.randomSampler.sample(geneCount, &workUnit.randomGenes);
+			const double statisticInRandom =
+				sphereTestStatistic(workUnit.randomGenes);
+			geneCountToRandomStatistics[geneCount].push_back(statisticInRandom);
+		}
+	}
+	printf("Done\n");
+
+	printf("Calculating p-value for each of %d spheres... ", workUnits.size());
 	for (int i = 0; i < workUnits.size(); i++) {
 		WorkUnit<Gene> &workUnit = workUnits[i];
-		workUnit.calculatePValue(sampleCount);
+
+		// Calculate metric in the sphere-sample
+		const double statisticInSphere =
+			sphereTestStatistic(workUnit.genesInSphere);
+
+		// Random samples
+		const QVector<double> &statsOnRandomSample =
+			geneCountToRandomStatistics[workUnit.genesInSphere.size()];
+		for (const double statisticInRandom : statsOnRandomSample) {
+			// Is random more extreme than sphere?
+			if (Gene::randomIsMoreExtreme(statisticInRandom, statisticInSphere))
+				workUnit.chanceWinCount++;
+		} // end for (N random samples)
+
+		workUnit.pValue =
+			Gene::calculatePValue(workUnit.chanceWinCount, sampleCount);
+
+		// Give benefit of the doubt to chance: replace zero pValues with the
+		// smallest we can safely say
+		workUnit.pValue = std::max(workUnit.pValue, 1.0 / (double)sampleCount);
 	}
 	printf("Done.\n");
 
@@ -315,8 +351,30 @@ void extractCoexFields(QSqlDatabase &db) {
 	}
 
 	// Report clusters
+	QMap<QString, Gene> nameToGene;
+	for (const Gene &gene : genes) {
+		nameToGene.insert(gene.name, gene);
+	}
 	for (int i = 0; i < clusters.size(); i++) {
-		printf("\tCluster %d: %d genes\n", i + 1, clusters[i].size());
+		QVector<const Gene *> tmp;
+		for (const QString &geneName : clusters[i]) {
+			tmp.push_back(&nameToGene[geneName]);
+		}
+		const double metric = sphereTestStatistic(tmp);
+
+		printf("\tCluster %d: %d genes\tMetric=%f\n", i + 1, clusters[i].size(),
+			   metric);
+	}
+
+	// Calculate the metric for the entire population to give a hint on range
+	{
+		QVector<const Gene *> tmp;
+		for (const Gene &gene : genes) {
+			tmp.push_back(&gene);
+		}
+		const double metricOverGenome = sphereTestStatistic(tmp);
+		printf("Metric calculated over the entire genome = %f\n",
+			   metricOverGenome);
 	}
 
 	// Write clusters to database for further evaluation
@@ -349,7 +407,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	try {
-		extractCoexFields(db);
+		extractReplicationTimingFields(db);
 	} catch (QString errorMessage) {
 		printf("ERROR: %s\n", errorMessage.toUtf8().data());
 		return 0;

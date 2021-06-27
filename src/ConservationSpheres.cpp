@@ -138,6 +138,11 @@ struct Gene {
 
 		return pValue;
 	}
+
+	// Define this to control when a sphere-sample is acceptable
+	static bool acceptSample(const QVector<const Gene *> &genes) {
+		return genes.size() >= minimumGeneCount;
+	}
 };
 
 // Load set of genes from DB
@@ -248,7 +253,7 @@ void extractConservationFields(QSqlDatabase &db) {
 	printf("Generating %d sphere samples... ", sampleCount);
 	int averageGenesInASphere = 0;
 	QVector<WorkUnit<Gene>> workUnits =
-		createWorkUnits(sphereRadius, minimumGeneCount, genes, sampleCount,
+		createWorkUnits(sphereRadius, genes, sampleCount,
 						&averageGenesInASphere);
 	printf("Done.\n");
 	printf("Average genes in a sphere: %d\n", averageGenesInASphere);
