@@ -13,3 +13,11 @@ This directory contains the gene sets we found to be locally similar. All files 
 |RoughFeatures.tsv          |Arbitrary compartmentalization of the yeast genome, designating "Hat" (nucleolus), "Internal" and "External" regions.                                                                   |
 |TightCommunities.tsv       |Chromosomal segments containing a small number of genes each, having a low Shannon entropy in terms of histone modification profiles.                                                   |
 
+
+## New results
+
+These are new results, added after the completion of the thesis.
+
+|File                        |Description                                                                                                                                                                             |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|ReplicationTimingFields.tsv | Replication timing signal : areas of notable variance. Rest of genome is smooth regarding replication.                                                                                 |
