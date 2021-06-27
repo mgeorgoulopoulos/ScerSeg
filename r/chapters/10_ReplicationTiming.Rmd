@@ -1,0 +1,67 @@
+---
+title: "Replication timing"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+# Replication timing
+
+```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
+library(plotly)
+library(RSQLite)
+```
+
+Let's see how this new dataset looks:
+
+```{r, message=FALSE, warning=FALSE}
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+replicationTiming <- dbGetQuery(conn, "SELECT l.Gene, x, y, z, ReplicationTiming FROM Loci l JOIN ReplicationTiming r ON l.Gene = r.Gene")
+plot_ly(x=replicationTiming$x, y=replicationTiming$y, z=replicationTiming$z, type="scatter3d", mode="markers", text=replicationTiming$Gene, color=replicationTiming$ReplicationTiming)
+dbDisconnect(conn)
+```
+
+## Metric used
+
+We use standard deviation of replication timing in a sphere as a metric.
+
+This signal is so smooth that almost all possible spheres have a far below metric than the randomized set of same size.
+
+Maybe it makes more sense to find the rare spheres where smoothness is disrupted:
+
+```{r, message=FALSE, warning=FALSE}
+sql <- "SELECT l.*, CASE WHEN Field IS NULL THEN 'None' ELSE Field END AS Field FROM Loci l LEFT JOIN ReplicationTimingFields f ON l.Gene = f.Gene"
+fieldColors <- c("#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#4488AA", "#FF00FF", "#000000")
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+replicationTimingFields <- dbGetQuery(conn, sql)
+plot_ly(x=replicationTimingFields$x, y=replicationTimingFields$y, z=replicationTimingFields$z, type="scatter3d", mode="markers", text=replicationTimingFields$Gene, color=replicationTimingFields$Field, colors=fieldColors)
+dbDisconnect(conn)
+```
+
+## Overlaps
+
+* ReplicationTimingFields:C has maximum overlap 100% with MotifFields:A (one is strict subset of the other).
+* ReplicationTimingFields:B is 100% within Tethys.
+
+## Worries
+
+Field C is the same as MotifFields A, which was again the weird one, having more variance in TFs than expected by chance.
+These 123 genes are all located in chrXII, from ~300Kb to ~800KB, with a 200Kb gap between ~500-700.
+
+Maybe we have the wrong (index space) coordinates for these genes? That would explain having significantly varied signals for both signal types.
+
+Alternatively, this weird behavior is because of the rDNA that is present there.
+
+
+```{r, message=FALSE, warning=FALSE}
+sql <- "SELECT Gene, Chromosome, Start,End FROM Loci WHERE Gene IN (SELECT Gene FROM ReplicationTimingFields WHERE Field = 'C') ORDER BY Start"
+conn <- dbConnect(RSQLite::SQLite(), "../../Results/yeast.sqlite")
+weirdGenes <- dbGetQuery(conn, sql)
+dbDisconnect(conn)
+weirdGenes
+```
+
+
+
+
