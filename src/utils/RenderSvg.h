@@ -41,7 +41,7 @@ namespace Svg {
 template <class ChromosomeName, class GeneClass>
 void render(const QString &filename,
 			const QMap<ChromosomeName, QVector<GeneClass>> &chromosomes,
-			bool wrapToHtml) {
+			bool wrapToHtml, QMap<GeneClass, QString> &assignedColors = QMap<GeneClass, QString>()) {
 
 	using Chromosome = QVector<GeneClass>;
 
@@ -83,6 +83,11 @@ void render(const QString &filename,
 			classToColor[geneClasses[i]] = colorPool.back();
 			colorPool.pop_back();
 		}
+	}
+
+	// Override with user colors, if provided
+	if (!assignedColors.isEmpty()) {
+		classToColor = assignedColors;
 	}
 
 	// Space in pixels left empty between chromosomes

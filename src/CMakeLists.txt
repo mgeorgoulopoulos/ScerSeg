@@ -76,3 +76,6 @@ target_link_libraries(14_ContinentCoexpressionStats Qt5::Core	Qt5::Gui Qt5::Widg
 
 add_executable(15_ReplicationTimingSpheres "ReplicationTimingSpheres.cpp")
 target_link_libraries(15_ReplicationTimingSpheres Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
+
+add_executable(16_ContinentsSvg "ContinentsSvg.cpp")
+target_link_libraries(16_ContinentsSvg Qt5::Core	Qt5::Gui Qt5::Widgets Qt5::Sql)
