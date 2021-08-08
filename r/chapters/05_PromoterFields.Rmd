@@ -123,8 +123,9 @@ The natural way to represent our data is therefore a quantification of the gentl
 For each histone modification, we calculate the average of each group. Then we consider the distribution of the averages and assign a z-score to each group. The 9-vector of z-scores will then characterize the collective tendencies of the group.
 
 ```{r}
-colors <- c("#FF0000", "#FF0000", "#000000", "#00FF00", "#00FF00")
-colors <- colorRampPalette(colors)(25)
+#colors <- c("#FF0000", "#FF0000", "#000000", "#00FF00", "#00FF00")
+#colors <- colorRampPalette(colors)(25)
+colors <- brewer.pal(256, "YlGnBu")
 
 tendencies <- read.table(
   "../../Results/PromoterFieldsTendencies.tsv",

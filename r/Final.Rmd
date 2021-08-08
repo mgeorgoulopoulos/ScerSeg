@@ -355,8 +355,9 @@ Each of the seven clusters has its own particular histone modification profile. 
 Furthermore, the shift appears to be quantized as evidenced by the multimodal distribution of shifts. Each cluster appears to consistently over- or under-represent a particular histone variant in one or two of its promoter-site nucleosomes.
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE, out.width="60%"}
-colors <- c("#FF0000", "#FF0000", "#000000", "#00FF00", "#00FF00")
-colors <- colorRampPalette(colors)(25)
+#colors <- c("#FF0000", "#FF0000", "#000000", "#00FF00", "#00FF00")
+#colors <- colorRampPalette(colors)(25)
+colors <- brewer.pal(256, "YlGnBu")
 
 tendencies <- read.table(
   "../Results/PromoterFieldsTendencies.tsv",
@@ -476,8 +477,10 @@ We group each of the associated 203 histone modification profiles into 7 cluster
 Divergence from average in histone variant abundance is not as subtle as in the case of histone profile clusters. Each of the 7 histone profiles has more pronounced differences from average, but not for all histone variants. This allows us to visualize the histone profiles using the original signal (instead of plotting tendencies). Figure 14 shows a heatmap visualization of these profiles. The distribution is bimodal, similar to the distribution of histone profile clusters, with the gap around zero meaning that these profiles distinguish themslves from average.
 
 ```{r, message=FALSE, warning=FALSE, fig.show="show", echo=FALSE, out.width="60%"}
-colors <- c("#FF0000", "#FF0000", "#000000", "#00FF00", "#00FF00")
-colors <- colorRampPalette(colors)(25)
+#colors <- c("#FF0000", "#FF0000", "#000000", "#00FF00", "#00FF00")
+#colors <- colorRampPalette(colors)(25)
+colors <- brewer.pal(256, "YlGnBu")
+
 
 tendencies <- read.table(
   "../Results/CommunityHistoneTendencies.tsv",
