@@ -8,6 +8,7 @@ output:
 
 ```{r, results="hide", message=FALSE, warning=FALSE, fig.show="hide", echo=FALSE}
 library(ggplot2)
+library(ggpubr)
 library(plotly)
 library(RSQLite)
 library(reticulate)
@@ -92,7 +93,30 @@ And here are the respective overlaps. We have more fields overlapping now:
 
 ```{r}
 continentCoexpression <- read.table(file = '../../Results/ContinentCoexpressionScoreSamples.tsv', sep = '\t', header = TRUE)
-boxplot(continentCoexpression, outline=FALSE, las=2)
+#boxplot(continentCoexpression, outline=FALSE, las=2)
+
+# Restructure the data set for ggplot to consume
+extractContinent <- function(df, name) {
+	Compartment <- rep(c(name), each=nrow(df))
+	CoexpressionScore <- df[,name]
+	return(data.frame(Compartment, CoexpressionScore))
+}
+
+continentCoexpressionRows <- extractContinent(continentCoexpression, "Antarctica")
+continentCoexpressionRows <- rbind(continentCoexpressionRows, extractContinent(continentCoexpression, "Laurasia"))
+continentCoexpressionRows <- rbind(continentCoexpressionRows, extractContinent(continentCoexpression, "Godwana"))
+continentCoexpressionRows <- rbind(continentCoexpressionRows, extractContinent(continentCoexpression, "Random"))
+continentCoexpressionRows <- rbind(continentCoexpressionRows, extractContinent(continentCoexpression, "Tethys"))
+
+myComparisons <- list( c("Antarctica", "Random"), c("Laurasia", "Random"), c("Godwana", "Random"), c("Tethys", "Random"))
+
+plot <- ggboxplot(continentCoexpressionRows, x = "Compartment", y = "CoexpressionScore", outlier.shape = NA,
+	title="Coexpression score per compartment",
+	fill = "Compartment",
+	palette = c("red", "orange", "purple", "white", "#222222"),
+	legend.position = "none") 
+	
+plot + stat_compare_means(comparisons = myComparisons, position="bottom") + stat_compare_means(label.y.npc = "bottom") 
 ```
 
 The important distinction is that of "sea versus land". Any combination of the 3 land continents will yield the same (better than average) coexpression score:
