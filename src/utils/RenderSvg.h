@@ -110,6 +110,45 @@ void render(const QString &filename,
 	// Add height to fit a legend
 	imageHeight += geneClasses.size() * padding;
 
+	// Break into boxes
+	struct Box {
+		GeneClass geneClass;
+		int count = 0;
+	};
+	struct ChromosomePacked {
+		ChromosomeName name;
+		QVector<Box> boxes;
+	};
+
+	QVector<ChromosomePacked> chromosomesPacked;
+	for (const ChromosomeName &name : chromosomes.keys()) {
+		const QVector<GeneClass> &genes = chromosomes[name];
+		ChromosomePacked chromosomePacked;
+		chromosomePacked.name = name;
+		Box box;
+		if (genes.isEmpty()) {
+			continue;
+		}
+		box.geneClass = genes.front();
+		for (const GeneClass &gene : genes) {
+			if (gene == box.geneClass) {
+				box.count++;
+				continue;
+			}
+
+			// Otherwise, add a new box
+			chromosomePacked.boxes.push_back(box);
+			box.count = 1;
+			box.geneClass = gene;
+		}
+
+		if (box.count > 0) {
+			chromosomePacked.boxes.push_back(box);
+		}
+
+		chromosomesPacked.push_back(chromosomePacked);
+	} // end for (all input chromosomes)
+	
 	// Render to strings
 	QVector<QString> svg;
 	svg << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
@@ -128,25 +167,23 @@ void render(const QString &filename,
 
 	int x = padding;
 	int y = padding;
-	for (int i : chromosomes.keys()) {
-		const Chromosome &chromosome = chromosomes[i];
-
+	for (const ChromosomePacked &chromosome : chromosomesPacked) {
 		svg << "<g>";
 		svg << QString("<text x=\"%1\" y=\"%2\">Chromosome %3</text>")
 				   .arg(x)
 				   .arg(y - 3)
-				   .arg(i);
+				   .arg(chromosome.name);
 
-		for (GeneClass geneClass : chromosome) {
+		for (const Box &box : chromosome.boxes) {
 			svg << QString("<rect x=\"%1\" y=\"%2\" width=\"%3\" "
 						   "height=\"%4\" style=\"fill:%5;\" />")
 					   .arg(x)
 					   .arg(y)
-					   .arg(1)
+					   .arg(box.count)
 					   .arg(chromosomeHeight)
-					   .arg(classToColor[geneClass]);
+					   .arg(classToColor[box.geneClass]);
 
-			x++;
+			x += box.count;
 		}
 		svg << "</g>";
 
